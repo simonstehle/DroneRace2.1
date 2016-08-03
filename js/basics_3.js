@@ -17,6 +17,9 @@ scene = new THREE.Scene();
 aspectRatio = window.innerWidth / window.innerHeight;
 droneCamera = new THREE.PerspectiveCamera(75, aspectRatio, 1, 30000);
 
+var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+var VIEW_ANGLE = 45, ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+
 droneCamera.position.z = 320;
 droneCamera.position.y = 100;
 

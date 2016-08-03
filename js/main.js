@@ -34,6 +34,6 @@ function animate() {
     // render another scene containing just a quad with the texture
     //    and put the result into the final texture
     renderer.render( screenScene, screenCamera, finalRenderTarget, true );
-    renderer.render(scene,droneCamera);
+    renderer.render( scene,droneCamera); 
 }
 animate();

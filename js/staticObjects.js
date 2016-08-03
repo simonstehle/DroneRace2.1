@@ -42,7 +42,7 @@ function initBonooneStadium(){
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials( materials );
 
-        objLoader.load( 'objects/Stadium.obj', function ( object ) {
+        objLoader.load( '../objects/Stadium.obj', function ( object ) {
 
             bonooneStadium = object;
             bonooneStadium.boundingSphere;
@@ -59,7 +59,7 @@ function initBonooneStadium(){
 }
 
 
-var texture = THREE.ImageUtils.loadTexture( 'objects/Grass_1.png' );
+var texture = THREE.ImageUtils.loadTexture( '../objects/Grass_1.png' );
 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 texture.repeat.set( 20, 20 );
 
