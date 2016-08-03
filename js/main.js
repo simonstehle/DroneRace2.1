@@ -7,7 +7,9 @@
 var marker = new THREE.Object3D();
 
 marker.add(droneCamera);
-marker.add(initDrone01(1));
+initDrone01();
+marker.add(drone_mesh);
+
 
 
 

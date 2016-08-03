@@ -3,6 +3,7 @@
  */
 "use strict";
 
+
 var drone_mesh;
 
 /**
@@ -11,17 +12,17 @@ var drone_mesh;
  * 
  * @param droneID
  */
-function initDrone01(droneID){
+function initDrone01(){
 
     
-    mtlLoader.load( '../objects/DroneV' + droneID + '.mtl', function( materials ) {
+    mtlLoader.load( 'objects/DroneV1.mtl', function( materials ) {
 
         materials.preload();
 
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials( materials );
 
-        objLoader.load( '../objects/DroneV' + droneID + '.obj', function ( object ) {
+        objLoader.load( 'objects/DroneV1.obj', function ( object ) {
             //TODO: Check here
              drone_mesh = object;
             drone_mesh.scale.set(20, 20, 20);
@@ -33,7 +34,7 @@ function initDrone01(droneID){
 
     });
 
-    return drone_mesh;
+
 
 
 }

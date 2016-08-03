@@ -33,6 +33,7 @@ var mtlLoader = new THREE.MTLLoader();
  * Importing the Libraries for loading and placing the models into the scene
  */
 
+
 function initBonooneStadium(){
 
     mtlLoader.load( 'objects/Stadium.mtl', function( materials ) {
@@ -42,9 +43,9 @@ function initBonooneStadium(){
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials( materials );
 
-        objLoader.load( '../objects/Stadium.obj', function ( object ) {
+        objLoader.load( 'objects/Stadium.obj', function ( object ) {
 
-            bonooneStadium = object;
+            var bonooneStadium = object;
             bonooneStadium.boundingSphere;
             bonooneStadium.scale.set(2000, 2000, 2000);
             bonooneStadium.position.set(0,-150,0);
@@ -59,7 +60,7 @@ function initBonooneStadium(){
 }
 
 
-var texture = THREE.ImageUtils.loadTexture( '../objects/Grass_1.png' );
+var texture = THREE.ImageUtils.loadTexture( 'objects/Grass_1.png' );
 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 texture.repeat.set( 20, 20 );
 
