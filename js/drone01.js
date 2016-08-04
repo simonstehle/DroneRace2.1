@@ -4,7 +4,6 @@
 "use strict";
 
 
-var drone_mesh;
 
 /**
  * Function to initialise the different drones
@@ -14,7 +13,25 @@ var drone_mesh;
  */
 function initDrone01(){
 
+    mtlLoader.load( 'objects/DroneV1.mtl', function( materials ) {
+
+        materials.preload();
+
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials( materials );
+
+        objLoader.load( 'objects/DroneV1.obj', function ( object ) {
+            drone_mesh = object;
+            drone_mesh.boundingSphere;
+            drone_mesh.scale.set(20, 20, 20);
+            marker.add(drone_mesh);
+
+        }, onProgress, onError );
+
+    });
+
     
+    /*
     mtlLoader.load( 'objects/DroneV1.mtl', function( materials ) {
 
         materials.preload();
@@ -28,13 +45,13 @@ function initDrone01(){
             drone_mesh.scale.set(20, 20, 20);
 
 
-            
+
 
         }, onProgress, onError );
 
     });
 
-
+*/
 
 
 }
