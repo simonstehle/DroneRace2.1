@@ -8,7 +8,7 @@
 var scene;
 // Camera looks at the scene.
 var aspectRatio;
-var droneCamera;
+var droneCamera, textureCamera;
 // Renderer draws what the droneCamera sees on the screen.
 var renderer;
 
@@ -23,9 +23,11 @@ var VIEW_ANGLE = 45, ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FA
 droneCamera.position.z = 320;
 droneCamera.position.y = 100;
 
+
+
 renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xFFCEB8);
+renderer.setClearColor(0xAAAAEE);
 document.body.appendChild(renderer.domElement);
 
 
@@ -45,13 +47,14 @@ scene.add( directionalLight );
 
 
 //Texture As Camera
-var textureCamera = new THREE.PerspectiveCamera( 5, ASPECT_RATIO, NEAR, FAR );
-scene.add(textureCamera);
+textureCamera = new THREE.PerspectiveCamera( 5, ASPECT_RATIO, NEAR, FAR );
 textureCamera.position.set(5000,800,4000);
+scene.add(textureCamera);
 
-var screenScene = new THREE.Scene();
+var screenScene, screenCamera, firstRenderTarget, finalRenderTarget;
+screenScene = new THREE.Scene();
 
-var screenCamera = new THREE.OrthographicCamera(
+screenCamera = new THREE.OrthographicCamera(
     window.innerWidth  / -2, window.innerWidth  /  2,
     window.innerHeight /  2, window.innerHeight / -2,
     -10000, 10000 );
@@ -60,17 +63,18 @@ screenScene.add( screenCamera );
 
 var screenGeometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
 
-var firstRenderTarget = new THREE.WebGLRenderTarget( 1024, 1024, { format: THREE.RGBFormat } );
-var screenMaterial = new THREE.MeshBasicMaterial( { map: firstRenderTarget } );
+firstRenderTarget = new THREE.WebGLRenderTarget( 1024, 1024, { format: THREE.RGBFormat } );
+var screenMaterial = new THREE.MeshBasicMaterial( { map: firstRenderTarget.texture } );
 
 var quad = new THREE.Mesh( screenGeometry, screenMaterial );
-// quad.rotation.x = Math.PI / 2;
+ //quad.rotation.x = Math.PI / 2;
 screenScene.add( quad );
+
 
 // final version of camera texture, used in scene.
 var screenGeometry = new THREE.CubeGeometry( 4000, 2000, 1, 1 );
-var finalRenderTarget = new THREE.WebGLRenderTarget( 1024, 1024, { format: THREE.RGBFormat } );
-var screenMaterial = new THREE.MeshBasicMaterial( { map: finalRenderTarget } );
+finalRenderTarget = new THREE.WebGLRenderTarget( 1024, 1024, { format: THREE.RGBFormat } );
+var screenMaterial = new THREE.MeshBasicMaterial( { map: finalRenderTarget.texture } );
 var screen = new THREE.Mesh( screenGeometry, screenMaterial );
 screen.position.set(0,1900,-9500);
 scene.add(screen);
