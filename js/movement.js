@@ -33,13 +33,13 @@ var moveForward = false;
  */
 var moveBackward = false;
 /**
- * is true when keyLeft is pressed
+ * is true when moveLeft is pressed
  * @type {boolean}
  */
 var moveLeft = false;
 
 /**
- * is true when keyRight is pressed
+ * is true when moveRight is pressed
  * @type {boolean}
  */
 var moveRight = false;
@@ -68,8 +68,8 @@ var speedSidewards = 40;
 var speedRotationRadian = 0.05;
 var speedUpDown = 20;
 
-var maxSpeed = 200;
-var maxAcceleration = 3;
+var maxSpeed = 300;
+var maxAcceleration = 7;
 var currentSpeed = 0;
 
 var boundaryBottom = -80;
@@ -82,16 +82,39 @@ var gameScore = 0;
 var hindernisse = [];
 hindernisse[0] = false;
 
+function resetMoving () {
+    movingForward = false;
+    movingBackward = false;
+    movingLeft = false;
+    movingRight = false;
+}
 
 
 
 function drone_movement() {
     if (detectCollisions()) {
-        if (moveForward) addMovementDelta(currentSpeed, 38);
-        if (moveBackward) addMovementDelta(currentSpeed, 40);
-        if (moveLeft) addMovementDelta(currentSpeed, 37);
-        if (moveRight) addMovementDelta(currentSpeed, 39);
+        if (moveForward && movingForward && !movingBackward) calcMovement(true, 38, false);
+        if (moveBackward && movingBackward && !movingForward) calcMovement(true, 40, false);
+        if (moveLeft && movingLeft && !movingRight) calcMovement(true, 37, false);
+        if (moveRight && movingRight && !movingLeft) calcMovement(true, 39, false);
+
+        if (!moveForward && movingForward) calcMovement(false, 38, false);
+        if (!moveBackward && movingBackward) calcMovement(false, 40, false);
+        if (!moveLeft && movingLeft) calcMovement(false, 37, false);
+        if (!moveRight && movingRight) calcMovement(false, 39, false);
+
+        if (moveBackward && movingForward) calcMovement(false, 38, true);
+        if (moveForward && movingBackward) calcMovement(false, 40, true);
+        if (moveRight && movingLeft) calcMovement(false, 37, true);
+        if (moveLeft && movingRight) calcMovement(false, 39, true);
+
+         /*
+        if (!moveBackward ) calcMovement(true, 40);
+        if (!moveLeft ) calcMovement(true, 37);
+        if (!moveRight ) calcMovement(true, 39);
+
         //if (!moveForward && movingForward) addMovementDelta(currentSpeed,38);
+        */
 
     }
 
@@ -109,11 +132,7 @@ function drone_movement() {
     }
 }
 
-function addMovementDelta (vCurr, keycode){
-    var tempMoveObj = calcMovement(globalAngle, vCurr, keycode, maxAcceleration, maxSpeed);
-    marker.position.z += tempMoveObj.Z;
-    marker.position.x += tempMoveObj.X;
-}
+
 
 function rotateOnYaxis (keycode) {
     collisionBool = true;
@@ -131,10 +150,12 @@ function rotateOnYaxis (keycode) {
 
 function droneDidCrash(){
     if (crash){
-        marker.position.set(0,0,5000);
+        marker.position.set(0,0,8000);
+        currentSpeed = 0;
+        resetMoving();
         setTimeout(function(){
             crash = false;
-        }, 3000);
+        }, 500);
     }
 }
 
@@ -164,17 +185,39 @@ function addOrSubstractSpeed(aMax, vMax, vCurr) {
  Param "direction" is an int; you give me the keycode between 37 and 40,
  so the function can determine in which direction relative to the current rotation you want to move
 
- * @param angle
- * @param vCurr
+ * @param forward
  * @param direction
- * @param aMax
- * @param vMax
+
  * @returns {{}}
  */
-function calcMovement (angle, vCurr, direction, aMax, vMax){
+function calcMovement (inKeyDirection, direction, reverseThrust){
+
+    var angle = globalAngle;
 
     console.log(currentSpeed);
-    currentSpeed += acc(aMax, vMax, vCurr);
+
+    if (inKeyDirection) {
+        var speedToAdd = acc(maxAcceleration, maxSpeed, currentSpeed);
+        if (speedToAdd < maxAcceleration / 10) currentSpeed = maxSpeed;
+        else currentSpeed += speedToAdd;
+
+    }
+    if (!inKeyDirection){
+        var speedToSubtract = negAcc(maxAcceleration, maxSpeed, currentSpeed);
+        if (reverseThrust) {
+            speedToSubtract -= (acc(maxAcceleration, maxSpeed, currentSpeed))*(-1);
+        }
+        if (speedToSubtract > maxAcceleration / -100) {
+            currentSpeed = 0;
+            resetMoving();
+
+        }
+        else currentSpeed += speedToSubtract;
+    }
+
+    if (!inKeyDirection && reverseThrust) {
+
+    }
 
     var vNew = currentSpeed;
 
@@ -206,8 +249,6 @@ function calcMovement (angle, vCurr, direction, aMax, vMax){
 
     if (net_angle < 0) net_angle += PiHalf*4;
 
-    //console.log("Quadrant: " + quadrant+ " Angle: " + net_angle);
-
 
     switch (quadrant) {
         case 0:
@@ -227,11 +268,9 @@ function calcMovement (angle, vCurr, direction, aMax, vMax){
             moveX = (Math.cos(net_angle)*vNew);
             break;
     }
-    var move = {};
-    move.X = moveX;
-    move.Z = moveZ;
 
-    return move;
+    marker.position.z += moveZ;
+    marker.position.x += moveX;
 }
 
 /**
@@ -277,18 +316,18 @@ function acc(aMax, vMax, vCurr) {
     }
 }
 
-
 function negAcc(aMax, vMax, vCurr) {
     if (vCurr === 0) {
         return 0;
     } else {
-        var aStart = aMax * 1/30;
+        var aStart = aMax * 1/10;
         var qStr = getNegQ(vMax);
         var aCurr = -aStart*Math.pow(qStr, -vCurr);
         if (vCurr + aCurr <= aStart) {
             return vCurr;
         } else {
             return aCurr;
+
         }
     }
 }
