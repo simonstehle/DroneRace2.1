@@ -24,29 +24,32 @@ document.addEventListener('keydown', function (event) {
             break;
         case 68:
             //Rotate right d
-            //TODO: Hier der Algorithmusch
             rotateRight = true;
             break;
+
         case 38:
             //Move Forward Arrow up
             moveForward = true;
+            movingForward = true;
 
             drone_mesh.rotation.x = Math.PI * -0.05;
             break;
         case 40:
             //Move Backwards Arrow down
             moveBackward = true;
+            movingBackward = true;
             drone_mesh.rotation.x = Math.PI * 0.05;
             break;
         case 37:
             //Move Left arrow left
             moveLeft = true;
+            movingLeft = true;
             drone_mesh.rotation.z = Math.PI * 0.05;
-
             break;
         case 39:
             //Move right arrow right
             moveRight = true;
+            movingRight = true;
             drone_mesh.rotation.z = Math.PI * -0.05;
             break;
     }

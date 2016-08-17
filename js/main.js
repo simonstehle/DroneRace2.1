@@ -7,20 +7,15 @@
 var marker = new THREE.Object3D();
 
 marker.add(droneCamera);
+
 var drone_mesh;
 initDrone01();
-console.log(drone_mesh);
-//marker.add(drone_mesh);
-
-
-
+// console.log(drone_mesh);
+// marker.add(drone_mesh);
 
 scene.add(marker);
 
 initBonooneStadium();
-
-
-
 
 function animate() {
     requestAnimationFrame(animate);
