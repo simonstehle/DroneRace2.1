@@ -63,6 +63,34 @@ mtlLoader.load( 'objects/Zeppelin.mtl', function( materials ) {
 
 });
 
+//Easteregg
+var sterlock;
+mtlLoader.load( 'objects/SterlockV2.mtl', function( materials ) {
+
+    materials.preload();
+
+    var objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials( materials );
+
+    objLoader.load( 'objects/SterlockV2.obj', function ( object ) {
+
+        sterlock = object;
+        //mesh.position.Y = -200;
+        //mesh.position.X = 3000;
+        //mesh.position.Z = 200;
+        //bonooneStadium.rotation.y = Math.PI*1.5;
+        sterlock.boundingSphere
+        sterlock.rotation.y = Math.PI;
+        sterlock.scale.set(500, 500, 500);
+        sterlock.position.set(0,200,9000);
+        scene.add(sterlock);
+
+
+
+    }, onProgress, onError );
+
+});
+
 var pipe1;
 mtlLoader.load( 'objects/Pipe.mtl', function( materials ) {
 
