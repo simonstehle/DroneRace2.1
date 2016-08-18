@@ -16,7 +16,6 @@
  */
 var allowedZones = [];
 
-
 var flyTroughObjects = [];
 var flyOverObjects = [];
 
@@ -193,24 +192,27 @@ function addOrSubstractSpeed(aMax, vMax, vCurr) {
 function calcMovement (inKeyDirection, direction, reverseThrust){
 
     var angle = globalAngle;
+    var speedToAdd = 0;
+    var speedToSubtract = 0;
 
     console.log(currentSpeed);
 
     if (inKeyDirection) {
-        var speedToAdd = acc(maxAcceleration, maxSpeed, currentSpeed);
+        speedToAdd = acc(maxAcceleration, maxSpeed, currentSpeed);
         if (speedToAdd < maxAcceleration / 10) currentSpeed = maxSpeed;
         else currentSpeed += speedToAdd;
-
     }
+
     if (!inKeyDirection){
-        var speedToSubtract = negAcc(maxAcceleration, maxSpeed, currentSpeed);
+        speedToSubtract = negAcc(maxAcceleration, maxSpeed, currentSpeed);
         if (reverseThrust) {
-            speedToSubtract -= (acc(maxAcceleration, maxSpeed, currentSpeed))*(-1);
+            //console.log("nur Trägheit: "+speedToSubtract);
+            speedToSubtract -= (acc(maxAcceleration, maxSpeed, 0));
+            //console.log("mit Thrust : "+speedToSubtract);
         }
-        if (speedToSubtract > maxAcceleration / -100) {
+        if (speedToSubtract > maxAcceleration / -100 && !reverseThrust) {
             currentSpeed = 0;
             resetMoving();
-
         }
         else currentSpeed += speedToSubtract;
     }
