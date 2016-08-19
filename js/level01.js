@@ -37,6 +37,7 @@ scene.add(flyOverBox);
 
 //Zeppelin
 var zeppelin;
+var zepMarker = new THREE.Object3D();
 mtlLoader.load( 'objects/Zeppelin.mtl', function( materials ) {
 
     materials.preload();
@@ -55,7 +56,10 @@ mtlLoader.load( 'objects/Zeppelin.mtl', function( materials ) {
         zeppelin.rotation.y = Math.PI*0.5;
         zeppelin.scale.set(500, 500, 500);
         zeppelin.position.set(0,6000,-11000);
-        scene.add(zeppelin);
+
+        zepMarker.position.set(0, 6000, 0);
+        zepMarker.add(zeppelin);
+        scene.add(zepMarker);
 
 
 

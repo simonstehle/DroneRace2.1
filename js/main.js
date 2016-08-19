@@ -3,13 +3,15 @@
  */
 //Marker for grouping object, drone and droneCamera
 var marker = new THREE.Object3D();
-
 marker.add(droneCamera);
+
 var drone_mesh;
 initDrone01();
 //marker.add(drone_mesh);
 
 scene.add(marker);
+
+
 
 initBonooneStadium();
 
@@ -22,6 +24,7 @@ function animate() {
     //Handle Control of Drone by Flags
 
     drone_movement();
+    zeppelin_circle();
 
     renderer.render( scene, textureCamera, firstRenderTarget, true );
     renderer.render( screenScene, screenCamera, finalRenderTarget, true );
