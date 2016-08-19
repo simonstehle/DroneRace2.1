@@ -27,7 +27,7 @@ var onProgress = function ( xhr ) {
  */
 var onError = function ( xhr ) { };
 THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
-var mtlLoader = new THREE.MTLLoader();
+
 
 /**
  * Importing the Libraries for loading and placing the models into the scene

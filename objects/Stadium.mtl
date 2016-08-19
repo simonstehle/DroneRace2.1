@@ -1,5 +1,5 @@
-# Blender MTL File: 'StadiumWithFloor.blend'
-# Material Count: 2
+# Blender MTL File: 'StadiumWithoutFloor.blend'
+# Material Count: 1
 
 newmtl Material.001
 Ns 96.078431
@@ -10,15 +10,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd objects\Stadium.png
-
-newmtl Material.002
-Ns 96.078431
-Ka 1.000000 1.000000 1.000000
-Kd 0.018407 0.261100 0.019595
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 2
-map_Kd  objects\Grass_1.png
+map_Kd objects/Stadium.png
