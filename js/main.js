@@ -25,10 +25,11 @@ function animate() {
 
     drone_movement();
     zeppelin_circle();
-
-    renderer.render( scene, textureCamera, firstRenderTarget, true );
+    textureCamera.lookAt(new THREE.Vector3(0,0,0));
+    renderer.render( scene, textureCamera, firstRenderTarget, true);
     renderer.render( screenScene, screenCamera, finalRenderTarget, true );
-    textureCamera.lookAt(marker.position);
-    renderer.render( scene,droneCamera);
+
+    renderer.render( scene, droneCamera);
+    
 }
 animate();

@@ -35,37 +35,7 @@ scene.add(circleMesh);
 scene.add(flyTroughRingMesh);
 scene.add(flyOverBox);
 
-//Zeppelin
-var zeppelin;
-var zepMarker = new THREE.Object3D();
-mtlLoader.load( 'objects/Zeppelin.mtl', function( materials ) {
 
-    materials.preload();
-
-    var objLoader = new THREE.OBJLoader();
-    objLoader.setMaterials( materials );
-
-    objLoader.load( 'objects/Zeppelin.obj', function ( object ) {
-
-        zeppelin = object;
-        //mesh.position.Y = -200;
-        //mesh.position.X = 3000;
-        //mesh.position.Z = 200;
-        //bonooneStadium.rotation.y = Math.PI*1.5;
-        zeppelin.boundingSphere
-        zeppelin.rotation.y = Math.PI*0.5;
-        zeppelin.scale.set(500, 500, 500);
-        zeppelin.position.set(0,6000,-11000);
-
-        zepMarker.position.set(0, 6000, 0);
-        zepMarker.add(zeppelin);
-        scene.add(zepMarker);
-
-
-
-    }, onProgress, onError );
-
-});
 
 //Easteregg
 var sterlock;
