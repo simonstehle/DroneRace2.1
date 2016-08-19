@@ -44,43 +44,132 @@ var moveLeft = false;
 var moveRight = false;
 
 //Declaration of rotation Flags
+/**
+ *
+ * @type {boolean}
+ */
 var rotateLeft = false;
+
+/**
+ *
+ * @type {boolean}
+ */
 var rotateRight = false;
 
 //Declaration of Up and Down Flags
+/**
+ *
+ * @type {boolean}
+ */
 var moveDroneUp = false;
+
+/**
+ *
+ * @type {boolean}
+ */
 var moveDroneDown = false;
 
 //Var for the glogal Angle to control the Drone after rotating around y
+/**
+ *
+ * @type {number}
+ */
 var globalAngle = 0;
 
 // flags that do not rely on key-control but on inertia
+/**
+ *
+ * @type {boolean}
+ */
 var movingForward = false;
+
+/**
+ *
+ * @type {boolean}
+ */
 var movingBackward = false;
+
+/**
+ *
+ * @type {boolean}
+ */
 var movingLeft = false;
+
+/**
+ *
+ * @type {boolean}
+ */
 var movingRight = false;
 
-//Declaration of Speed Variables
-var speedForward = 50;
-var speedBackwards = 50;
-var speedSidewards = 40;
+/**
+ *
+ * @type {number}
+ */
 var speedRotationRadian = 0.05;
+
+/**
+ *
+ * @type {number}
+ */
 var speedUpDown = 20;
 
+/**
+ *
+ * @type {number}
+ */
 var maxSpeed = 300;
+
+/**
+ *
+ * @type {number}
+ */
 var maxAcceleration = 7;
+
+/**
+ *
+ * @type {number}
+ */
 var currentSpeed = 0;
 
+/**
+ *
+ * @type {number}
+ */
 var boundaryBottom = -80;
+
+/**
+ *
+ * @type {Array}
+ */
 var forbiddenZones = [];
+
+/**
+ *
+ * @type {boolean}
+ */
 var crash = false; //set true if someone crashes the drone
 
 //vars to score the Game
+/**
+ *
+ * @type {Array}
+ */
 var yBoundaries = [];
+/**
+ *
+ * @type {number}
+ */
 var gameScore = 0;
+/**
+ *
+ * @type {Array}
+ */
 var hindernisse = [];
 hindernisse[0] = false;
 
+/**
+ *
+ */
 function resetMoving () {
     movingForward = false;
     movingBackward = false;
@@ -89,7 +178,9 @@ function resetMoving () {
 }
 
 
-
+/**
+ *
+ */
 function drone_movement() {
     if (detectCollisions()) {
         if (moveForward && movingForward && !movingBackward) calcMovement(true, 38, false);
@@ -132,7 +223,10 @@ function drone_movement() {
 }
 
 
-
+/**
+ *
+ * @param keycode
+ */
 function rotateOnYaxis (keycode) {
     collisionBool = true;
     switch (keycode) {
@@ -147,6 +241,9 @@ function rotateOnYaxis (keycode) {
     }
 }
 
+/**
+ *
+ */
 function droneDidCrash(){
     if (crash){
         marker.position.set(0,0,8000);
@@ -158,36 +255,20 @@ function droneDidCrash(){
     }
 }
 
-/*
-function addOrSubstractSpeed(aMax, vMax, vCurr) {
-    var speedToAdd;
-    if (moveForward) {
-        acc(aMax, vMax, vCurr);
-    }
-    else if(!moveForward && movingForward) {
-        negAcc(aMax, vMax, vCurr)
 
-    }
-    return speedToAdd;
-}
-*/
 
 /**
- * This function uses current rotation and pace of
- an object to calculate how far it has to move on
- X and Z in one iteration (pace).
- It uses quadrants to calculate if
- the change of position is negative and positive and
- weather sin or cos hast to be used.
-
-
- Param "direction" is an int; you give me the keycode between 37 and 40,
- so the function can determine in which direction relative to the current rotation you want to move
-
- * @param forward
+ * This function uses current rotation (globalAngle) of
+ * an object to calculate how far it has to move on
+ * X and Z in one iteration (pace).
+ *
+ * Furthermore, the current speed, the direction
+ * in which the object is moving and in which direction the object
+ * is accelerated is used the calculate the movement in the next iteration.
+ *
+ * @param inKeyDirection
  * @param direction
-
- * @returns {{}}
+ * @param reverseThrust
  */
 function calcMovement (inKeyDirection, direction, reverseThrust){
 
@@ -298,16 +379,34 @@ function detectCollisions() {
     // return (intersect.length === 0);
 }
 
+
+/**
+ *
+ * @param vMax
+ * @returns {number}
+ */
 function getQ (vMax) {
     var q = Math.pow(10, 1/vMax);
     return q;
 }
 
+/**
+ *
+ * @param vMax
+ * @returns {number}
+ */
 function getNegQ (vMax) {
     var negQ = Math.pow(10, -1/vMax);
     return negQ;
 }
 
+/**
+ *
+ * @param aMax
+ * @param vMax
+ * @param vCurr
+ * @returns {number}
+ */
 function acc(aMax, vMax, vCurr) {
     var q = getQ(vMax);
     var aCurr = aMax*Math.pow(q, -vCurr);
@@ -318,6 +417,13 @@ function acc(aMax, vMax, vCurr) {
     }
 }
 
+/**
+ *
+ * @param aMax
+ * @param vMax
+ * @param vCurr
+ * @returns {number}
+ */
 function negAcc(aMax, vMax, vCurr) {
     if (vCurr === 0) {
         return 0;
@@ -326,23 +432,11 @@ function negAcc(aMax, vMax, vCurr) {
         var qStr = getNegQ(vMax);
         var aCurr = -aStart*Math.pow(qStr, -vCurr);
         if (vCurr + aCurr <= aStart) {
-            return vCurr;
+            aCurr = vCurr;
+            return aCurr;
         } else {
             return aCurr;
 
         }
     }
 }
-
-
-
-/**
- * Ob eine Beschleunigung auf den Pace addiert oder davon subtrahiert wird,
- * hängt davon ab, wie die Bewegung bisher ausgesehen hat.
- * Wurde sich mit arrowUp nach vorne bewegt, dann wirkt bei keyUp die negAcc;
- * wird dann zusätzlich arrowDown gedrückt, wirkt die Beschleunigung in die andere Richtung solange bis pace = 0,
- * danach wird die BEschleunigung wieder positiv
- *
- * NegAcc wirkt bei pace != 0 und wenn keine Taste gedrückt wird
- *
- */
