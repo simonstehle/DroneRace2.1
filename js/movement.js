@@ -105,7 +105,7 @@ var movingRight = false;
  *
  * @type {number}
  */
-var speedRotationRadian = 0.05;
+var speedRotationRadian = 0.04;
 
 /**
  *
@@ -117,13 +117,13 @@ var speedUpDown = 20;
  *
  * @type {number}
  */
-var maxSpeed = 300;
+var maxSpeed = 100;
 
 /**
  *
  * @type {number}
  */
-var maxAcceleration = 7;
+var maxAcceleration = 3;
 
 /**
  *
@@ -198,14 +198,6 @@ function drone_movement() {
         if (moveRight && movingLeft) calcMovement(false, 37, true);
         if (moveLeft && movingRight) calcMovement(false, 39, true);
 
-         /*
-        if (!moveBackward ) calcMovement(true, 40);
-        if (!moveLeft ) calcMovement(true, 37);
-        if (!moveRight ) calcMovement(true, 39);
-
-        //if (!moveForward && movingForward) addMovementDelta(currentSpeed,38);
-        */
-
     }
 
     if (rotateLeft) rotateOnYaxis(65);
@@ -255,8 +247,6 @@ function droneDidCrash(){
     }
 }
 
-
-
 /**
  * This function uses current rotation (globalAngle) of
  * an object to calculate how far it has to move on
@@ -286,20 +276,18 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
 
     if (!inKeyDirection){
         speedToSubtract = negAcc(maxAcceleration, maxSpeed, currentSpeed);
+
         if (reverseThrust) {
-            //console.log("nur Trägheit: "+speedToSubtract);
             speedToSubtract -= (acc(maxAcceleration, maxSpeed, 0));
-            //console.log("mit Thrust : "+speedToSubtract);
         }
-        if (speedToSubtract > maxAcceleration / -100 && !reverseThrust) {
+
+        if (speedToSubtract > maxAcceleration / -100 || currentSpeed <= 0) {
             currentSpeed = 0;
             resetMoving();
         }
-        else currentSpeed += speedToSubtract;
-    }
-
-    if (!inKeyDirection && reverseThrust) {
-
+        else {
+            currentSpeed += speedToSubtract;
+        }
     }
 
     var vNew = currentSpeed;

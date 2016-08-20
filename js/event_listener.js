@@ -31,7 +31,6 @@ document.addEventListener('keydown', function (event) {
             //Move Forward Arrow up
             moveForward = true;
             movingForward = true;
-
             drone_mesh.rotation.x = Math.PI * -0.05;
             break;
         case 40:
@@ -80,28 +79,23 @@ document.addEventListener('keyup', function (event) {
             break;
         case 38:
             //Move Forward Arrow up
-
-            setTimeout(function () {
-                moveForward = false;
-                drone_mesh.rotation.x = Math.PI * 0;
-
-            }, 100);
-
+            moveForward = false;
+            drone_mesh.rotation.x = 0;
             break;
         case 40:
             //Move Backwards Arrow down
-            drone_mesh.rotation.x = Math.PI * 0;
+            drone_mesh.rotation.x = 0;
             moveBackward = false;
             break;
         case 37:
             //Move Left arrow left
             moveLeft = false;
-            drone_mesh.rotation.z = Math.PI * 0;
+            drone_mesh.rotation.z = 0;
             break;
         case 39:
             //Move right arrow right
             moveRight = false;
-            drone_mesh.rotation.z = Math.PI * 0;
+            drone_mesh.rotation.z = 0;
             break;
     }
 
