@@ -2,22 +2,7 @@
  * Created by simonstehle on 03.08.16.
  */
 
-/**
- * Area for detecting the collisions
- */
 
-
-/**
- * all legitimate zones are stored in this array,
- * so the drone is only allowed to fly there
- * additionally, there will be forbiddenZones within allowedZones,
- * which resemble the obstacles in the court
- * @type {Array}
- */
-var allowedZones = [];
-
-var flyTroughObjects = [];
-var flyOverObjects = [];
 
 //Declaration of Moving Flags
 /**
@@ -266,7 +251,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     var speedToAdd = 0;
     var speedToSubtract = 0;
 
-    console.log(currentSpeed);
+    //console.log(currentSpeed);
 
     if (inKeyDirection) {
         speedToAdd = acc(maxAcceleration, maxSpeed, currentSpeed);
@@ -344,28 +329,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     marker.position.x += moveX;
 }
 
-/**
- * detect collision
- * @returns {boolean}
- */
-function detectCollisions() {
-    if(detectFlyThrough(flyTroughObjects, flyOverObjects))
-        console.log("Heureka!");
-    var vector = new THREE.Vector3(0,-1,0);
-    var rayCaster = new THREE.Raycaster(marker.position, vector);
-    var intersect = rayCaster.intersectObjects(forbiddenZones);
-    //console.log("Länge des Intersect " + intersect.length);
 
-    if (intersect.length === 0){
-        crash =true;
-        //console.log("Crash: " +crash)
-        return false;
-    }
-    else{
-        return true;
-    }
-    // return (intersect.length === 0);
-}
 
 
 /**

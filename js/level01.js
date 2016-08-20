@@ -11,7 +11,7 @@ ringMaterial.side = THREE.DoubleSide;
 var flyTroughRingMesh = new THREE.Mesh(ringGeometry,ringMaterial);
 flyTroughRingMesh.position.x = 250;
 flyTroughRingMesh.position.y = 250;
-var flyOverBoxGeometry = new THREE.BoxGeometry(500, 1, 10);
+var flyOverBoxGeometry = new THREE.BoxGeometry(500, 1,50);
 var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
 flyOverBoxMaterial.side = THREE.DoubleSide;
 var flyOverBox = new THREE.Mesh(flyOverBoxGeometry, flyOverBoxMaterial);
@@ -25,7 +25,7 @@ var circleMesh = new THREE.Mesh(circleGeo, circlmeMat);
 circleMesh.position.x = 250;
 circleMesh.position.y = 250;
 
-flyTroughObjects.push(circleMesh);
+flyThroughObjects.push(circleMesh);
 flyOverObjects.push(flyOverBox);
 
 ringBlock.push(circleMesh);
@@ -35,7 +35,7 @@ scene.add(circleMesh);
 scene.add(flyTroughRingMesh);
 scene.add(flyOverBox);
 
-
+addTarget(circleMesh,flyOverBox,flyTroughRingMesh);
 
 //Easteregg
 var sterlock;
@@ -85,7 +85,7 @@ mtlLoader.load( 'objects/Pipe.mtl', function( materials ) {
         pipe1.scale.set(200, 200, 200);
         pipe1.position.set(0,100,-1000);
         scene.add(pipe1);
-
+        forbiddenZones.push(pipe1);
 
 
     }, onProgress, onError );

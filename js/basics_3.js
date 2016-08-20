@@ -24,7 +24,7 @@ function init()
 {
     scene = new THREE.Scene();
 
-    droneCamera = new THREE.PerspectiveCamera(75, ASPECT_RATIO, 1, 30000);
+    droneCamera = new THREE.PerspectiveCamera(50, ASPECT_RATIO, 1, 30000);
     droneCamera.position.z = 320;
     droneCamera.position.y = 100;
 
@@ -78,10 +78,9 @@ function init()
     
     
     //Texture As Camera
-    var t = new THREE.PerspectiveCamera()
     textureCamera = new THREE.PerspectiveCamera(2, ASPECT_RATIO, NEAR, FAR*5 );
-    textureCamera.position.set(0,5000,-11000);
-    zepMarker.add(textureCamera);
+    textureCamera.position.set(11000,3000,-3000);
+    scene.add(textureCamera);
 
     screenScene = new THREE.Scene();
     screenCamera = new THREE.OrthographicCamera(
