@@ -87,15 +87,25 @@ function detectFlyOver(element, index)
 }
 
 function detectFlyThrough(index){
-    var frontVector = new THREE.Vector3(0,0,-1);
-    var frontRayCaster = new THREE.Raycaster(marker.position, frontVector);
-    var frontIntersect = frontRayCaster.intersectObject(flyThroughMeshs[index]);
-    if(frontIntersect.length>0)
+
+    if(GetRaycastIntersect(index, new THREE.Vector3(0,0,-1))
+        || GetRaycastIntersect(index, new THREE.Vector3(0,0,1))
+        ||GetRaycastIntersect(index, new THREE.Vector3(-1,0,0))
+        ||GetRaycastIntersect(index, new THREE.Vector3(1,0,0)))
     {
         changeColorOfObject(indicatorMeshs[index],0,255,0);
         window.setTimeout(function () {
             changeColorOfObject(indicatorMeshs[index],0,255,255);},3000);
     }
+}
+
+function GetRaycastIntersect(index,vector)
+{
+    var rayCaster = new THREE.Raycaster(marker.position, vector);
+    var intersect = rayCaster.intersectObject(flyThroughMeshs[index]);
+    if(intersect.length>0)
+        return true;
+    return false;
 }
 
 function detectHit(index){

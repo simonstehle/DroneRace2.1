@@ -64,7 +64,7 @@ function init()
             zeppelin.boundingSphere
             zeppelin.rotation.y = Math.PI*0.5;
             zeppelin.scale.set(500, 500, 500);
-            zeppelin.position.set(0,6000,-11000);
+            zeppelin.position.set(0,2000,-11000);
 
             zepMarker.position.set(0, 6000, 0);
             zepMarker.add(zeppelin);

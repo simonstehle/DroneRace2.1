@@ -3,42 +3,9 @@
  */
 
 
-var circleGeo = new THREE.CircleGeometry(150,30);
-var circleMat = new THREE.MeshBasicMaterial({color: 0x69201C});
-circleMat.side = THREE.DoubleSide;
-circleMat.visible = false;
-var circleMesh = new THREE.Mesh(circleGeo, circleMat);
-circleMesh.position.x = 250;
-circleMesh.position.y = 250;
 
-var flyOverBoxGeometry = new THREE.BoxGeometry(600, 1,200);
-var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
-flyOverBoxMaterial.side = THREE.DoubleSide;
-var flyOverBox = new THREE.Mesh(flyOverBoxGeometry, flyOverBoxMaterial);
-flyOverBox.position.x = 250;
-
-var ringGeometry = new THREE.RingGeometry(200,250, 30);
-var ringMaterial = new THREE.MeshBasicMaterial();
-ringMaterial.side = THREE.DoubleSide;
-var flyTroughRingMesh = new THREE.Mesh(ringGeometry,ringMaterial);
-flyTroughRingMesh.position.x = 250;
-flyTroughRingMesh.position.y = 250;
-
-var ringGeometry = new THREE.RingGeometry(150,300, 30);
-var ringMaterial = new THREE.MeshBasicMaterial({color: 0x69201C});
-ringMaterial.side = THREE.DoubleSide;
-ringMaterial.visible = false;
-var hitBoxMesh = new THREE.Mesh(ringGeometry,ringMaterial);
-hitBoxMesh.position.x = 250;
-hitBoxMesh.position.y = 250;
-
-
-scene.add(circleMesh);
-scene.add(flyTroughRingMesh);
-scene.add(flyOverBox);
-scene.add(hitBoxMesh);
-
-addTarget(circleMesh,flyOverBox,flyTroughRingMesh, hitBoxMesh);
+AddTargetRing(200, 250, 250, 250, 0,Math.PI*.25);
+AddTargetRing(2000, 2500, 2500, 2500, 1000,0);
 
 //Easteregg
 var sterlock;
