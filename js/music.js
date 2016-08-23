@@ -8,7 +8,6 @@
 
 var sound = new Howl({
     src: ['objects/everything_is_awesome.mp3'],
-    autoplay: true,
     loop: true,
     volume: 0.5,
     onend: function() {
@@ -16,4 +15,4 @@ var sound = new Howl({
     }
 });
 
-sound.play();
+//sound.play();
