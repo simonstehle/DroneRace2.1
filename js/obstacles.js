@@ -2,7 +2,7 @@
  * Created by simonstehle on 03.08.16.
  */
 
-function AddTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ, rotationY) {
+function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ, rotationY) {
     var segmentCount = 30;
     var hitBoxInnerRadius = innerRadius - 50;
     var hitBoxOuterRadius = outerRadius + 50;
@@ -45,7 +45,10 @@ function AddTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
     scene.add(flyOverBox);
     scene.add(hitBoxMesh);
 
-    addTarget(circleMesh,flyOverBox,flyThroughRingMesh, hitBoxMesh);
+    var hitBoxCollection = [];
+    hitBoxCollection.push(hitBoxMesh);
+
+    addTarget(circleMesh,flyOverBox,flyThroughRingMesh, hitBoxCollection);
 }
 
 
@@ -89,17 +92,14 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
         }
 
         //Box to detect a collision. Placed under the wallMesh
-        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width, 1, -80);
+        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2, 1, -80);
         var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial();
         wallFlyOverBoxMaterial.side = THREE.DoubleSide;
         wallFlyOverBoxMaterial.visible = false;
         var wallFlyOverBox = new THREE.Mesh(wallFlyOverBoxGeometry, wallFlyOverBoxMaterial);
-        wallFlyOverBox.position.x = positionX;
+        wallFlyOverBox.position.x = positionX+width/2;
         wallFlyOverBox.position.z = positionZ;
         wallFlyOverBox.position.y = -80;
-
-
-
 
         wallMarker.add(wallMesh);
         wallMarker.add(wallFlyOverBox);
@@ -107,6 +107,10 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
         wallMarker.add(zylinderMesh);
 
     wallMarker.rotation.y = rotationY;
+    var hitBoxMeshCollection = []
+    hitBoxMeshCollection.push(zylinderMesh);
+    hitBoxMeshCollection.push(wallMesh);
+    addTarget(flytrueWallMesh,wallFlyOverBox,zylinderMesh,hitBoxMeshCollection);
     scene.add(wallMarker);
 
 }
@@ -117,7 +121,6 @@ function build3WallObstacle(widthSegment, heightSegment, posXStarting, posZStart
     addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false);
     addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true);
     addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false);
-    addWa
 }
 
 
@@ -127,3 +130,54 @@ function build3WallObstacle(widthSegment, heightSegment, posXStarting, posZStart
 
 
 
+
+
+function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
+
+    var pixelToScale = width/3.25;
+
+
+    var rectGeo = new THREE.PlaneGeometry(width,width);
+    var rectMat = new THREE.MeshBasicMaterial({color: 0x69201C});
+    rectMat.side = THREE.DoubleSide;
+    rectMat.visible = true;
+    var rectMesh = new THREE.Mesh(rectGeo, rectMat);
+    rectMesh.position.set(positionX,positionY,positionZ)
+    rectMesh.rotation.y = rotationY;
+
+    var flyOverBoxGeometry = new THREE.BoxGeometry(width, 1, maxSpeed+1);
+    var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
+    flyOverBoxMaterial.side = THREE.DoubleSide;
+    flyOverBoxMaterial.visible = false;
+    var flyOverBox = new THREE.Mesh(flyOverBoxGeometry, flyOverBoxMaterial);
+    flyOverBox.position.x = positionX;
+    flyOverBox.position.z = positionZ;
+    flyOverBox.rotation.y = rotationY;
+
+    var frame;
+    mtlLoader.load( 'objects/Frame.mtl', function( materials ) {
+
+        materials.preload();
+
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials( materials );
+
+        objLoader.load( 'objects/Frame.obj', function ( object ) {
+            frame = object;
+            frame.boundingSphere;
+            frame.scale.set(pixelToScale, pixelToScale, pixelToScale);
+            frame.position.set(positionX,positionY,positionZ);
+            frame.rotation.y = rotationY;
+            scene.add(frame);
+            scene.add(rectMesh);
+            scene.add(flyOverBox);
+            addTarget(rectMesh,flyOverBox,frame, frame);
+            console.log('addedTargetFrame');
+        }, onProgress, onError );
+
+    });
+
+
+
+
+}
