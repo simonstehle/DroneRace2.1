@@ -183,7 +183,47 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
 
     });
 
+}
+
+
+function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotationY, height) {
+    var startFinishMarker = new THREE.Object3D();
+
+    var startlineGeo = new THREE.BoxGeometry(width,1,depth);
+    var startlineMat = new THREE.MeshBasicMaterial();
+    startlineMat.side = THREE.DoubleSide;
+    var startlineMesh = new THREE.Mesh(startlineGeo, startlineMat);
+
+    startlineMesh.position.set(positionX,positionY,positionZ);
+    startFinishMarker.add(startlineMesh);
+
+
+    var startTopGeo = new THREE.BoxGeometry(width,1,depth);
+    var startTopMat = new THREE.MeshBasicMaterial();
+    startTopMat.side = THREE.DoubleSide;
+    var startTopMesh = new THREE.Mesh(startTopGeo, startTopMat);
+
+    startTopMesh.position.set(positionX,355,positionZ);
+    startTopMesh.rotation.x = Math.PI *0.5;
+
+    startFinishMarker.add(startTopMesh);
+
+
+    startFinishMarker.add(makeAZylinder(positionX-width/2,0 , positionZ,height));
+    startFinishMarker.add(makeAZylinder(positionX+width/2, 0, positionZ,height));
 
 
 
+
+    startFinishMarker.rotation.y = rotationY;
+    scene.add(startFinishMarker);
+}
+
+function makeAZylinder(zylPositionX, zylPositionY, zylPositionZ, height) {
+    var zylinderGeometry = new THREE.CylinderGeometry( 50, 50, height, 5,5 );
+    var zylinderMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    var zylinderMesh = new THREE.Mesh( zylinderGeometry, zylinderMaterial );
+    zylinderMesh.position.set(zylPositionX, zylPositionY,zylPositionZ);
+
+    return zylinderMesh;
 }
