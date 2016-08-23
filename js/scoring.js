@@ -11,7 +11,7 @@ scoreboard.help("Das ist ein Dronenspiel. Fliege durch die grün amrkierten ding
 
 function startTimer() {
 
-    scoreboard.startsTimer();
+    scoreboard.startTimer();
 
 }
 
