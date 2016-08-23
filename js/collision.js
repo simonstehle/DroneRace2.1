@@ -23,6 +23,10 @@ var indicatorMeshs = [];
 var flyThroughMeshs = [];
 var flyOverMeshs = [];
 var hitBoxMeshs = [];
+var nextTarget = -1;
+var lastTarget = -1;
+
+ResetTargets();
 
 function addTarget(flyThroughMesh, flyOverMesh, indicatorMesh, hitBoxMeshCollection)
 {
@@ -30,6 +34,7 @@ function addTarget(flyThroughMesh, flyOverMesh, indicatorMesh, hitBoxMeshCollect
     flyOverMeshs.push(flyOverMesh);
     indicatorMeshs.push(indicatorMesh);
     hitBoxMeshs.push(hitBoxMeshCollection);
+    lastTarget=lastTarget+1;
 }
 
 
@@ -88,14 +93,14 @@ function detectFlyOver(element, index)
 
 function detectFlyThrough(index){
 
-    if(GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(0,0,-1))
+    if(index === nextTarget
+        && (GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(0,0,-1))
         || GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(0,0,1))
         ||GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(-1,0,0))
-        ||GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(1,0,0)))
+        ||GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(1,0,0))))
     {
-        changeColorOfObject(indicatorMeshs[index],0,255,0);
-        window.setTimeout(function () {
-            changeColorOfObject(indicatorMeshs[index],0,255,255);},3000);
+        changeColorOfObject(indicatorMeshs[index],0,255,255);
+        RefreshTarget();
     }
 }
 
@@ -124,11 +129,31 @@ function GetRaycastIntersect(object, vector)
 function detectHit(index){
     if(GetIntersect(hitBoxMeshs[index]))
     {
-        console.log('Hit');
         changeColorOfObject(indicatorMeshs[index],255,0,0);
         window.setTimeout(function () {
             changeColorOfObject(indicatorMeshs[index],0,0,255);},3000);
         crash = true;
+        ResetTargets();
     }
+}
+
+function RefreshTarget()
+{
+    if(nextTarget<lastTarget) {
+        nextTarget += 1;
+        changeColorOfObject(indicatorMeshs[nextTarget], 0, 255, 0);
+    }
+
+}
+
+function ResetTargets()
+{
+    nextTarget=-1;
+
+    for (var i = 0; i < indicatorMeshs.length; i++) {
+        changeColorOfObject(indicatorMeshs[i], 0, 255 , 255);
+    }
+    RefreshTarget();
+
 }
 

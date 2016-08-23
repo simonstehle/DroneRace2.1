@@ -194,7 +194,6 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
 
     });
 
-    hitBoxFrame = frame.clone
 
 }
 
