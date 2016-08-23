@@ -237,6 +237,7 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
     var startFlyTrueGeo = new THREE.BoxGeometry(width,20,800);
     var startFlyTrueMat = new THREE.MeshBasicMaterial();
     startFlyTrueMat.side = THREE.DoubleSide;
+    startFlyTrueMat.visible =false;
     var startFlyTrueMesh = new THREE.Mesh(startFlyTrueGeo, startFlyTrueMat);
     startFlyTrueMesh.position.set(positionX,0,positionZ);
     startFlyTrueMesh.rotation.x = Math.PI *0.5;
