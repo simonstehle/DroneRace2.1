@@ -146,7 +146,7 @@ var maxAcceleration = 3;
 var currentStraightSpeed = 0;
 var currentSideSpeed = 0;
 
-
+var diagonalMovement = false;
 
 /**
  *
@@ -190,11 +190,15 @@ hindernisse[0] = false;
  * - when the drone has crashed and is respawned and therefor not moving
  * - when the drone has reached currentStraightSpeed = 0 and is therefor not moving in any direction
  */
-function resetMoving () {
+function resetStraight () {
     movingForward = false;
     movingBackward = false;
     movingLeft = false;
     movingRight = false;
+}
+
+function resetSide() {
+
 }
 
 
@@ -209,22 +213,27 @@ function resetMoving () {
 function drone_movement() {
     if (detectCollisions()) {
 
-        cleanUpMovement();
-
+        // keyDown in moving direction; normal acceleration
         if (moveForward && movingForward && !movingBackward) calcMovement(true, 38, false);
         if (moveBackward && movingBackward && !movingForward) calcMovement(true, 40, false);
         if (moveLeft && movingLeft && !movingRight) calcMovement(true, 37, false);
         if (moveRight && movingRight && !movingLeft) calcMovement(true, 39, false);
 
+        // no keyDown in moving direction, nor against moving direction; slowing by inertia
         if (!moveForward && movingForward) calcMovement(false, 38, false);
         if (!moveBackward && movingBackward) calcMovement(false, 40, false);
         if (!moveLeft && movingLeft) calcMovement(false, 37, false);
         if (!moveRight && movingRight) calcMovement(false, 39, false);
 
+        // keyDown in against moving direction: slowing by inertia and braking
         if (moveBackward && movingForward) calcMovement(false, 38, true);
         if (moveForward && movingBackward) calcMovement(false, 40, true);
         if (moveRight && movingLeft) calcMovement(false, 37, true);
         if (moveLeft && movingRight) calcMovement(false, 39, true);
+
+        if ((moveForward || moveBackward) && (moveLeft || moveRight)) diagonalMovement = true;
+
+        cleanUpMovement();
     }
 
     if (rotateLeft) rotateOnYaxis(65);
@@ -247,21 +256,24 @@ function drone_movement() {
  * or diagonally
  */
 function cleanUpMovement() {
-    if (movingForward && (moveRight || moveLeft) && !moveForward) {
-        movingForward = false;
+    if (!diagonalMovement) {
+        if (movingForward && (moveRight || moveLeft) && !moveForward) {
+            movingForward = false;
+        }
+
+        if (movingBackward && (moveRight || moveLeft) && !moveBackward) {
+            movingBackward = false;
+        }
+
+        if (movingLeft && (moveForward || moveBackward) && !moveLeft) {
+            movingLeft = false;
+        }
+
+        if (movingRight && (moveForward || moveBackward) && !moveRight) {
+            movingRight = false;
+        }
     }
 
-    if (movingBackward && (moveRight || moveLeft) && !moveBackward) {
-        movingBackward = false;
-    }
-
-    if (movingLeft && (moveForward || moveBackward) && !moveLeft) {
-        movingLeft = false;
-    }
-
-    if (movingRight && (moveForward || moveBackward) && !moveRight) {
-        movingRight = false;
-    }
 }
 
 
@@ -294,7 +306,8 @@ function droneDidCrash(){
         marker.rotation.y = 0;
         globalAngle = 0;
         currentStraightSpeed = 0;
-        resetMoving();
+        resetStraight();
+        resetSide();
         setTimeout(function(){
             crash = false;
         }, 500);
@@ -316,23 +329,27 @@ function droneDidCrash(){
  */
 function calcMovement (inKeyDirection, direction, reverseThrust){
 
-    var angle = globalAngle;
+
     var speedToAdd = 0;
     var speedToSubtract = 0;
 
-    var localSpeed = 0;
-    var ausgabe = "0";
+    var localSpeed;
+    var tempOut = "";
+
+    var straight;
 
     if (direction === 38 || direction === 40) {
         localSpeed = currentStraightSpeed;
-        ausgabe = "Straight";
+        tempOut = "Straight";
+        straight = true;
     }
-    else if (direction === 37 || direction === 39) {
+    if (direction === 37 || direction === 39) {
         localSpeed = currentSideSpeed;
-        ausgabe = "Side";
+        tempOut = "Side";
+        straight = false;
     }
 
-    console.log(ausgabe + ": " + localSpeed);
+    //console.log(tempOut + ": " + localSpeed);
 
 
 
@@ -345,13 +362,15 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     if (!inKeyDirection){
         speedToSubtract = negAcc(maxAcceleration, maxSpeed, localSpeed);
 
-        if (reverseThrust) {
+        if (reverseThrust || diagonalMovement) {
             speedToSubtract -= (acc(maxAcceleration, maxSpeed, 0));
         }
 
         if (speedToSubtract > maxAcceleration / -100 || localSpeed <= 0) {
             localSpeed = 0;
-            resetMoving();
+            if (straight) resetStraight();
+            else (resetSide());
+
         }
         else {
             localSpeed += speedToSubtract;
@@ -366,6 +385,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     }
 
 
+    var angle = globalAngle;
     var quadrant, net_angle, moveZ, moveX, PiHalf;
     quadrant = -1;
     PiHalf = Math.PI/2;
@@ -422,6 +442,8 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     else if (direction === 37 || direction === 39) {
         currentSideSpeed = localSpeed;
     }
+
+    console.log(marker.position.x + "; " + marker.position.z);
 
 }
 
