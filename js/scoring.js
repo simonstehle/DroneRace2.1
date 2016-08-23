@@ -3,37 +3,27 @@
  */
 
 
-var scoreboard = new Scoreboard();
-scoreboard.timer()
-scoreboard.help(
-    'Hey du,<br>'
-    + 'Fliege mit der Drone durch das Zeug durch das Grül leuchtet<br> '
-    + 'Pass auf dich auf mein Freund<br> '
-    + 'Stößt du dagegen stirbst du'
-);
+var scoreboard = new  Scoreboard();
+
+scoreboard.help("Das ist ein Dronenspiel. Fliege durch die grün amrkierten dinge!")
+
 
 
 function startTimer() {
 
-    scoreboard.startsTimer()
+    scoreboard.startsTimer();
 
 }
 
 function resetTimer() {
-    scoreboard.resetTimer()
+    scoreboard.resetTimer();
 
 }
 
 
 function stopTimer() {
 
-    scoreboard.stopTimer()
+    scoreboard.stopTimer();
 
 }
 
-
-function scorePoints() {
-    if (scoreboard.getTimeRemaining() > 0) {
-        scoreboard.addPoints(10);
-    }
-}
