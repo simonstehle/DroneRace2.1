@@ -218,21 +218,37 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
     var startTopMat = new THREE.MeshBasicMaterial();
     startTopMat.side = THREE.DoubleSide;
     var startTopMesh = new THREE.Mesh(startTopGeo, startTopMat);
-
     startTopMesh.position.set(positionX,355,positionZ);
     startTopMesh.rotation.x = Math.PI *0.5;
-
     startFinishMarker.add(startTopMesh);
 
 
-    startFinishMarker.add(makeAZylinder(positionX-width/2,0 , positionZ,height));
-    startFinishMarker.add(makeAZylinder(positionX+width/2, 0, positionZ,height));
+    var startFlyTrueGeo = new THREE.BoxGeometry(width,20,800);
+    var startFlyTrueMat = new THREE.MeshBasicMaterial();
+    startFlyTrueMat.side = THREE.DoubleSide;
+    var startFlyTrueMesh = new THREE.Mesh(startFlyTrueGeo, startFlyTrueMat);
+    startFlyTrueMesh.position.set(positionX,0,positionZ);
+    startFlyTrueMesh.rotation.x = Math.PI *0.5;
+    startFinishMarker.add(startFlyTrueMesh);
 
+    var zylinder1 = makeAZylinder(positionX-width/2,0 , positionZ,height)
+    var zylinder2 = makeAZylinder(positionX+width/2, 0, positionZ,height)
+
+    startFinishMarker.add(zylinder1);
+    startFinishMarker.add(zylinder2);
+
+
+    var hitBoxMeshCollection = [];
+    hitBoxMeshCollection.push(zylinder1);
+    hitBoxMeshCollection.push(zylinder2);
+   
 
 
     startFinishMarker.position.set(positionX, 0,positionZ);
     startFinishMarker.rotation.y = rotationY;
     scene.add(startFinishMarker);
+
+    addTarget(startFlyTrueMesh,startlineMesh,startTopMesh,hitBoxMeshCollection);
 }
 
 function makeAZylinder(zylPositionX, zylPositionY, zylPositionZ, height) {
