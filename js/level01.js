@@ -14,7 +14,7 @@ addTargetRing(200, 250, 6000, 200, 0,0, scene);
 addTargetRing(200, 250, 5500, 200, 800,0, scene);
 addTargetRing(200, 250, 6100, 200, 1600,0, scene);
 
-
+addTargetFrame(800,-1000,1000,-2000, 0);
 
 
 
@@ -26,7 +26,7 @@ addTargetRing(200, 250, 250, 250, 0,Math.PI*.25, scene);
 
 
 
-addTargetFrame(800,-1000,1000,-2000, 0);
+
 
 
 
