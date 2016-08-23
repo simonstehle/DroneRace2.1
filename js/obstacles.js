@@ -82,24 +82,30 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
 
 
 
-        if (flyTrueOnLeft){
-            flytrueWallMesh.position.set((positionX - width), 0, positionZ); //the Wall to fly true ist based on the right side
-            zylinderMesh.position.set(positionX - width*1.5, 0, positionZ);
-        }
-        else{
-            flytrueWallMesh.position.set((positionX + width), 0, positionZ); //the Wall to fly true ist based on the right side
-            zylinderMesh.position.set(positionX + width*1.5, 0, positionZ);
-        }
+
 
         //Box to detect a collision. Placed under the wallMesh
-        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2, 1, -80);
+        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2,1, -maxSpeed);
         var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial();
         wallFlyOverBoxMaterial.side = THREE.DoubleSide;
-        wallFlyOverBoxMaterial.visible = false;
+        wallFlyOverBoxMaterial.visible = true;
         var wallFlyOverBox = new THREE.Mesh(wallFlyOverBoxGeometry, wallFlyOverBoxMaterial);
-        wallFlyOverBox.position.x = positionX+width/2;
+
         wallFlyOverBox.position.z = positionZ;
         wallFlyOverBox.position.y = -80;
+
+
+
+    if (flyTrueOnLeft){
+        flytrueWallMesh.position.set((positionX - width), 0, positionZ); //the Wall to fly true ist based on the right side
+        zylinderMesh.position.set(positionX - width*1.5, 0, positionZ);
+        wallFlyOverBox.position.x = positionX-width/2;
+    }
+    else{
+        flytrueWallMesh.position.set((positionX + width), 0, positionZ); //the Wall to fly true ist based on the right side
+        zylinderMesh.position.set(positionX + width*1.5, 0, positionZ);
+        wallFlyOverBox.position.x = positionX+width/2;
+    }
 
         wallMarker.add(wallMesh);
         wallMarker.add(wallFlyOverBox);
