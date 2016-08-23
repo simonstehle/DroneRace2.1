@@ -64,7 +64,7 @@ function addTube(numberOfRings, innerRadius, outerRadius, positionX, positionY, 
 
 
 
-function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueOnLeft) {
+function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueOnLeft, moving) {
     var wallMarker = new THREE.Object3D();
 
 
@@ -130,21 +130,25 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
     addTarget(flytrueWallMesh,wallFlyOverBox,zylinderMesh,hitBoxMeshCollection);
     scene.add(wallMarker);
 
+    if (moving) {
+        wallMarker.rotateY(0.1);
+    }
+
 }
 
 
 function build3WallObstacle(widthSegment, heightSegment, posXStarting, posZStarting, rotationY) {
 
-    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false);
-    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true);
-    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false, false);
+    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true, false);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false, false);
 }
 
 function build3MovingWallObstacle(widthSegment, heightSegment, posXStarting, posZStarting, rotationY) {
 
-    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false);
-    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true);
-    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false, true);
+    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true, true);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false, true);
 }
 
 

@@ -193,12 +193,11 @@ hindernisse[0] = false;
 function resetStraight () {
     movingForward = false;
     movingBackward = false;
-    movingLeft = false;
-    movingRight = false;
 }
 
 function resetSide() {
-
+    movingLeft = false;
+    movingRight = false;
 }
 
 
