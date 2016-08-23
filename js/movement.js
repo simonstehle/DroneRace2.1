@@ -1,117 +1,146 @@
 /**
- * Created by simonstehle on 03.08.16.
+ * The entire movement of the drone is controlled in this file
+ * Several flags are used to control acceleration and movement in each direction
+ * Collision detection also happens in this file
  */
 
 
-
-//Declaration of Moving Flags
 /**
- * is true when when keyUp is pressed
+ * true when arrowUp is pressed
+ * makes the drone accelerate forward relative to the current position and rotation
  * @type {boolean}
  */
 var moveForward = false;
 
+
 /**
- * is true when keyDown is pressed
+ * true when arrowDown is pressed
+ * makes the drone accelerate backward relative to the current position and rotation
  * @type {boolean}
  */
 var moveBackward = false;
+
+
 /**
- * is true when moveLeft is pressed
+ * true when arrowLeft is pressed
+ * makes the drone accelerate left relative to the current position and rotation
  * @type {boolean}
  */
 var moveLeft = false;
 
+
 /**
- * is true when moveRight is pressed
+ * true when arrowRight is pressed
+ * makes the drone accelerate right relative to the current position and rotation
  * @type {boolean}
  */
 var moveRight = false;
 
-//Declaration of rotation Flags
+
+
 /**
- *
+ * true when A is pressed
+ * makes the drone rotate around the Y axis anticlockwise
  * @type {boolean}
  */
 var rotateLeft = false;
 
+
 /**
- *
+ * true when D is pressed
+ * makes the drone rotate around the Y axis clockwise
  * @type {boolean}
  */
 var rotateRight = false;
 
-//Declaration of Up and Down Flags
+
 /**
- *
+ * true when W is pressed
+ * makes the drone move up the Y axis (value increases)
  * @type {boolean}
  */
 var moveDroneUp = false;
 
 /**
- *
+ * true when W is pressed
+ * makes the drone move down the Y axis (value decreases)
  * @type {boolean}
  */
 var moveDroneDown = false;
 
 //Var for the glogal Angle to control the Drone after rotating around y
 /**
- *
+ * angle around which the drone has been rotated relative to the starting position
+ * starts at 0, one full rotation is |2*Pi|
  * @type {number}
  */
 var globalAngle = 0;
 
-// flags that do not rely on key-control but on inertia
 /**
- *
+ * the following flags do not entirely rely on keys pressed
+ * each becomes true when a certain key is pressed, but remains true when the key is up
+ * they represent the drones inertia and become false upon breaking
+ * breaking happens either by inertia or acceleration on the reversre direction
+ */
+
+/**
+ * is true whenever the drone is moving forward relative to its current position and rotation
  * @type {boolean}
  */
 var movingForward = false;
 
 /**
- *
+ * is true whenever the drone is moving backward relative to its current position and rotation
  * @type {boolean}
  */
 var movingBackward = false;
 
 /**
- *
+ * is true whenever the drone is moving left relative to its current position and rotation
  * @type {boolean}
  */
 var movingLeft = false;
 
 /**
- *
+ * is true whenever the drone is moving right relative to its current position and rotation
  * @type {boolean}
  */
 var movingRight = false;
 
+
 /**
- *
+ * the following variables are global variables that control extent of the movement
+ */
+
+/**
+ * radian around which the drone is maximally turned around the Y axis; value is lowered with increasing speed
  * @type {number}
  */
 var maxRotation = 0.05;
 
 /**
- *
+ * speed at which the drone moves up and down the Y axis; value is lowered with increasing speed
  * @type {number}
  */
 var speedUpDown = 20;
 
 /**
- *
+ * maximal speed the drone can reach by steady acceleration
  * @type {number}
  */
-var maxSpeed = 100;
+var maxSpeed = 300;
 
 /**
- *
+ * maximal acceleration of the drone at rest (currentSpeed = 0)
+ * when maxSpeed is reached, the drone will not accelerate anymore
  * @type {number}
  */
 var maxAcceleration = 3;
 
 /**
- *
+ * current speed of the drone
+ * acceleration at any point is controlled by keys pressed and the current speed
+ * the faster the drone, the lower the acceleration
  * @type {number}
  */
 var currentSpeed = 0;
@@ -132,7 +161,7 @@ var forbiddenZones = [];
  *
  * @type {boolean}
  */
-var crash = false; //set true if someone crashes the drone
+var crash = false;
 
 //vars to score the Game
 /**
@@ -153,7 +182,10 @@ var hindernisse = [];
 hindernisse[0] = false;
 
 /**
- *
+ * function to reset all the moving___ flags to false
+ * is used
+ * - when the drone has crashed and is respawned and therefor not moving
+ * - when the drone has reached currentSpeed = 0 and is therefor not moving in any direction
  */
 function resetMoving () {
     movingForward = false;
@@ -164,7 +196,12 @@ function resetMoving () {
 
 
 /**
+ * this function is called in the "animate()" function in the main.js file and therefor executed all the time
+ * at first, cleanUpMovement() checks all the keys pressed to determine whether the drone should now move straight
+ * in one direction or diagonally
  *
+ * afterwards several combination of flags are checked to determine which params must be passed to calcMovement(),
+ * a function where acceleration, breaking and moving with rotation is calculated
  */
 function drone_movement() {
     if (detectCollisions()) {
@@ -201,6 +238,11 @@ function drone_movement() {
     }
 }
 
+/**
+ * checks all the keys pressed to determine whether
+ * the drone should now move straight in one direction
+ * or diagonally
+ */
 function cleanUpMovement() {
     if (movingForward && (moveRight || moveLeft) && !moveForward) {
         movingForward = false;
@@ -221,8 +263,9 @@ function cleanUpMovement() {
 
 
 /**
- *
- * @param keycode
+ * makes the drone rotate around the Y axis
+ * with increasing speed, the rotation decreases slightly (max: 0.05; min: 0.03)
+ * @param keycode - can have two values which determine whether the drone turns clockwise or anticlockwise
  */
 function rotateOnYaxis (keycode) {
     collisionBool = true;
@@ -244,7 +287,7 @@ function rotateOnYaxis (keycode) {
 }
 
 /**
- *
+ * when the global variable "crash" is true, the drone is respawned at a fixed position including a 0.5 s timeout
  */
 function droneDidCrash(){
     if (crash){
@@ -365,7 +408,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
 
 
 /**
- *
+ * helper function for acc(), calculates on value
  * @param vMax
  * @returns {number}
  */
@@ -375,7 +418,7 @@ function getQ (vMax) {
 }
 
 /**
- *
+ * helper function for negAcc(), calculates on value
  * @param vMax
  * @returns {number}
  */
@@ -385,11 +428,12 @@ function getNegQ (vMax) {
 }
 
 /**
- *
- * @param aMax
+ * uses the three variables (current and maximal speed, maximal acceleration)
+ * to calculate the next acceleration
+ * @param aMax - maxSpeed of the drone
  * @param vMax
  * @param vCurr
- * @returns {number}
+ * @returns {number} - this int is added to the current speed
  */
 function acc(aMax, vMax, vCurr) {
     var q = getQ(vMax);
@@ -402,11 +446,12 @@ function acc(aMax, vMax, vCurr) {
 }
 
 /**
- *
+ * uses the three variables (current and maximal speed, maximal acceleration)
+ * to calculate the braking effect by not acceleration anymore
  * @param aMax
  * @param vMax
  * @param vCurr
- * @returns {number}
+ * @returns {number} - this int is subtracted from the current speed
  */
 function negAcc(aMax, vMax, vCurr) {
     if (vCurr === 0) {
