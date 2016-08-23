@@ -2,9 +2,9 @@
  * Created by simonstehle on 03.08.16.
  */
 
-function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ, rotationY) {
+function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ, rotationY, parent) {
     var segmentCount = 30;
-    var hitBoxInnerRadius = innerRadius - 50;
+    var hitBoxInnerRadius = innerRadius - 30;
     var hitBoxOuterRadius = outerRadius + 50;
 
     var circleGeo = new THREE.CircleGeometry(hitBoxInnerRadius, segmentCount);
@@ -40,15 +40,26 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
     hitBoxMesh.position.set(positionX,positionY,positionZ);
     hitBoxMesh.rotation.y = rotationY;
 
-    scene.add(circleMesh);
-    scene.add(flyThroughRingMesh);
-    scene.add(flyOverBox);
-    scene.add(hitBoxMesh);
+    parent.add(circleMesh);
+    parent.add(flyThroughRingMesh);
+    parent.add(flyOverBox);
+    parent.add(hitBoxMesh);
 
     var hitBoxCollection = [];
     hitBoxCollection.push(hitBoxMesh);
 
     addTarget(circleMesh,flyOverBox,flyThroughRingMesh, hitBoxCollection);
+}
+
+function addTube(numberOfRings, innerRadius, outerRadius, positionX, positionY, positionZ, rotationY) {
+    var tubeMarker = new THREE.Object3D();
+    for (var i=0; i<numberOfRings; i++){
+
+        addTargetRing(innerRadius,outerRadius,positionX+i*80,positionY,positionZ,Math.PI *0.5, tubeMarker);
+       console.log("done")
+    }
+    tubeMarker.rotation.y = rotationY;
+    scene.add(tubeMarker);
 }
 
 
@@ -88,7 +99,7 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
         var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2,1, -maxSpeed);
         var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial();
         wallFlyOverBoxMaterial.side = THREE.DoubleSide;
-        wallFlyOverBoxMaterial.visible = true;
+        wallFlyOverBoxMaterial.visible = false;
         var wallFlyOverBox = new THREE.Mesh(wallFlyOverBoxGeometry, wallFlyOverBoxMaterial);
 
         wallFlyOverBox.position.z = positionZ;
@@ -113,7 +124,7 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
         wallMarker.add(zylinderMesh);
 
     wallMarker.rotation.y = rotationY;
-    var hitBoxMeshCollection = []
+    var hitBoxMeshCollection = [];
     hitBoxMeshCollection.push(zylinderMesh);
     hitBoxMeshCollection.push(wallMesh);
     addTarget(flytrueWallMesh,wallFlyOverBox,zylinderMesh,hitBoxMeshCollection);
@@ -148,7 +159,7 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
     rectMat.side = THREE.DoubleSide;
     rectMat.visible = true;
     var rectMesh = new THREE.Mesh(rectGeo, rectMat);
-    rectMesh.position.set(positionX,positionY,positionZ)
+    rectMesh.position.set(positionX,positionY,positionZ);
     rectMesh.rotation.y = rotationY;
 
     var flyOverBoxGeometry = new THREE.BoxGeometry(width, 1, maxSpeed+1);
@@ -214,7 +225,7 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
 
 
 
-
+    startFinishMarker.position.set(positionX, 0,positionZ);
     startFinishMarker.rotation.y = rotationY;
     scene.add(startFinishMarker);
 }
@@ -227,3 +238,19 @@ function makeAZylinder(zylPositionX, zylPositionY, zylPositionZ, height) {
 
     return zylinderMesh;
 }
+
+
+var wallTextureLoader = new THREE.TextureLoader();
+var wallTexture = wallTextureLoader.load('objects/woodTexture.jpg');
+wallTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+wallTexture.repeat.set( 30,30 );
+wallTexture.side = THREE.DoubleSide;
+
+var wallMaterial = new THREE.MeshPhysicalMaterial( {
+    color: 0xffffff,
+    specular:0xffffff,
+    shininess: 10,
+    map: texture,
+    combine: THREE.MixOperation,
+    reflectivity: 0.05
+} );

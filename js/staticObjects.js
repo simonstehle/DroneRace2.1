@@ -64,6 +64,7 @@ var texture = textureLoader.load('objects/Grass_1.png');
 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 texture.repeat.set( 30,30 );
 
+
 var grassMaterial = new THREE.MeshPhysicalMaterial( {
     color: 0xffffff,
     specular:0xffffff,
