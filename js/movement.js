@@ -90,7 +90,7 @@ var movingRight = false;
  *
  * @type {number}
  */
-var speedRotationRadian = 0.04;
+var speedRotationRadian = 0.03;
 
 /**
  *
@@ -183,6 +183,12 @@ function drone_movement() {
         if (moveRight && movingLeft) calcMovement(false, 37, true);
         if (moveLeft && movingRight) calcMovement(false, 39, true);
 
+        cleanUpStraightMovement();
+        cleanupSideMovement();
+
+
+
+
     }
 
     if (rotateLeft) rotateOnYaxis(65);
@@ -199,6 +205,24 @@ function drone_movement() {
     }
 }
 
+
+function cleanupSideMovement() {
+    if (movingRight || moveLeft) {
+        if (movingForward || movingBackward) {
+            movingRight = false;
+            moveRight = false;
+        }
+    }
+}
+
+function cleanUpStraightMovement() {
+    if (movingForward || movingBackward) {
+        if (movingRight || movingLeft) {
+            movingForward = false;
+            movingBackward = false;
+        }
+    }
+}
 
 /**
  *
@@ -251,7 +275,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     var speedToAdd = 0;
     var speedToSubtract = 0;
 
-    //console.log(currentSpeed);
+    console.log(currentSpeed);
 
     if (inKeyDirection) {
         speedToAdd = acc(maxAcceleration, maxSpeed, currentSpeed);
@@ -275,7 +299,15 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
         }
     }
 
+
+
     var vNew = currentSpeed;
+    if (rotateRight || rotateLeft) {
+        var quotvMax = currentSpeed / maxSpeed;
+        quotvMax *= 0.5;
+        var quoutSpeed = 1-quotvMax;
+        vNew *= quoutSpeed;
+    }
 
 
     var quadrant, net_angle, moveZ, moveX, PiHalf;
