@@ -82,24 +82,30 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
 
 
 
-        if (flyTrueOnLeft){
-            flytrueWallMesh.position.set((positionX - width), 0, positionZ); //the Wall to fly true ist based on the right side
-            zylinderMesh.position.set(positionX - width*1.5, 0, positionZ);
-        }
-        else{
-            flytrueWallMesh.position.set((positionX + width), 0, positionZ); //the Wall to fly true ist based on the right side
-            zylinderMesh.position.set(positionX + width*1.5, 0, positionZ);
-        }
+
 
         //Box to detect a collision. Placed under the wallMesh
-        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2, 1, -80);
+        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2,1, -maxSpeed);
         var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial();
         wallFlyOverBoxMaterial.side = THREE.DoubleSide;
-        wallFlyOverBoxMaterial.visible = false;
+        wallFlyOverBoxMaterial.visible = true;
         var wallFlyOverBox = new THREE.Mesh(wallFlyOverBoxGeometry, wallFlyOverBoxMaterial);
-        wallFlyOverBox.position.x = positionX+width/2;
+
         wallFlyOverBox.position.z = positionZ;
         wallFlyOverBox.position.y = -80;
+
+
+
+    if (flyTrueOnLeft){
+        flytrueWallMesh.position.set((positionX - width), 0, positionZ); //the Wall to fly true ist based on the right side
+        zylinderMesh.position.set(positionX - width*1.5, 0, positionZ);
+        wallFlyOverBox.position.x = positionX-width/2;
+    }
+    else{
+        flytrueWallMesh.position.set((positionX + width), 0, positionZ); //the Wall to fly true ist based on the right side
+        zylinderMesh.position.set(positionX + width*1.5, 0, positionZ);
+        wallFlyOverBox.position.x = positionX+width/2;
+    }
 
         wallMarker.add(wallMesh);
         wallMarker.add(wallFlyOverBox);
@@ -177,7 +183,47 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
 
     });
 
+}
+
+
+function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotationY, height) {
+    var startFinishMarker = new THREE.Object3D();
+
+    var startlineGeo = new THREE.BoxGeometry(width,1,depth);
+    var startlineMat = new THREE.MeshBasicMaterial();
+    startlineMat.side = THREE.DoubleSide;
+    var startlineMesh = new THREE.Mesh(startlineGeo, startlineMat);
+
+    startlineMesh.position.set(positionX,positionY,positionZ);
+    startFinishMarker.add(startlineMesh);
+
+
+    var startTopGeo = new THREE.BoxGeometry(width,1,depth);
+    var startTopMat = new THREE.MeshBasicMaterial();
+    startTopMat.side = THREE.DoubleSide;
+    var startTopMesh = new THREE.Mesh(startTopGeo, startTopMat);
+
+    startTopMesh.position.set(positionX,355,positionZ);
+    startTopMesh.rotation.x = Math.PI *0.5;
+
+    startFinishMarker.add(startTopMesh);
+
+
+    startFinishMarker.add(makeAZylinder(positionX-width/2,0 , positionZ,height));
+    startFinishMarker.add(makeAZylinder(positionX+width/2, 0, positionZ,height));
 
 
 
+
+    startFinishMarker.rotation.y = rotationY;
+    scene.add(startFinishMarker);
+}
+
+function makeAZylinder(zylPositionX, zylPositionY, zylPositionZ, height) {
+    var zylinderGeometry = new THREE.CylinderGeometry( 50, 50, height, 5,5 );
+    var zylinderMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    var zylinderMesh = new THREE.Mesh( zylinderGeometry, zylinderMaterial );
+    zylinderMesh.position.set(zylPositionX, zylPositionY,zylPositionZ);
+
+    return zylinderMesh;
 }

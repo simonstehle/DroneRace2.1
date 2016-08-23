@@ -14,3 +14,13 @@ build3WallObstacle(1000,2000,3000,1500, Math.PI * 0.25);
 addTargetFrame(800,-1000,2000,-2000, 0);
 
 
+for (var i=0; i<20; i++){
+
+    addTargetRing(250,300,(i*180-250),0,(-1100),Math.PI*0.5);
+
+
+
+}
+
+
+addStartFinishLine(1000,100,1000,-80,2000,0,800);

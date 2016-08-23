@@ -128,7 +128,7 @@ var speedUpDown = 20;
  * maximal speed the drone can reach by steady acceleration
  * @type {number}
  */
-var maxSpeed = 200;
+var maxSpeed = 100;
 
 /**
  * maximal acceleration of the drone at rest (currentStraightSpeed = 0)
