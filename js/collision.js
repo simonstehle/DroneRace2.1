@@ -77,7 +77,7 @@ function detectFlyOver(element, index)
     var bottomVector = new THREE.Vector3(0,-1,0);
     var bottomRayCaster = new THREE.Raycaster(marker.position, bottomVector);
     var bottomIntersect = bottomRayCaster.intersectObject(flyOverMeshs[index])
-    console.log(bottomIntersect.length);
+    //console.log(bottomIntersect.length);
     if(bottomIntersect.length>0)
     {
         detectFlyThrough(index);
