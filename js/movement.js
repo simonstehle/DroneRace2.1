@@ -116,7 +116,7 @@ var movingRight = false;
  * radian around which the drone is maximally turned around the Y axis; value is lowered with increasing speed
  * @type {number}
  */
-var maxRotation = 0.05;
+var maxRotation = 0.04;
 
 /**
  * speed at which the drone moves up and down the Y axis; value is lowered with increasing speed
@@ -128,10 +128,10 @@ var speedUpDown = 20;
  * maximal speed the drone can reach by steady acceleration
  * @type {number}
  */
-var maxSpeed = 300;
+var maxSpeed = 200;
 
 /**
- * maximal acceleration of the drone at rest (currentSpeed = 0)
+ * maximal acceleration of the drone at rest (currentStraightSpeed = 0)
  * when maxSpeed is reached, the drone will not accelerate anymore
  * @type {number}
  */
@@ -143,7 +143,10 @@ var maxAcceleration = 3;
  * the faster the drone, the lower the acceleration
  * @type {number}
  */
-var currentSpeed = 0;
+var currentStraightSpeed = 0;
+var currentSideSpeed = 0;
+
+
 
 /**
  *
@@ -185,7 +188,7 @@ hindernisse[0] = false;
  * function to reset all the moving___ flags to false
  * is used
  * - when the drone has crashed and is respawned and therefor not moving
- * - when the drone has reached currentSpeed = 0 and is therefor not moving in any direction
+ * - when the drone has reached currentStraightSpeed = 0 and is therefor not moving in any direction
  */
 function resetMoving () {
     movingForward = false;
@@ -268,12 +271,8 @@ function cleanUpMovement() {
  * @param keycode - can have two values which determine whether the drone turns clockwise or anticlockwise
  */
 function rotateOnYaxis (keycode) {
-    collisionBool = true;
-
     var currentRotation;
-
-    currentRotation = maxRotation - currentSpeed / maxSpeed * 0.02;
-
+    currentRotation = maxRotation - currentStraightSpeed / maxSpeed * 0.02;
     switch (keycode) {
         case 65:
             globalAngle += currentRotation;
@@ -292,7 +291,7 @@ function rotateOnYaxis (keycode) {
 function droneDidCrash(){
     if (crash){
         marker.position.set(0,0,8000);
-        currentSpeed = 0;
+        currentStraightSpeed = 0;
         resetMoving();
         setTimeout(function(){
             crash = false;
@@ -319,35 +318,47 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     var speedToAdd = 0;
     var speedToSubtract = 0;
 
-    console.log(currentSpeed);
+    var localSpeed = 0;
+    var ausgabe = "0";
+
+    if (direction === 38 || direction === 40) {
+        localSpeed = currentStraightSpeed;
+        ausgabe = "Straight";
+    }
+    else if (direction === 37 || direction === 39) {
+        localSpeed = currentSideSpeed;
+        ausgabe = "Side";
+    }
+
+    console.log(ausgabe + ": " + localSpeed);
+
+
 
     if (inKeyDirection) {
-        speedToAdd = acc(maxAcceleration, maxSpeed, currentSpeed);
-        if (speedToAdd < maxAcceleration / 10) currentSpeed = maxSpeed;
-        else currentSpeed += speedToAdd;
+        speedToAdd = acc(maxAcceleration, maxSpeed, localSpeed);
+        if (speedToAdd < maxAcceleration / 10) localSpeed = maxSpeed;
+        else localSpeed += speedToAdd;
     }
 
     if (!inKeyDirection){
-        speedToSubtract = negAcc(maxAcceleration, maxSpeed, currentSpeed);
+        speedToSubtract = negAcc(maxAcceleration, maxSpeed, localSpeed);
 
         if (reverseThrust) {
             speedToSubtract -= (acc(maxAcceleration, maxSpeed, 0));
         }
 
-        if (speedToSubtract > maxAcceleration / -100 || currentSpeed <= 0) {
-            currentSpeed = 0;
+        if (speedToSubtract > maxAcceleration / -100 || localSpeed <= 0) {
+            localSpeed = 0;
             resetMoving();
         }
         else {
-            currentSpeed += speedToSubtract;
+            localSpeed += speedToSubtract;
         }
     }
 
-
-
-    var vNew = currentSpeed;
+    var vNew = localSpeed;
     if (rotateRight || rotateLeft) {
-        var quotientVMax = currentSpeed / maxSpeed;
+        var quotientVMax = localSpeed / maxSpeed;
         quotientVMax *= 0.5;
         vNew *= 1-quotientVMax;
     }
@@ -402,6 +413,14 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
 
     marker.position.z += moveZ;
     marker.position.x += moveX;
+
+    if (direction === 38 || direction === 40) {
+        currentStraightSpeed = localSpeed;
+    }
+    else if (direction === 37 || direction === 39) {
+        currentSideSpeed = localSpeed;
+    }
+
 }
 
 
