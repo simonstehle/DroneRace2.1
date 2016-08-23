@@ -4,8 +4,8 @@
 
 function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ, rotationY, parent) {
     var segmentCount = 30;
-    var hitBoxInnerRadius = innerRadius - 30;
-    var hitBoxOuterRadius = outerRadius + 50;
+    var hitBoxInnerRadius = innerRadius - 20;
+    var hitBoxOuterRadius = outerRadius + 20;
 
     var circleGeo = new THREE.CircleGeometry(hitBoxInnerRadius, segmentCount);
     var circleMat = new THREE.MeshBasicMaterial({color: 0x69201C});
@@ -15,7 +15,7 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
     circleMesh.position.set(positionX,positionY,positionZ);
     circleMesh.rotation.y = rotationY;
 
-    var flyOverBoxGeometry = new THREE.BoxGeometry(hitBoxOuterRadius*2, 1, maxSpeed+1);
+    var flyOverBoxGeometry = new THREE.BoxGeometry(hitBoxOuterRadius*2, 1, maxStraightSpeed+1);
     var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
     flyOverBoxMaterial.side = THREE.DoubleSide;
     flyOverBoxMaterial.visible = false;
@@ -66,14 +66,25 @@ function addTube(numberOfRings, innerRadius, outerRadius, positionX, positionY, 
 
 function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueOnLeft, moving) {
     var wallMarker = new THREE.Object3D();
+    var wallTexture = textureLoader.load('objects/woodTexture.jpg');
+    wallTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    wallTexture.repeat.set( 1,1 );
 
-
+    var wallMaterial = new THREE.MeshPhysicalMaterial( {
+        color: 0xffffff,
+        specular:0xffffff,
+        shininess: 10,
+        map: wallTexture,
+        combine: THREE.MixOperation,
+        reflectivity: 0.05,
+        side: THREE.DoubleSide
+    } );
 
         //Wall that is an obstacle
         var wallGeo = new THREE.PlaneGeometry(width, height);
-        var wallMat = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-        wallMat.side = THREE.DoubleSide;
-        var wallMesh = new THREE.Mesh(wallGeo, wallMat);
+        //var wallMat = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+        //wallMat.side = THREE.DoubleSide;
+        var wallMesh = new THREE.Mesh(wallGeo, wallMaterial);
         wallMesh.position.set(positionX, 0, positionZ);
 
 
@@ -96,7 +107,7 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
 
 
         //Box to detect a collision. Placed under the wallMesh
-        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2,1, -maxSpeed);
+        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2,1, -maxStraightSpeed);
         var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial();
         wallFlyOverBoxMaterial.side = THREE.DoubleSide;
         wallFlyOverBoxMaterial.visible = false;
@@ -165,7 +176,7 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
     rectMesh.position.set(positionX,positionY,positionZ);
     rectMesh.rotation.y = rotationY;
 
-    var flyOverBoxGeometry = new THREE.BoxGeometry(width*1.3,1, maxSpeed+1);
+    var flyOverBoxGeometry = new THREE.BoxGeometry(width*1.3,1, maxStraightSpeed+1);
     var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
     flyOverBoxMaterial.side = THREE.DoubleSide;
     flyOverBoxMaterial.visible = false;
@@ -261,17 +272,4 @@ function makeAZylinder(zylPositionX, zylPositionY, zylPositionZ, height) {
 }
 
 
-var wallTextureLoader = new THREE.TextureLoader();
-var wallTexture = wallTextureLoader.load('objects/woodTexture.jpg');
-wallTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-wallTexture.repeat.set( 30,30 );
-wallTexture.side = THREE.DoubleSide;
 
-var wallMaterial = new THREE.MeshPhysicalMaterial( {
-    color: 0xffffff,
-    specular:0xffffff,
-    shininess: 10,
-    map: texture,
-    combine: THREE.MixOperation,
-    reflectivity: 0.05
-} );

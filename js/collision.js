@@ -99,7 +99,7 @@ function detectFlyThrough(index){
         ||GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(-1,0,0))
         ||GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(1,0,0))))
     {
-        changeColorOfObject(indicatorMeshs[index],0,255,255);
+        changeColorOfObject(indicatorMeshs[index],155,155,155);
         RefreshTarget();
     }
 }
@@ -131,7 +131,7 @@ function detectHit(index){
     {
         changeColorOfObject(indicatorMeshs[index],255,0,0);
         window.setTimeout(function () {
-            changeColorOfObject(indicatorMeshs[index],0,0,255);},3000);
+            changeColorOfObject(indicatorMeshs[index],200,200,255);},3000);
         crash = true;
         ResetTargets();
     }
@@ -150,8 +150,9 @@ function ResetTargets()
 {
     nextTarget=-1;
 
+    //startTimer();
     for (var i = 0; i < indicatorMeshs.length; i++) {
-        changeColorOfObject(indicatorMeshs[i], 0, 255 , 255);
+        changeColorOfObject(indicatorMeshs[i], 155, 155 , 155);
     }
     RefreshTarget();
 
