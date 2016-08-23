@@ -115,7 +115,7 @@ function GetIntersect(intersectObjects)
 function GetRaycastIntersect(object, vector)
 {
     var rayCaster = new THREE.Raycaster(marker.position, vector);
-    var intersect = rayCaster.intersectObject(object);
+    var intersect = rayCaster.intersectObject(object,true);
     if(intersect.length>0)
         return true;
     return false;
