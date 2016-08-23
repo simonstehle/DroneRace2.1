@@ -140,6 +140,13 @@ function build3WallObstacle(widthSegment, heightSegment, posXStarting, posZStart
     addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false);
 }
 
+function build3MovingWallObstacle(widthSegment, heightSegment, posXStarting, posZStarting, rotationY) {
+
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false);
+    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false);
+}
+
 
 function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
 
