@@ -90,7 +90,7 @@ var movingRight = false;
  *
  * @type {number}
  */
-var speedRotationRadian = 0.03;
+var maxRotation = 0.05;
 
 /**
  *
@@ -168,6 +168,9 @@ function resetMoving () {
  */
 function drone_movement() {
     if (detectCollisions()) {
+
+        cleanUpMovement();
+
         if (moveForward && movingForward && !movingBackward) calcMovement(true, 38, false);
         if (moveBackward && movingBackward && !movingForward) calcMovement(true, 40, false);
         if (moveLeft && movingLeft && !movingRight) calcMovement(true, 37, false);
@@ -182,13 +185,6 @@ function drone_movement() {
         if (moveForward && movingBackward) calcMovement(false, 40, true);
         if (moveRight && movingLeft) calcMovement(false, 37, true);
         if (moveLeft && movingRight) calcMovement(false, 39, true);
-
-        cleanUpStraightMovement();
-        cleanupSideMovement();
-
-
-
-
     }
 
     if (rotateLeft) rotateOnYaxis(65);
@@ -205,22 +201,21 @@ function drone_movement() {
     }
 }
 
-
-function cleanupSideMovement() {
-    if (movingRight || moveLeft) {
-        if (movingForward || movingBackward) {
-            movingRight = false;
-            moveRight = false;
-        }
+function cleanUpMovement() {
+    if (movingForward && (moveRight || moveLeft) && !moveForward) {
+        movingForward = false;
     }
-}
 
-function cleanUpStraightMovement() {
-    if (movingForward || movingBackward) {
-        if (movingRight || movingLeft) {
-            movingForward = false;
-            movingBackward = false;
-        }
+    if (movingBackward && (moveRight || moveLeft) && !moveBackward) {
+        movingBackward = false;
+    }
+
+    if (movingLeft && (moveForward || moveBackward) && !moveLeft) {
+        movingLeft = false;
+    }
+
+    if (movingRight && (moveForward || moveBackward) && !moveRight) {
+        movingRight = false;
     }
 }
 
@@ -230,14 +225,19 @@ function cleanUpStraightMovement() {
  */
 function rotateOnYaxis (keycode) {
     collisionBool = true;
+
+    var currentRotation;
+
+    currentRotation = maxRotation - currentSpeed / maxSpeed * 0.02;
+
     switch (keycode) {
         case 65:
-            globalAngle += speedRotationRadian;
-            marker.rotation.y += speedRotationRadian;
+            globalAngle += currentRotation;
+            marker.rotation.y += currentRotation;
             break;
         case 68:
-            globalAngle -= speedRotationRadian;
-            marker.rotation.y -= speedRotationRadian;
+            globalAngle -= currentRotation;
+            marker.rotation.y -= currentRotation;
             break;
     }
 }
@@ -303,10 +303,9 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
 
     var vNew = currentSpeed;
     if (rotateRight || rotateLeft) {
-        var quotvMax = currentSpeed / maxSpeed;
-        quotvMax *= 0.5;
-        var quoutSpeed = 1-quotvMax;
-        vNew *= quoutSpeed;
+        var quotientVMax = currentSpeed / maxSpeed;
+        quotientVMax *= 0.5;
+        vNew *= 1-quotientVMax;
     }
 
 
