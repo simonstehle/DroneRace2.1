@@ -11,7 +11,7 @@ build3WallObstacle(1000,2000,3000,1500, Math.PI * 0.25);
 
 
 
-addTargetFrame(800,-1000,2000,-2000, 0);
+addTargetFrame(800,-1000,1000,-2000, 0);
 
 addTube(25,200,250,-2000,0,-1000, Math.PI * 0.3);
 

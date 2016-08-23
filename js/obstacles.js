@@ -141,14 +141,6 @@ function build3WallObstacle(widthSegment, heightSegment, posXStarting, posZStart
 }
 
 
-
-
-
-
-
-
-
-
 function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
 
     var pixelToScale = width/3.25;
@@ -157,12 +149,12 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
     var rectGeo = new THREE.PlaneGeometry(width,width);
     var rectMat = new THREE.MeshBasicMaterial({color: 0x69201C});
     rectMat.side = THREE.DoubleSide;
-    rectMat.visible = true;
+    rectMat.visible = false;
     var rectMesh = new THREE.Mesh(rectGeo, rectMat);
     rectMesh.position.set(positionX,positionY,positionZ);
     rectMesh.rotation.y = rotationY;
 
-    var flyOverBoxGeometry = new THREE.BoxGeometry(width, 1, maxSpeed+1);
+    var flyOverBoxGeometry = new THREE.BoxGeometry(width*1.3,1, maxSpeed+1);
     var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
     flyOverBoxMaterial.side = THREE.DoubleSide;
     flyOverBoxMaterial.visible = false;
@@ -185,14 +177,17 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
             frame.scale.set(pixelToScale, pixelToScale, pixelToScale);
             frame.position.set(positionX,positionY,positionZ);
             frame.rotation.y = rotationY;
+            var hitBoxCollection = [];
+            hitBoxCollection.push(frame);
+            addTarget(rectMesh,flyOverBox,frame, hitBoxCollection);
             scene.add(frame);
             scene.add(rectMesh);
             scene.add(flyOverBox);
-            addTarget(rectMesh,flyOverBox,frame, frame);
-            console.log('addedTargetFrame');
         }, onProgress, onError );
 
     });
+
+    hitBoxFrame = frame.clone
 
 }
 

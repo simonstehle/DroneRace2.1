@@ -71,7 +71,7 @@ function detectTargetHit() {
     flyThroughMeshs.forEach(detectFlyOver)
 
 }
-
+//flyOverFirst to save ressources
 function detectFlyOver(element, index)
 {
     var bottomVector = new THREE.Vector3(0,-1,0);
@@ -103,7 +103,7 @@ function GetIntersect(intersectObjects)
 {
     for (var i = 0; i < intersectObjects.length; i++) {
         if(GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(0,0,-1))
-            || GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(0,0,1))
+            ||GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(0,0,1))
             ||GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(-1,0,0))
             ||GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(1,0,0)))
             return true;
@@ -125,9 +125,9 @@ function detectHit(index){
     if(GetIntersect(hitBoxMeshs[index]))
     {
         console.log('Hit');
-        changeColorOfObject(flyThroughMeshs[index],255,0,0);
+        changeColorOfObject(indicatorMeshs[index],255,0,0);
         window.setTimeout(function () {
-            changeColorOfObject(flyThroughMeshs[index],0,0,255);},3000);
+            changeColorOfObject(indicatorMeshs[index],0,0,255);},3000);
         crash = true;
     }
 }
