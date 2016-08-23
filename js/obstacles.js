@@ -15,7 +15,7 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
     circleMesh.position.set(positionX,positionY,positionZ);
     circleMesh.rotation.y = rotationY;
 
-    var flyOverBoxGeometry = new THREE.BoxGeometry(hitBoxOuterRadius*2, 1, maxSpeed+1);
+    var flyOverBoxGeometry = new THREE.BoxGeometry(hitBoxOuterRadius*2, 1, maxStraightSpeed+1);
     var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
     flyOverBoxMaterial.side = THREE.DoubleSide;
     flyOverBoxMaterial.visible = false;
@@ -96,7 +96,7 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
 
 
         //Box to detect a collision. Placed under the wallMesh
-        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2,1, -maxSpeed);
+        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2,1, -maxStraightSpeed);
         var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial();
         wallFlyOverBoxMaterial.side = THREE.DoubleSide;
         wallFlyOverBoxMaterial.visible = false;
@@ -165,7 +165,7 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
     rectMesh.position.set(positionX,positionY,positionZ);
     rectMesh.rotation.y = rotationY;
 
-    var flyOverBoxGeometry = new THREE.BoxGeometry(width*1.3,1, maxSpeed+1);
+    var flyOverBoxGeometry = new THREE.BoxGeometry(width*1.3,1, maxStraightSpeed+1);
     var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
     flyOverBoxMaterial.side = THREE.DoubleSide;
     flyOverBoxMaterial.visible = false;

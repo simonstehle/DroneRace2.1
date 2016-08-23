@@ -128,14 +128,27 @@ var speedUpDown = 20;
  * maximal speed the drone can reach by steady acceleration
  * @type {number}
  */
-var maxSpeed = 100;
+var maxStraightSpeed = 100;
+
+/**
+ *
+ * @type {number}
+ */
+var maxSideSpeed = maxStraightSpeed * 0.75;
 
 /**
  * maximal acceleration of the drone at rest (currentStraightSpeed = 0)
- * when maxSpeed is reached, the drone will not accelerate anymore
+ * when maxStraightSpeed is reached, the drone will not accelerate anymore
  * @type {number}
  */
-var maxAcceleration = 3;
+var maxStraightAcceleration = 3;
+
+/**
+ *
+ * @type {number}
+ */
+var maxSideAcceleration = maxStraightAcceleration * 0.75;
+
 
 /**
  * current speed of the drone
@@ -144,6 +157,11 @@ var maxAcceleration = 3;
  * @type {number}
  */
 var currentStraightSpeed = 0;
+
+/**
+ *
+ * @type {number}
+ */
 var currentSideSpeed = 0;
 
 var diagonalMovement = false;
@@ -244,7 +262,6 @@ function drone_movement() {
     if (moveDroneDown){
         if (marker.position.y > boundaryBottom){
             marker.position.y -= speedUpDown;
-            //console.log("Höhe : "+marker.position.y)
         }
     }
 }
@@ -272,7 +289,6 @@ function cleanUpMovement() {
             movingRight = false;
         }
     }
-
 }
 
 
@@ -283,7 +299,7 @@ function cleanUpMovement() {
  */
 function rotateOnYaxis (keycode) {
     var currentRotation;
-    currentRotation = maxRotation - currentStraightSpeed / maxSpeed * 0.02;
+    currentRotation = maxRotation - currentStraightSpeed / maxStraightSpeed * 0.02;
     switch (keycode) {
         case 65:
             globalAngle += currentRotation;
@@ -297,7 +313,7 @@ function rotateOnYaxis (keycode) {
 }
 
 /**
- * when the global variable "crash" is true, the drone is respawned at a fixed position including a 0.5 s timeout
+ * when the global variable "crash" is true, the drone is respawned at the start/finish line including a 0.5 s timeout
  */
 function droneDidCrash(){
     if (crash){
@@ -328,44 +344,36 @@ function droneDidCrash(){
  */
 function calcMovement (inKeyDirection, direction, reverseThrust){
 
-
     var speedToAdd = 0;
     var speedToSubtract = 0;
 
     var localSpeed;
-    var tempOut = "";
-
     var straight;
 
     if (direction === 38 || direction === 40) {
         localSpeed = currentStraightSpeed;
-        tempOut = "Straight";
         straight = true;
     }
     if (direction === 37 || direction === 39) {
         localSpeed = currentSideSpeed;
-        tempOut = "Side";
         straight = false;
     }
 
-    //console.log(tempOut + ": " + localSpeed);
-
-
 
     if (inKeyDirection) {
-        speedToAdd = acc(maxAcceleration, maxSpeed, localSpeed);
-        if (speedToAdd < maxAcceleration / 10) localSpeed = maxSpeed;
+        speedToAdd = acc(maxStraightAcceleration, maxStraightSpeed, localSpeed);
+        if (speedToAdd < maxStraightAcceleration / 10) localSpeed = maxStraightSpeed;
         else localSpeed += speedToAdd;
     }
 
     if (!inKeyDirection){
-        speedToSubtract = negAcc(maxAcceleration, maxSpeed, localSpeed);
+        speedToSubtract = negAcc(maxStraightAcceleration, maxStraightSpeed, localSpeed);
 
         if (reverseThrust || diagonalMovement) {
-            speedToSubtract -= (acc(maxAcceleration, maxSpeed, 0));
+            speedToSubtract -= (acc(maxStraightAcceleration, maxStraightSpeed, 0));
         }
 
-        if (speedToSubtract > maxAcceleration / -100 || localSpeed <= 0) {
+        if (speedToSubtract > maxStraightAcceleration / -100 || localSpeed <= 0) {
             localSpeed = 0;
             if (straight) resetStraight();
             else (resetSide());
@@ -378,7 +386,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
 
     var vNew = localSpeed;
     if (rotateRight || rotateLeft) {
-        var quotientVMax = localSpeed / maxSpeed;
+        var quotientVMax = localSpeed / maxStraightSpeed;
         quotientVMax *= 0.5;
         vNew *= 1-quotientVMax;
     }
@@ -442,8 +450,6 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
         currentSideSpeed = localSpeed;
     }
 
-    console.log(marker.position.x + "; " + marker.position.z);
-
 }
 
 
@@ -472,7 +478,7 @@ function getNegQ (vMax) {
 /**
  * uses the three variables (current and maximal speed, maximal acceleration)
  * to calculate the next acceleration
- * @param aMax - maxSpeed of the drone
+ * @param aMax - maxStraightSpeed of the drone
  * @param vMax
  * @param vCurr
  * @returns {number} - this int is added to the current speed
@@ -510,4 +516,8 @@ function negAcc(aMax, vMax, vCurr) {
 
         }
     }
+}
+
+function logPosition() {
+    console.log(marker.position.x + "; " + marker.position.z);
 }
