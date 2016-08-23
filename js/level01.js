@@ -7,6 +7,9 @@
 AddTargetRing(200, 250, 250, 250, 0,Math.PI*.25);
 AddTargetRing(2000, 2500, 2500, 2500, 1000,0);
 
+build3WallObstacle(1000,2000,3000,1500, Math.PI * 0.25);
+
+
 //Easteregg
 var sterlock;
 mtlLoader.load( 'objects/SterlockV2.mtl', function( materials ) {

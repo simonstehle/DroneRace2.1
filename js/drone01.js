@@ -23,7 +23,7 @@ function initDrone01(){
         objLoader.load( 'objects/DroneV1.obj', function ( object ) {
             drone_mesh = object;
             drone_mesh.boundingSphere;
-            drone_mesh.scale.set(20, 20, 20);
+            drone_mesh.scale.set(8, 8, 8);
             marker.add(drone_mesh);
 
         }, onProgress, onError );
