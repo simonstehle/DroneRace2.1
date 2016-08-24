@@ -2,7 +2,7 @@
  * Created by simonstehle on 03.08.16.
  */
 
-//addStartFinishLine(1000,100,-4000,-80,0,0,800);
+addStartFinishLine(1000,100,-4000,-80,0,0,800);
 
 
 addTube(25,200,250,1500,0,-7000, Math.PI * 0.3);
