@@ -160,6 +160,7 @@ function RefreshTarget()
         stopGame();
     }
 
+    
     //Check ift the Time was better than the latest personal best. If it was, overwrite the cookie
     console.log(getCookie("Level"+getCookie("ActualLevel")));
     console.log("Zeit: "+getActualTime());
