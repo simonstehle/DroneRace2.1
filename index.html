@@ -2,41 +2,120 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Drone Racer</title>
+    <title>DroneRacer2.1</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="lib/ChromeFixes.js"></script>
+    <script src="lib/Three.js"></script>
+    <script src="lib/Scoreboard.js"></script>
+    <script src="js/cookies.js"></script>
+    <script src="lib/DDSLoader.js"></script>
+    <script src="lib/MTLLoader.js"></script>
+    <script src="lib/OBJLoader.js"></script>
+    <script src="lib/OBJLoader.js"></script>
+    <script src="lib/howler.js"></script>
+
+
+    <!--
+    <script src="Legacy/helper_functions.js"></script>
+    <script src="Legacy/drone.js"></script>
+    -->
+
+    <script src="js/music.js"></script>
+    <script src="js/other_functions.js"></script>
+    <script src="js/movement.js"></script>
+    <script src="js/scoring.js"></script>
+    <script src="js/basics_3.js"></script>
+    <script src="js/event_listener.js"></script>
+    <script src="js/collision.js"></script>
+
+
+    <script src="js/staticObjects.js"></script>
+    <script src="js/obstacles.js"></script>
+    <script src="js/level01.js"></script>
+    <script src="js/drone01.js"></script>
+
+
+
+
+    <style>
+
+        .leveloutside{
+
+        }
+
+        .levelinside{
+            padding:10px;
+            background-color: green;
+            height: 200px;
+            text-align: center;
+            border-radius: 15px;
+            cursor: pointer;
+
+        }
+
+        .levelinsideText{
+            font-size:3em;
+        }
+
+        .timeToBeat{
+            font-size: 2.5em;
+        }
+
+
+
+    </style>
 </head>
 <body>
-<script src="lib/ChromeFixes.js"></script>
-<script src="lib/Three.js"></script>
-<script src="lib/Scoreboard.js"></script>
-<script src="lib/DDSLoader.js"></script>
-<script src="lib/MTLLoader.js"></script>
-<script src="lib/OBJLoader.js"></script>
-<script src="lib/OBJLoader.js"></script>
-<script src="lib/howler.js"></script>
 
 
-<!--
-<script src="Legacy/helper_functions.js"></script>
-<script src="Legacy/drone.js"></script>
--->
+<div class="jumbotron">
+    <div class="container">
+        <h1>DroneRace 2.1 <br> Willkommen!</h1>
+        <h3>Wähle ein Level aus und beginn damit, die Bestzeiten zu brechen!</h3>
+    </div>
+</div>
 
-<script src="js/music.js"></script>
-<script src="js/other_functions.js"></script>
-<script src="js/movement.js"></script>
-<script src="js/scoring.js"></script>
-<script src="js/basics_3.js"></script>
-<script src="js/event_listener.js"></script>
-<script src="js/collision.js"></script>
+<div class="container">
 
 
-<script src="js/staticObjects.js"></script>
-<script src="js/obstacles.js"></script>
-<script src="js/level01.js"></script>
-<script src="js/drone01.js"></script>
 
-<script src="js/main.js"></script>
+
+<div class="row levelrow">
+    <div class="col-md-4 leveloutside" onclick="levelSetter(1);"><div class="levelinside"><br><span class="levelinsideText">Level 1</span>
+    <br><span id="level1Time" class="timeToBeat">Bestzeit:0:00</span></div></div>
+
+    <div class="col-md-4 leveloutside" onclick="levelSetter(2);"><div class="levelinside"><br><span class="levelinsideText">Level 1</span>
+        <br><span id="level2Time" class="timeToBeat">Bestzeit:0:00</span></div></div>
+
+    <div class="col-md-4 leveloutside" onclick="levelSetter(3);"><div class="levelinside"><br><span class="levelinsideText">Level 1</span>
+        <br><span id="level3Time" class="timeToBeat">Bestzeit:0:00</span></div></div>
+</div>
+
+
+    </div><!--End of Container -->
+
 
 
 
 </body>
+
+<script>
+
+
+    function levelSetter(number) {
+
+        setCookie("ActualLevel",number,100);
+        location.href='game.html';
+    }
+
+
+</script>
 </html>

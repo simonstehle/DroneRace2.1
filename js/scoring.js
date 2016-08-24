@@ -6,7 +6,6 @@
 var scoreboard = new  Scoreboard();
 
 startOnLoad();
-
 scoreboard.timer();
 
 function startOnLoad() {
@@ -20,7 +19,6 @@ function inAnimate() {
 function setHelp() {
     scoreboard.help("Fliege durch die grün markierten Hindernisse!");
     scoreboard.showHelp();
-
 }
 
 function startTimer() {
@@ -42,7 +40,6 @@ function showSpeed() {
     scoreboard.showMessage();
 }
 
-function getTime()
-{
-    //return scoreboard.time
+function getActualTime() {
+    return scoreboard.getTime();
 }

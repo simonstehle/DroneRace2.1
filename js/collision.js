@@ -162,6 +162,19 @@ function RefreshTarget()
         stopGame();
     }
 
+    
+    //Check ift the Time was better than the latest personal best. If it was, overwrite the cookie
+    console.log(getCookie("Level"+getCookie("ActualLevel")));
+    console.log("Zeit: "+getActualTime());
+        if((getCookie("Level"+getCookie("ActualLevel")) > getActualTime())){
+
+            setCookie("Level"+getCookie("ActualLevel"),getActualTime(), 100);
+        }
+    if(getCookie("Level"+getCookie("ActualLevel")) == undefined || getCookie("Level"+getCookie("ActualLevel")) == 0 ) {
+        setCookie("Level"+getCookie("ActualLevel"),getActualTime(), 100);
+        }
+
+
 }
 
 function ResetTargets()

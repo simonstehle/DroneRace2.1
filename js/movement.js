@@ -358,49 +358,61 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     var speedToSubtract = 0;
 
     var localSpeed;
+    var localMaxAcc;
+    var localMaxSpeed;
+
     var straight;
 
     if (direction === 38 || direction === 40) {
         localSpeed = currentStraightSpeed;
+        localMaxAcc = maxStraightAcceleration;
+        localMaxSpeed = maxStraightSpeed;
         straight = true;
     }
     if (direction === 37 || direction === 39) {
         localSpeed = currentSideSpeed;
+        localMaxAcc = maxSideAcceleration;
+        localMaxSpeed = maxSideSpeed;
         straight = false;
     }
 
+    if (rotateRight || rotateLeft) {
+        localMaxAcc *= 0.9;
+        localMaxSpeed *= 0.9;
+    }
 
     if (inKeyDirection) {
-        speedToAdd = acc(maxStraightAcceleration, maxStraightSpeed, localSpeed);
-        if (speedToAdd < maxStraightAcceleration / 10) localSpeed = maxStraightSpeed;
+        speedToAdd = acc(localMaxAcc, localMaxSpeed, localSpeed);
+        if (speedToAdd < localMaxAcc / 10) localSpeed = localMaxSpeed;
         else localSpeed += speedToAdd;
     }
 
     if (!inKeyDirection){
-        speedToSubtract = negAcc(maxStraightAcceleration, maxStraightSpeed, localSpeed);
+        speedToSubtract = negAcc(localMaxAcc, localMaxSpeed, localSpeed);
 
         if (reverseThrust || diagonalMovement) {
-            speedToSubtract -= (acc(maxStraightAcceleration, maxStraightSpeed, 0));
+            speedToSubtract -= (acc(localMaxAcc, localMaxSpeed, 0));
         }
 
-        if (speedToSubtract > maxStraightAcceleration / -100 || localSpeed <= 0) {
+        if (speedToSubtract > localMaxAcc / -100 || localSpeed <= 0) {
             localSpeed = 0;
             if (straight) resetStraight();
             else (resetSide());
-
         }
         else {
             localSpeed += speedToSubtract;
         }
     }
 
-    var vNew = localSpeed;
+
+
     if (rotateRight || rotateLeft) {
-        var quotientVMax = localSpeed / maxStraightSpeed;
+        var quotientVMax = localSpeed / localMaxSpeed;
         quotientVMax *= 0.5;
         vNew *= 1-quotientVMax;
     }
 
+    var vNew = localSpeed;
 
     var angle = globalAngle;
     var quadrant, net_angle, moveZ, moveX, PiHalf;

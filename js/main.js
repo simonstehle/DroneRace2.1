@@ -13,18 +13,20 @@ scene.add(marker);
 
 
 
-
-
 initBonooneStadium();
 
+buildLevels();
+
+
+
 function animate() {
+
     requestAnimationFrame(animate);
 
     //Reset Drone if crashed
     droneDidCrash();
 
     //Handle Control of Drone by Flags
-
     drone_movement();
     moveZeppelin(zepCrashFlag);
     rotors.forEach(rotateRotor);
