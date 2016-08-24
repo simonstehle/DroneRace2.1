@@ -8,7 +8,6 @@ var scoreboard = new  Scoreboard();
 startOnLoad();
 scoreboard.timer();
 
-
 function startOnLoad() {
     setHelp();
 }
@@ -37,6 +36,7 @@ function stopTimer() {
 function showSpeed() {
     scoreboard.message("Forward Speed: " + speedDisplay(currentStraightSpeed));
     scoreboard.addMessage("Side Speed: " + speedDisplay(currentSideSpeed));
+    scoreboard.addMessage("You're playing Level ");
     scoreboard.showMessage();
 }
 

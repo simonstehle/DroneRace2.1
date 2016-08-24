@@ -149,14 +149,16 @@ function detectHit(hitBoxes,index){
 
 function RefreshTarget()
 {
-    if(nextTarget === 1)
+    if(nextTarget === 2)
         startTimer();
     if(nextTarget<lastTarget) {
         nextTarget += 1;
         changeColorOfObject(indicatorMeshs[nextTarget], 0, 255, 0);
     }
-    else
+    else {
         stopTimer();
+        stopGame();
+    }
 
     //Check ift the Time was better than the latest personal best. If it was, overwrite the cookie
     console.log(getCookie("Level"+getCookie("ActualLevel")));
@@ -183,5 +185,10 @@ function ResetTargets()
     RefreshTarget();
     resetTimer();
 
+}
+
+function stopGame()
+{
+    //window.alert("Ihre Zeit ist: " + );
 }
 

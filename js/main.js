@@ -30,8 +30,11 @@ function animate() {
     //Handle Control of Drone by Flags
     drone_movement();
     moveZeppelin(zepCrashFlag);
+    rotors.forEach(rotateRotor);
+
 
     showSpeed();
+
 
     textureCamera.lookAt(marker.position);
     renderer.render( scene, textureCamera, firstRenderTarget, true);
@@ -41,3 +44,8 @@ function animate() {
     
 }
 animate();
+
+function rotateRotor(element, index)
+{
+    element.rotation.y += Math.PI*0.2;
+}

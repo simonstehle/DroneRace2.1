@@ -22,6 +22,7 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
     var flyOverBox = new THREE.Mesh(flyOverBoxGeometry, flyOverBoxMaterial);
     flyOverBox.position.x = positionX;
     flyOverBox.position.z = positionZ;
+    flyOverBox.position.y = -150;
     flyOverBox.rotation.y = rotationY;
 
 
@@ -95,7 +96,7 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
     wallFlyOverBoxMaterial.visible = true;
     var wallFlyOverBox = new THREE.Mesh(wallFlyOverBoxGeometry, wallFlyOverBoxMaterial);
 
-    wallFlyOverBox.position.set(positionX, -80, positionZ);
+    wallFlyOverBox.position.set(positionX, -150, positionZ);
 
 
         var zylinderRadius = 50;
@@ -111,7 +112,6 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
     zylinderFlyOverCircleMat.side = THREE.DoubleSide;
         var zylinderFlyOverCircle = new THREE.Mesh(zylinderFlyOverCircleGeo, zylinderFlyOverCircleMat);
         zylinderFlyOverCircle.position.z = positionZ;
-        zylinderFlyOverCircle.position.y = -100;
     zylinderFlyOverCircle.rotation.x = Math.PI*0.5;
 
 
@@ -132,16 +132,16 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
 
     if (flyTrueOnLeft){
         flytrueWallMesh.position.set((positionX - width), 0, positionZ); //the Wall to fly true ist based on the right side
-        targetFlyOverBox.position.set((positionX - width), -100, positionZ);
+        targetFlyOverBox.position.set((positionX - width), -150, positionZ);
         zylinderMesh.position.set(positionX - width*1.5, 0, positionZ);
-        zylinderFlyOverCircle.position.set(positionX - width*1.5, -100, positionZ);
+        zylinderFlyOverCircle.position.set(positionX - width*1.5, -150, positionZ);
         wallFlyOverBox.position.x = positionX;
     }
     else{
         flytrueWallMesh.position.set((positionX + width), 0, positionZ); //the Wall to fly true ist based on the right side
-        targetFlyOverBox.position.set((positionX + width), -100, positionZ);
+        targetFlyOverBox.position.set((positionX + width), -150, positionZ);
         zylinderMesh.position.set(positionX + width*1.5, 0, positionZ);
-        zylinderFlyOverCircle.position.set(positionX + width*1.5, -100, positionZ);
+        zylinderFlyOverCircle.position.set(positionX + width*1.5, -150, positionZ);
         wallFlyOverBox.position.x = positionX;
     }
 
@@ -204,6 +204,7 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
     var flyOverBox = new THREE.Mesh(flyOverBoxGeometry, flyOverBoxMaterial);
     flyOverBox.position.x = positionX;
     flyOverBox.position.z = positionZ;
+    flyOverBox.position.y = -150;
     flyOverBox.rotation.y = rotationY;
 
     var frame;
