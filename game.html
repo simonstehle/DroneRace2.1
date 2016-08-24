@@ -3,8 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>Drone Racer</title>
+    <style>
+        .overlayingTextBox{
+            position: absolute;
+            left: 50%;
+            top: 30%;
+            margin-right: auto;
+            width: 400px;
+
+
+
+
+
+        }
+
+        .rativeDiv{
+            position: relative;
+            height: 300px;
+            left: -50%;
+            top: -50%;
+            background-color: rgba(238, 238, 238, 0.5);
+            border-radius: 20px;
+        }
+
+        .hiddenStuff{
+            visibility: hidden;
+        }
+
+        .textDivResults{
+            padding: 10px;
+        }
+
+    </style>
 </head>
+
+
 <body>
+
+
+
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" >
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css" >
+
+
+
+<div id="overlaytext" class="overlayingTextBox hiddenStuff">
+    <div class="rativeDiv">
+        <div class="textDivResults">
+
+            <h3>Deine Zeit:        <span id="timeJustFlew"></span></h3><br>
+            <h3>Deine Bestzeit:    <span id="aktualBestTime"></span></h3>
+            <h3>                   <span id="resultText"></span></h3>
+        </div>
+
+
+    </div>
+</div>
+
+<div id="WebGLCanvas"></div>
+
+
+
 <script src="lib/ChromeFixes.js"></script>
 <script src="lib/Three.js"></script>
 <script src="lib/Scoreboard.js"></script>
@@ -38,6 +99,17 @@
 <script src="js/main.js"></script>
 
 
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="lib/bootstrap/js/bootstrap.min.js" ></script>
+
+<script>
+
+    document.getElementById("aktualBestTime").innerHTML = getCookie("Level"+getCookie("ActualLevel"));
+
+</script>
 
 </body>
 </html>

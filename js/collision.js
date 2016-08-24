@@ -184,8 +184,10 @@ function ResetTargets()
 
 function stopGame()
 {
+
+    var recentPersonalBestTime = getCookie("Level"+getCookie("ActualLevel"))
     //Check ift the Time was better than the latest personal best. If it was, overwrite the cookie
-    console.log("Bisherige Bestzeit"+getCookie("Level"+getCookie("ActualLevel")));
+    console.log("Bisherige Bestzeit"+ recentPersonalBestTime);
     console.log("Zeit: "+getActualTime());
     if((getCookie("Level"+getCookie("ActualLevel")) > getActualTime())){
 
@@ -195,6 +197,25 @@ function stopGame()
         setCookie("Level"+getCookie("ActualLevel"),getActualTime(), 100);
     }
 
-    location.href='index.html';
+
+    
+    document.getElementById('overlaytext').className = "overlayingTextBox";
+    document.getElementById('timeJustFlew').innerHTML = getActualTime();
+
+    if (recentPersonalBestTime > getActualTime()){
+        document.getElementById("resultText").innerHTML = "Yeah, du hast deinen Rekord für diese Strecke gebrochen!";
+    } else {
+        document.getElementById("resultText").innerHTML = "Schade, du warst schonmal bessser. Versuche es doch gleich nochmal";
+    }
+
+
+
+    setTimeout(function(){
+
+        document.getElementById('overlaytext').className = "overlayingTextBox hiddenStuff";
+        location.href='index.html';
+
+    }, 5000);
+
 }
 
