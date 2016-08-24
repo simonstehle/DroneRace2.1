@@ -6,6 +6,7 @@
 var scoreboard = new  Scoreboard();
 
 startOnLoad();
+
 scoreboard.timer();
 
 function startOnLoad() {
@@ -37,4 +38,9 @@ function showSpeed() {
     scoreboard.message("Forward Speed: " + speedDisplay(currentStraightSpeed));
     scoreboard.addMessage("Side Speed: " + speedDisplay(currentSideSpeed));
     scoreboard.showMessage();
+}
+
+function getTime()
+{
+    //return scoreboard.time
 }

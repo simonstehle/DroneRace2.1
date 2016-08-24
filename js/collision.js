@@ -155,8 +155,10 @@ function RefreshTarget()
         nextTarget += 1;
         changeColorOfObject(indicatorMeshs[nextTarget], 0, 255, 0);
     }
-    else
+    else {
         stopTimer();
+        stopGame();
+    }
 
 }
 
@@ -171,5 +173,10 @@ function ResetTargets()
     RefreshTarget();
     resetTimer();
 
+}
+
+function stopGame()
+{
+    //window.alert("Ihre Zeit ist: " + );
 }
 
