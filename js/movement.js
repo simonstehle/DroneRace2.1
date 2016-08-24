@@ -68,7 +68,6 @@ var moveDroneUp = false;
  */
 var moveDroneDown = false;
 
-//Var for the glogal Angle to control the Drone after rotating around y
 /**
  * angle around which the drone has been rotated relative to the starting position
  * starts at 0, one full rotation is |2*Pi|
@@ -79,8 +78,8 @@ var globalAngle = 0;
 /**
  * the following flags do not entirely rely on keys pressed
  * each becomes true when a certain key is pressed, but remains true when the key is up
- * they represent the drones inertia and become false upon breaking
- * breaking happens either by inertia or acceleration on the reversre direction
+ * they represent the drones inertia and become false upon braking
+ * braking happens either by inertia or acceleration on the reverse direction
  */
 
 /**
@@ -202,23 +201,6 @@ var gameScore = 0;
 var hindernisse = [];
 hindernisse[0] = false;
 
-/**
- * function to reset all the moving___ flags to false
- * is used
- * - when the drone has crashed and is respawned and therefor not moving
- * - when the drone has reached currentStraightSpeed = 0 and is therefor not moving in any direction
- */
-function resetStraight () {
-    movingForward = false;
-    movingBackward = false;
-    currentStraightSpeed = 0;
-}
-
-function resetSide() {
-    movingLeft = false;
-    movingRight = false;
-    currentSideSpeed = 0;
-}
 
 
 /**
@@ -475,7 +457,86 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
 }
 
 
+/**
+ * function to reset all the moving___ flags to false
+ * is used
+ * - when the drone has crashed and is respawned and therefor not moving
+ * - when the drone has reached currentStraightSpeed = 0 and is therefor not moving in any direction
+ */
+function resetStraight () {
+    movingForward = false;
+    movingBackward = false;
+    currentStraightSpeed = 0;
+}
 
+function resetSide() {
+    movingLeft = false;
+    movingRight = false;
+    currentSideSpeed = 0;
+}
+
+/**
+ * checks all the keys pressed to determine whether
+ * the drone should now move straight in one direction
+ * or diagonally
+ */
+function cleanUpMovement() {
+    if (!diagonalMovement) {
+        if (movingForward && (moveRight || moveLeft) && !moveForward) {
+            movingForward = false;
+        }
+
+        if (movingBackward && (moveRight || moveLeft) && !moveBackward) {
+            movingBackward = false;
+        }
+
+        if (movingLeft && (moveForward || moveBackward) && !moveLeft) {
+            movingLeft = false;
+        }
+
+        if (movingRight && (moveForward || moveBackward) && !moveRight) {
+            movingRight = false;
+        }
+    }
+}
+
+
+/**
+ * makes the drone rotate around the Y axis
+ * with increasing speed, the rotation decreases slightly (max: 0.05; min: 0.03)
+ * @param keycode - can have two values which determine whether the drone turns clockwise or anticlockwise
+ */
+function rotateOnYaxis (keycode) {
+    var currentRotation;
+    currentRotation = maxRotation - currentStraightSpeed / maxStraightSpeed * 0.02;
+    switch (keycode) {
+        case 65:
+            globalAngle += currentRotation;
+            marker.rotation.y += currentRotation;
+            break;
+        case 68:
+            globalAngle -= currentRotation;
+            marker.rotation.y -= currentRotation;
+            break;
+    }
+}
+
+/**
+ * when the global variable "crash" is true, the drone is respawned at the start/finish line including a 0.5 s timeout
+ */
+function droneDidCrash(){
+    if (crash){
+        marker.position.set(-8000,0,400);
+        marker.rotation.y = 0;
+        globalAngle = 0;
+        resetStraight();
+        resetSide();
+        setTimeout(function(){
+            crash = false;
+        }, 500);
+        ResetTargets();
+    }
+}
 
 /**
  * helper function for acc(), calculates on value
