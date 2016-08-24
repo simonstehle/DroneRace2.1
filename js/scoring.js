@@ -36,7 +36,8 @@ function stopTimer() {
 function showSpeed() {
     scoreboard.message("Forward Speed: " + speedDisplay(currentStraightSpeed));
     scoreboard.addMessage("Side Speed: " + speedDisplay(currentSideSpeed));
-    scoreboard.addMessage("You're playing Level ");
+    var showLevel = getCookie("ActualLevel");
+    scoreboard.addMessage("You're playing Level " + showLevel);
     scoreboard.showMessage();
 }
 
