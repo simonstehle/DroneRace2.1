@@ -2,7 +2,7 @@
  * Created by simonstehle on 03.08.16.
  */
 
-addStartFinishLine(1000,100,-4000,-80,0,0,800);
+//addStartFinishLine(1000,100,-4000,-80,0,0,800);
 
 
 addTube(25,200,250,1500,0,-7000, Math.PI * 0.3);
@@ -15,8 +15,13 @@ addTargetRing(200, 250, 6100, 200, 1600,0, scene);
 
 build3WallObstacle(1000,2000,0,-6000, Math.PI*1.2);
 
-addTargetFrame(800,-1000,1000,-2000, 0);
-addTargetRing(200, 250, 250, 250, 0,Math.PI*.25, scene);
+addTargetRing(200, 250, 250, 250, 3250,Math.PI*0.5, scene);
+
+addTube(30,200,250,-3000,40,3000, 0);
+
+
+addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
+
 
 
 
