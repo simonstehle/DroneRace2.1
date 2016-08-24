@@ -24,7 +24,7 @@ function speedDisplay(speed) {
 }
 
 function zeppelin_crash() {
-    if (zepMarker.position.y > -5000) zepMarker.position.y -= 50;
+    if (zepMarker.position.y > -5000) zepMarker.position.y -= 70;
     if (zeppelin.position.z = 0) zeppelin.position.x -= 10;
     if (zeppelin.position.x = 0) zeppelin.position.z -= 10;
 }
@@ -34,7 +34,7 @@ function moveZeppelin (crash) {
 
     if (crash) {
         if (firstTime<3) firstTime ++;
-        if (firstTime === 1) makeMusic();
+        if (firstTime === 1) dyingSoundPlay();
         //console.log("Zeppelin crash!");
         zeppelin_crash();
         zeppelinRotation += 0.001;

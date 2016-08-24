@@ -20,6 +20,7 @@ function inAnimate() {
 function setHelp() {
     scoreboard.help("Fliege durch die grün markierten Hindernisse!");
     scoreboard.showHelp();
+
 }
 
 function startTimer() {
@@ -37,6 +38,7 @@ function stopTimer() {
 function showSpeed() {
     scoreboard.message("Forward Speed: " + speedDisplay(currentStraightSpeed));
     scoreboard.addMessage("Side Speed: " + speedDisplay(currentSideSpeed));
+    scoreboard.addMessage("You're playing Level ");
     scoreboard.showMessage();
 }
 
