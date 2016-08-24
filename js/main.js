@@ -25,6 +25,9 @@ function animate() {
 
     drone_movement();
     zeppelin_circle();
+
+    showSpeed();
+
     textureCamera.lookAt(marker.position);
     renderer.render( scene, textureCamera, firstRenderTarget, true);
     renderer.render( screenScene, screenCamera, finalRenderTarget, true );
