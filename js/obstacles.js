@@ -234,13 +234,13 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
     startFinishMarker.add(startTopMesh);
 
 
-    var startFlyTrueGeo = new THREE.BoxGeometry(width,20,800);
+    var startFlyTrueGeo = new THREE.BoxGeometry(width,600,20);
     var startFlyTrueMat = new THREE.MeshBasicMaterial();
     startFlyTrueMat.side = THREE.DoubleSide;
     startFlyTrueMat.visible =false;
     var startFlyTrueMesh = new THREE.Mesh(startFlyTrueGeo, startFlyTrueMat);
     startFlyTrueMesh.position.set(positionX,0,positionZ);
-    startFlyTrueMesh.rotation.x = Math.PI *0.5;
+   // startFlyTrueMesh.rotation.x = Math.PI *0.5;
     startFinishMarker.add(startFlyTrueMesh);
 
     var zylinder1 = makeAZylinder(positionX-width/2,0 , positionZ,height)
@@ -259,9 +259,10 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
 
     startFinishMarker.position.set(positionX, 0,positionZ);
     startFinishMarker.rotation.y = rotationY;
+    //addTarget(startFlyTrueMesh,startlineMesh,startTopMesh,hitBoxMeshCollection);
     scene.add(startFinishMarker);
 
-    addTarget(startFlyTrueMesh,startlineMesh,startTopMesh,hitBoxMeshCollection);
+
 }
 
 function makeAZylinder(zylPositionX, zylPositionY, zylPositionZ, height) {
