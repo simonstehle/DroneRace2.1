@@ -24,13 +24,13 @@ function animate() {
     //Handle Control of Drone by Flags
 
     drone_movement();
-    zeppelin_circle();
+    moveZeppelin(zepCrashFlag);
 
     showSpeed();
 
     textureCamera.lookAt(marker.position);
     renderer.render( scene, textureCamera, firstRenderTarget, true);
-    renderer.render( screenScene, screenCamera, finalRenderTarget, true );
+    renderer.render( screenScene, screenCamera, finalRenderTarget, true);
 
     renderer.render( scene, droneCamera);
     

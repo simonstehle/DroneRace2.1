@@ -6,13 +6,18 @@
  * https://github.com/goldfire/howler.js
  */
 
+var startPlaying = false;
+
+function makeMusic() {
+    sound.play();
+}
+
 var sound = new Howl({
     src: ['objects/everything_is_awesome.mp3'],
     loop: true,
-    volume: 0.5,
+    volume: 0.05,
     onend: function() {
         console.log('Finished!');
     }
 });
 
-//sound.play();

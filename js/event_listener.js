@@ -51,6 +51,12 @@ document.addEventListener('keydown', function (event) {
             movingRight = true;
             drone_mesh.rotation.z = Math.PI * -0.05;
             break;
+        case 32:
+            zepCrashFlag = true;
+            break;
+        case 16:
+            marker.position.y = 6000;
+            break;
     }
 
 
