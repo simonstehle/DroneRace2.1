@@ -6,7 +6,7 @@
 var scoreboard = new  Scoreboard();
 
 startOnLoad();
-
+scoreboard.timer();
 
 function startOnLoad() {
     setHelp();

@@ -149,11 +149,14 @@ function detectHit(hitBoxes,index){
 
 function RefreshTarget()
 {
+    if(nextTarget === 1)
+        startTimer();
     if(nextTarget<lastTarget) {
         nextTarget += 1;
         changeColorOfObject(indicatorMeshs[nextTarget], 0, 255, 0);
-
     }
+    else
+        stopTimer();
 
 }
 
@@ -166,6 +169,7 @@ function ResetTargets()
         changeColorOfObject(indicatorMeshs[i], 155, 155 , 155);
     }
     RefreshTarget();
+    resetTimer();
 
 }
 
