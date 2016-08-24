@@ -300,7 +300,7 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
 
 function makeAZylinder(positionX,positionY, positionZ, height) {
     var zylinderGeometry = new THREE.CylinderGeometry( 50, 50, height, 5,5 );
-    var zylinderMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    var zylinderMaterial = new THREE.MeshLambertMaterial( {color: 0xffff00} );
     var zylinderMesh = new THREE.Mesh( zylinderGeometry, zylinderMaterial );
     zylinderMesh.position.set(positionX, positionY,positionZ);
 
