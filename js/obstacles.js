@@ -251,8 +251,9 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
 
 
     var hitBoxMeshCollection = [];
-    hitBoxMeshCollection.push(zylinder1);
-    hitBoxMeshCollection.push(zylinder2);
+    //hitBoxMeshCollection.push(zylinder1);
+    //hitBoxMeshCollection.push(zylinder2);
+    //hitBoxMeshCollection.push(startTopMesh);
    
 
 
