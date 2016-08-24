@@ -25,6 +25,8 @@ function animate() {
 
     drone_movement();
     moveZeppelin(zepCrashFlag);
+    rotors.forEach(rotateRotor);
+
 
     showSpeed();
 
@@ -37,3 +39,8 @@ function animate() {
     
 }
 animate();
+
+function rotateRotor(element, index)
+{
+    element.rotation.y += Math.PI*0.2;
+}

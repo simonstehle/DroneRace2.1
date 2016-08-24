@@ -18,6 +18,8 @@ var VIEW_ANGLE = 45, ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FA
 var zeppelin;
 var zepMarker = new THREE.Object3D();
 
+var rotors = [];
+
 init();
 
 function init()
