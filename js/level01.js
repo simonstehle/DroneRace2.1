@@ -57,12 +57,7 @@ function buildLevel2()
 
 
 
-    build3WallObstacle(1000,2000,0,-6000, Math.PI*1.2);
-
-    addTargetRing(200, 250, 250, 250, 3250,Math.PI*0.5, scene);
-
-    addTube(30,200,250,-3000,40,3000, 0);
-
+    
 
 
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
