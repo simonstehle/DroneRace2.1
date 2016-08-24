@@ -5,7 +5,7 @@
 
 var scoreboard = new  Scoreboard();
 
-scoreboard.help("Das ist ein Dronenspiel. Fliege durch die grün amrkierten dinge!")
+scoreboard.help("Das ist ein Dronenspiel. Fliege durch die grün amrkierten dinge!");
 
 
 
