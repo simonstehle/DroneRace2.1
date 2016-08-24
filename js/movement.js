@@ -322,7 +322,6 @@ function droneDidCrash(){
         marker.position.set(-8000,0,400);
         marker.rotation.y = 0;
         globalAngle = 0;
-        currentStraightSpeed = 0;
         resetStraight();
         resetSide();
         setTimeout(function(){
