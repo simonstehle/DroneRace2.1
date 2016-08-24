@@ -8,7 +8,8 @@ document.addEventListener('keydown', function (event) {
     event.preventDefault();
 
     var code = event.keyCode;
-    
+
+
     switch (code){
         case 87:
             //Move Upwards w
