@@ -327,6 +327,7 @@ function droneDidCrash(){
         setTimeout(function(){
             crash = false;
         }, 500);
+        ResetTargets();
     }
 }
 

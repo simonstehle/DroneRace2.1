@@ -216,35 +216,35 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
 function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotationY, height) {
     var startFinishMarker = new THREE.Object3D();
 
-    var startlineGeo = new THREE.BoxGeometry(width,1,depth);
+    var startlineGeo = new THREE.PlaneGeometry(width,depth);
     var startlineMat = new THREE.MeshBasicMaterial();
     startlineMat.side = THREE.DoubleSide;
     var startlineMesh = new THREE.Mesh(startlineGeo, startlineMat);
-
-    startlineMesh.position.set(positionX,positionY,positionZ);
+    startlineMesh.rotation.x = Math.PI *0.5;
+    startlineMesh.position.set(positionX,positionY+1,positionZ);
     startFinishMarker.add(startlineMesh);
 
 
-    var startTopGeo = new THREE.BoxGeometry(width,1,depth);
+    var startTopGeo = new THREE.PlaneGeometry(width,depth);
     var startTopMat = new THREE.MeshBasicMaterial();
     startTopMat.side = THREE.DoubleSide;
     var startTopMesh = new THREE.Mesh(startTopGeo, startTopMat);
     startTopMesh.position.set(positionX,355,positionZ);
-    startTopMesh.rotation.x = Math.PI *0.5;
+
     startFinishMarker.add(startTopMesh);
 
 
-    var startFlyTrueGeo = new THREE.BoxGeometry(width,600,20);
+    var startFlyTrueGeo = new THREE.PlaneGeometry(width,600);
     var startFlyTrueMat = new THREE.MeshBasicMaterial();
     startFlyTrueMat.side = THREE.DoubleSide;
     startFlyTrueMat.visible =false;
     var startFlyTrueMesh = new THREE.Mesh(startFlyTrueGeo, startFlyTrueMat);
     startFlyTrueMesh.position.set(positionX,0,positionZ);
-   // startFlyTrueMesh.rotation.x = Math.PI *0.5;
+
     startFinishMarker.add(startFlyTrueMesh);
 
-    var zylinder1 = makeAZylinder(positionX-width/2,0 , positionZ,height)
-    var zylinder2 = makeAZylinder(positionX+width/2, 0, positionZ,height)
+    var zylinder1 = makeAZylinder(positionX-width/2,0 , positionZ,height);
+    var zylinder2 = makeAZylinder(positionX+width/2, 0, positionZ,height);
 
     startFinishMarker.add(zylinder1);
     startFinishMarker.add(zylinder2);
@@ -253,12 +253,13 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
     var hitBoxMeshCollection = [];
     hitBoxMeshCollection.push(zylinder1);
     hitBoxMeshCollection.push(zylinder2);
+    hitBoxMeshCollection.push(startTopMesh);
    
 
 
     startFinishMarker.position.set(positionX, 0,positionZ);
     startFinishMarker.rotation.y = rotationY;
-    //addTarget(startFlyTrueMesh,startlineMesh,startTopMesh,hitBoxMeshCollection);
+    addTarget(startFlyTrueMesh,startlineMesh,startTopMesh,hitBoxMeshCollection);
     scene.add(startFinishMarker);
 
 
