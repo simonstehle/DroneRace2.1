@@ -51,3 +51,16 @@ var dyingSound = new Howl({
 function dyingSoundPlay() {
     dyingSound.play();
 }
+
+var droneCrashSound = new Howl({
+    src: ['objects/crash_drone.mp3'],
+    loop: false,
+    volume: 1,
+    onend: function() {
+        console.log('Finished!');
+    }
+});
+
+function droneCrashSoundPlay() {
+    droneCrashSound.play();
+}
