@@ -16,3 +16,32 @@ var sound = new Howl({
 });
 
 //sound.play();
+
+
+
+var scoringSound = new Howl({
+    src: ['objects/scoring_sound.mp3'],
+    loop: false,
+    volume: 0.5,
+    onend: function() {
+        console.log('Finished!');
+    }
+});
+
+function madePointSound() {
+    scoringSound.play();
+}
+
+
+var dyingSound = new Howl({
+    src: ['objects/dying_sound.mp3'],
+    loop: false,
+    volume: 1,
+    onend: function() {
+        console.log('Finished!');
+    }
+});
+
+function dyingSoundPlay() {
+    dyingSound.play();
+}

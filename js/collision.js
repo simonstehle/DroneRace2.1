@@ -101,6 +101,7 @@ function detectFlyThrough(index){
     {
         changeColorOfObject(indicatorMeshs[index],155,155,155);
         RefreshTarget();
+        madePointSound();
     }
 }
 
@@ -142,6 +143,7 @@ function RefreshTarget()
     if(nextTarget<lastTarget) {
         nextTarget += 1;
         changeColorOfObject(indicatorMeshs[nextTarget], 0, 255, 0);
+
     }
 
 }
