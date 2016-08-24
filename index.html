@@ -69,6 +69,12 @@
             font-size: 2.5em;
         }
 
+        .resetrow{
+            text-align: center;
+            padding-top: -10px;;
+
+        }
+
 
 
     </style>
@@ -88,6 +94,7 @@
 
 
 
+
 <div class="row levelrow">
     <div class="col-md-4 leveloutside" onclick="levelSetter(1);"><div class="levelinside"><br><span class="levelinsideText">Level 1</span>
     <br><span id="level1Time" class="timeToBeat">Bestzeit:0:00</span></div></div>
@@ -98,7 +105,13 @@
     <div class="col-md-4 leveloutside" onclick="levelSetter(3);"><div class="levelinside"><br><span class="levelinsideText">Level 3</span>
         <br><span id="level3Time" class="timeToBeat">Bestzeit:0:00</span></div></div>
 </div>
+    <div class="row resetrow">
+        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove-sign" aria-hidden="true" onclick="resetScores('Level1')"></span></h2></div>
+        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove-sign" aria-hidden="true" onclick="resetScores('Level2')"></span></h2></div>
+        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove-sign" aria-hidden="true" onclick="resetScores('Level3')"></span></h2></div>
 
+
+    </div>
 
     </div><!--End of Container -->
 
@@ -116,27 +129,40 @@
         location.href='game.html';
     }
 
-    var level1temp = document.getElementById("level1Time").innerHTML = getCookie("Level1");
-    var level2temp = document.getElementById("level2Time").innerHTML = getCookie("Level2");
-    var level3temp = document.getElementById("level1Time").innerHTML = getCookie("Level3");
+    function updateTimesToBeat() {
+        var level1temp = document.getElementById("level1Time").innerHTML = getCookie("Level1");
+        var level2temp = document.getElementById("level2Time").innerHTML = getCookie("Level2");
+        var level3temp = document.getElementById("level1Time").innerHTML = getCookie("Level3");
 
-    if (level1temp >= 0 && level1temp != ""){
-        document.getElementById("level1Time").innerHTML = "Bestzeit: "+ level1temp;
-    } else {
-        document.getElementById("level1Time").innerHTML = "Keine Bestzeit";
+        if (level1temp >= 0 && level1temp != ""){
+            document.getElementById("level1Time").innerHTML = "Bestzeit: "+ level1temp;
+        } else {
+            document.getElementById("level1Time").innerHTML = "Keine Bestzeit";
+        }
+
+        if (level2temp >= 0 && level2temp != "" ){
+            document.getElementById("level2Time").innerHTML = "Bestzeit: "+ level2temp;
+        } else {
+            document.getElementById("level2Time").innerHTML = "Keine Bestzeit";
+        }
+
+        if (level3temp >= 0 && level3temp != ""){
+            document.getElementById("level3Time").innerHTML = "Bestzeit: "+ level3temp;
+        } else {
+            document.getElementById("level3Time").innerHTML = "Keine Bestzeit";
+        }
     }
 
-    if (level2temp >= 0 && level2temp != "" ){
-        document.getElementById("level2Time").innerHTML = "Bestzeit: "+ level2temp;
-    } else {
-        document.getElementById("level2Time").innerHTML = "Keine Bestzeit";
+
+
+
+    function resetScores(level){
+
+        setCookie(level,"",100);
+        updateTimesToBeat();
+
     }
 
-    if (level3temp >= 0 && level3temp != ""){
-        document.getElementById("level3Time").innerHTML = "Bestzeit: "+ level3temp;
-    } else {
-        document.getElementById("level3Time").innerHTML = "Keine Bestzeit";
-    }
 
 
 

@@ -55,11 +55,7 @@ function buildLevel2()
 
     build3WallObstacle(1000,2000,6000,-4000, Math.PI*0.2);
 
-
-
     
-
-
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
 
 }
