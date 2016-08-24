@@ -48,7 +48,10 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
     var hitBoxCollection = [];
     hitBoxCollection.push(hitBoxMesh);
 
-    addTarget(circleMesh,flyOverBox,flyThroughRingMesh, hitBoxCollection);
+    var hitBoxFlyOverMeshCollection = [];
+    hitBoxFlyOverMeshCollection.push(flyOverBox);
+
+    addTarget(circleMesh,flyOverBox,flyThroughRingMesh, hitBoxCollection,hitBoxFlyOverMeshCollection);
 }
 
 function addTube(numberOfRings, innerRadius, outerRadius, positionX, positionY, positionZ, rotationY) {
@@ -61,8 +64,6 @@ function addTube(numberOfRings, innerRadius, outerRadius, positionX, positionY, 
     tubeMarker.rotation.y = rotationY;
     scene.add(tubeMarker);
 }
-
-
 
 function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueOnLeft, moving) {
     var wallMarker = new THREE.Object3D();
@@ -88,57 +89,77 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
         wallMesh.position.set(positionX, 0, positionZ);
 
 
-        //Wall that ist not an obstacle, detects point/success
-        var flytrueWallGeo = new THREE.PlaneGeometry(width, height);
-        var flytrueWallMat = new THREE.MeshBasicMaterial({color: 0x00FFFF, side: THREE.DoubleSide});
-        flytrueWallMat.side = THREE.DoubleSide;
-        flytrueWallMat.visible = false;
-        var flytrueWallMesh = new THREE.Mesh(flytrueWallGeo, flytrueWallMat);
+    //Box to detect a collision. Placed under the wallMesh
+    var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width,1, -maxStraightSpeed);
+    var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial({color: 0xff0055});
+    wallFlyOverBoxMaterial.visible = true;
+    var wallFlyOverBox = new THREE.Mesh(wallFlyOverBoxGeometry, wallFlyOverBoxMaterial);
+
+    wallFlyOverBox.position.set(positionX, -80, positionZ);
 
 
+        var zylinderRadius = 50;
 
         //Zylinder to make boundary to score point
-        var zylinderGeometry = new THREE.CylinderGeometry( 50, 50, height, 5,5 );
+        var zylinderGeometry = new THREE.CylinderGeometry( zylinderRadius, zylinderRadius, height, 5,5 );
         var zylinderMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
         var zylinderMesh = new THREE.Mesh( zylinderGeometry, zylinderMaterial );
 
+        var zylinderFlyOverCircleGeo = new THREE.CircleGeometry(zylinderRadius*2,30);
+        var zylinderFlyOverCircleMat = new THREE.MeshBasicMaterial({color: 0xffff00});
+    zylinderFlyOverCircleMat.visible = true;
+    zylinderFlyOverCircleMat.side = THREE.DoubleSide;
+        var zylinderFlyOverCircle = new THREE.Mesh(zylinderFlyOverCircleGeo, zylinderFlyOverCircleMat);
+        zylinderFlyOverCircle.position.z = positionZ;
+        zylinderFlyOverCircle.position.y = -100;
+    zylinderFlyOverCircle.rotation.x = Math.PI*0.5;
 
 
+    //Wall that ist not an obstacle, detects point/success
+    var flytrueWallGeo = new THREE.PlaneGeometry(width, height);
+    var flytrueWallMat = new THREE.MeshBasicMaterial({color: 0x00FFFF, side: THREE.DoubleSide});
+    flytrueWallMat.side = THREE.DoubleSide;
+    flytrueWallMat.visible = false;
+    var flytrueWallMesh = new THREE.Mesh(flytrueWallGeo, flytrueWallMat);
 
-
-        //Box to detect a collision. Placed under the wallMesh
-        var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width*2,1, -maxStraightSpeed);
-        var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial();
-        wallFlyOverBoxMaterial.side = THREE.DoubleSide;
-        wallFlyOverBoxMaterial.visible = false;
-        var wallFlyOverBox = new THREE.Mesh(wallFlyOverBoxGeometry, wallFlyOverBoxMaterial);
-
-        wallFlyOverBox.position.z = positionZ;
-        wallFlyOverBox.position.y = -80;
-
+//targetFlyOverBox
+    var targetFlyOverBoxGeometry = new THREE.BoxGeometry(width,1, maxStraightSpeed);
+    var targetFlyOverBoxMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF});
+    targetFlyOverBoxMaterial.visible = true;
+    targetFlyOverBoxMaterial.side = THREE.DoubleSide;
+    var targetFlyOverBox = new THREE.Mesh(targetFlyOverBoxGeometry, targetFlyOverBoxMaterial);
 
 
     if (flyTrueOnLeft){
         flytrueWallMesh.position.set((positionX - width), 0, positionZ); //the Wall to fly true ist based on the right side
+        targetFlyOverBox.position.set((positionX - width), -100, positionZ);
         zylinderMesh.position.set(positionX - width*1.5, 0, positionZ);
-        wallFlyOverBox.position.x = positionX-width/2;
+        zylinderFlyOverCircle.position.set(positionX - width*1.5, -100, positionZ);
+        wallFlyOverBox.position.x = positionX;
     }
     else{
         flytrueWallMesh.position.set((positionX + width), 0, positionZ); //the Wall to fly true ist based on the right side
+        targetFlyOverBox.position.set((positionX + width), -100, positionZ);
         zylinderMesh.position.set(positionX + width*1.5, 0, positionZ);
-        wallFlyOverBox.position.x = positionX+width/2;
+        zylinderFlyOverCircle.position.set(positionX + width*1.5, -100, positionZ);
+        wallFlyOverBox.position.x = positionX;
     }
 
         wallMarker.add(wallMesh);
         wallMarker.add(wallFlyOverBox);
         wallMarker.add(flytrueWallMesh);
+        wallMarker.add(targetFlyOverBox);
         wallMarker.add(zylinderMesh);
+    wallMarker.add(zylinderFlyOverCircle);
 
     wallMarker.rotation.y = rotationY;
     var hitBoxMeshCollection = [];
+    var hitBoxFlyOverMeshCollection = [];
     hitBoxMeshCollection.push(zylinderMesh);
+    hitBoxFlyOverMeshCollection.push(zylinderFlyOverCircle);
     hitBoxMeshCollection.push(wallMesh);
-    addTarget(flytrueWallMesh,wallFlyOverBox,zylinderMesh,hitBoxMeshCollection);
+    hitBoxFlyOverMeshCollection.push(wallFlyOverBox);
+    addTarget(flytrueWallMesh,targetFlyOverBox,zylinderMesh,hitBoxMeshCollection,hitBoxFlyOverMeshCollection);
     scene.add(wallMarker);
 
     if (moving) {
@@ -201,7 +222,9 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
             frame.rotation.y = rotationY;
             var hitBoxCollection = [];
             hitBoxCollection.push(frame);
-            addTarget(rectMesh,flyOverBox,frame, hitBoxCollection);
+            var hitBoxFlyOverMeshCollection = [];
+            hitBoxFlyOverMeshCollection.push(flyOverBox);
+            addTarget(rectMesh,flyOverBox,frame, hitBoxCollection,hitBoxFlyOverMeshCollection);
             scene.add(frame);
             scene.add(rectMesh);
             scene.add(flyOverBox);
@@ -216,62 +239,82 @@ function addTargetFrame(width, positionX, positionY, positionZ, rotationY) {
 function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotationY, height) {
     var startFinishMarker = new THREE.Object3D();
 
-    var startlineGeo = new THREE.PlaneGeometry(width,depth);
+    var startlineGeo = new THREE.BoxGeometry(width,1,depth);
     var startlineMat = new THREE.MeshBasicMaterial();
     startlineMat.side = THREE.DoubleSide;
     var startlineMesh = new THREE.Mesh(startlineGeo, startlineMat);
-    startlineMesh.rotation.x = Math.PI *0.5;
-    startlineMesh.position.set(positionX,positionY+1,positionZ);
+
+    startlineMesh.position.set(positionX,positionY,positionZ);
+
     startFinishMarker.add(startlineMesh);
 
 
-    var startTopGeo = new THREE.PlaneGeometry(width,depth);
+    var startTopGeo = new THREE.BoxGeometry(width,1,depth);
     var startTopMat = new THREE.MeshBasicMaterial();
     startTopMat.side = THREE.DoubleSide;
     var startTopMesh = new THREE.Mesh(startTopGeo, startTopMat);
     startTopMesh.position.set(positionX,355,positionZ);
-
+    startTopMesh.rotation.x = Math.PI *0.5;
     startFinishMarker.add(startTopMesh);
 
 
-    var startFlyTrueGeo = new THREE.PlaneGeometry(width,600);
+    var startFlyTrueGeo = new THREE.BoxGeometry(width,600,20);
     var startFlyTrueMat = new THREE.MeshBasicMaterial();
     startFlyTrueMat.side = THREE.DoubleSide;
     startFlyTrueMat.visible =false;
     var startFlyTrueMesh = new THREE.Mesh(startFlyTrueGeo, startFlyTrueMat);
     startFlyTrueMesh.position.set(positionX,0,positionZ);
-
+   // startFlyTrueMesh.rotation.x = Math.PI *0.5;
     startFinishMarker.add(startFlyTrueMesh);
 
-    var zylinder1 = makeAZylinder(positionX-width/2,0 , positionZ,height);
-    var zylinder2 = makeAZylinder(positionX+width/2, 0, positionZ,height);
+    var zylinder1 = makeAZylinder(positionX-width/2,0 , positionZ,height)
+    var flyOverCircle1 = makeAFlyOverCircle(positionX-width/2, -150 , positionZ,80);
+    var zylinder2 = makeAZylinder(positionX+width/2, 0, positionZ,height)
+    var flyOverCircle2 = makeAFlyOverCircle(positionX+width/2, -150, positionZ,80);
 
     startFinishMarker.add(zylinder1);
     startFinishMarker.add(zylinder2);
+    startFinishMarker.add(flyOverCircle1);
+    startFinishMarker.add(flyOverCircle2);
 
 
     var hitBoxMeshCollection = [];
+    var hitBoxFlyOverMeshCollection =[];
     hitBoxMeshCollection.push(zylinder1);
+    hitBoxFlyOverMeshCollection.push(flyOverCircle1);
     hitBoxMeshCollection.push(zylinder2);
+    hitBoxFlyOverMeshCollection.push(flyOverCircle2);
     hitBoxMeshCollection.push(startTopMesh);
-   
+    hitBoxFlyOverMeshCollection.push(startlineMesh);
+
 
 
     startFinishMarker.position.set(positionX, 0,positionZ);
     startFinishMarker.rotation.y = rotationY;
-    addTarget(startFlyTrueMesh,startlineMesh,startTopMesh,hitBoxMeshCollection);
+    addTarget(startFlyTrueMesh,startlineMesh,startTopMesh,hitBoxMeshCollection,hitBoxFlyOverMeshCollection);
     scene.add(startFinishMarker);
 
 
 }
 
-function makeAZylinder(zylPositionX, zylPositionY, zylPositionZ, height) {
+function makeAZylinder(positionX,positionY, positionZ, height) {
     var zylinderGeometry = new THREE.CylinderGeometry( 50, 50, height, 5,5 );
     var zylinderMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
     var zylinderMesh = new THREE.Mesh( zylinderGeometry, zylinderMaterial );
-    zylinderMesh.position.set(zylPositionX, zylPositionY,zylPositionZ);
+    zylinderMesh.position.set(positionX, positionY,positionZ);
 
     return zylinderMesh;
+}
+
+function makeAFlyOverCircle(positionX,positionY, positionZ, radius) {
+    var circleGeometry = new THREE.CircleGeometry(radius,30 );
+    var circleMaterial = new THREE.MeshBasicMaterial( {color: 0xff00ff} );
+    circleMaterial.side = THREE.DoubleSide;
+    circleMaterial.visible = true;
+    var circleMesh = new THREE.Mesh( circleGeometry, circleMaterial );
+    circleMesh.position.set(positionX,positionY, positionZ);
+    circleMesh.rotation.x = Math.PI*0.5;
+    return circleMesh;
 }
 
 

@@ -23,17 +23,19 @@ var indicatorMeshs = [];
 var flyThroughMeshs = [];
 var flyOverMeshs = [];
 var hitBoxMeshs = [];
+var hitBoxFlyOverMeshs =[];
 var nextTarget = -1;
 var lastTarget = -1;
 
 ResetTargets();
 
-function addTarget(flyThroughMesh, flyOverMesh, indicatorMesh, hitBoxMeshCollection)
+function addTarget(flyThroughMesh, flyOverMesh, indicatorMesh, hitBoxMeshCollection, hitBoxFlyOverMeshCollection)
 {
     flyThroughMeshs.push(flyThroughMesh);
     flyOverMeshs.push(flyOverMesh);
     indicatorMeshs.push(indicatorMesh);
     hitBoxMeshs.push(hitBoxMeshCollection);
+    hitBoxFlyOverMeshs.push(hitBoxFlyOverMeshCollection);
     lastTarget=lastTarget+1;
 }
 
@@ -81,13 +83,21 @@ function detectFlyOver(element, index)
 {
     var bottomVector = new THREE.Vector3(0,-1,0);
     var bottomRayCaster = new THREE.Raycaster(marker.position, bottomVector);
+
     var bottomIntersect = bottomRayCaster.intersectObject(flyOverMeshs[index])
-    //console.log(bottomIntersect.length);
     if(bottomIntersect.length>0)
     {
         detectFlyThrough(index);
-        detectHit(index);
+    }
 
+    for (var i = 0; i < hitBoxFlyOverMeshs[index].length; i++) {
+        var bottomVector = new THREE.Vector3(0,-1,0);
+        var bottomRayCaster = new THREE.Raycaster(marker.position, bottomVector);
+        var bottomIntersect = bottomRayCaster.intersectObject(hitBoxFlyOverMeshs[index][i])
+        if(bottomIntersect.length>0)
+        {
+            detectHit(index,i);
+        }
     }
 }
 
@@ -105,21 +115,20 @@ function detectFlyThrough(index){
     }
 }
 
-function GetIntersect(intersectObjects)
+function GetIntersect(intersectObject)
 {
-    for (var i = 0; i < intersectObjects.length; i++) {
-        if(GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(0,0,-1))
-            ||GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(0,0,1))
-            ||GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(-1,0,0))
-            ||GetRaycastIntersect(intersectObjects[i], new THREE.Vector3(1,0,0)))
+        if(GetRaycastIntersect(intersectObject, new THREE.Vector3(0,0,-1))
+            ||GetRaycastIntersect(intersectObject, new THREE.Vector3(0,0,1))
+            ||GetRaycastIntersect(intersectObject, new THREE.Vector3(-1,0,0))
+            ||GetRaycastIntersect(intersectObject, new THREE.Vector3(1,0,0)))
             return true;
-    }
-
     return false;
 }
 
 function GetRaycastIntersect(object, vector)
 {
+    if(object === undefined)
+        return false;
     var rayCaster = new THREE.Raycaster(marker.position, vector);
     var intersect = rayCaster.intersectObject(object,true);
     if(intersect.length>0)
@@ -127,12 +136,12 @@ function GetRaycastIntersect(object, vector)
     return false;
 }
 
-function detectHit(index){
-    if(GetIntersect(hitBoxMeshs[index]))
+function detectHit(hitBoxes,index){
+    if(GetIntersect(hitBoxMeshs[hitBoxes][index]))
     {
-        changeColorOfObject(indicatorMeshs[index],255,0,0);
+        changeColorOfObject(indicatorMeshs[hitBoxes],255,0,0);
         window.setTimeout(function () {
-            changeColorOfObject(indicatorMeshs[index],200,200,255);},3000);
+            changeColorOfObject(indicatorMeshs[hitBoxes],200,200,255);},3000);
         crash = true;
         ResetTargets();
     }
