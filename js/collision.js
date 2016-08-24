@@ -149,7 +149,7 @@ function detectHit(hitBoxes,index){
 
 function RefreshTarget()
 {
-    if(nextTarget === 1)
+    if(nextTarget === 2)
         startTimer();
     if(nextTarget<lastTarget) {
         nextTarget += 1;
