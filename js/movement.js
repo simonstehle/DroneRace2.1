@@ -319,16 +319,24 @@ function rotateOnYaxis (keycode) {
  */
 function droneDidCrash(){
     if (crash){
-        marker.position.set(-8000,0,400);
-        marker.rotation.y = 0;
-        globalAngle = 0;
-        resetStraight();
-        resetSide();
-        setTimeout(function(){
-            crash = false;
-        }, 500);
-        ResetTargets();
+        console.log('crash');
+        ResetDrone();
     }
+}
+
+function ResetDrone()
+{
+    marker.position.set(-8000,0,400);
+    marker.rotation.y = 0;
+    globalAngle = 0;
+    resetStraight();
+    resetSide();
+    setTimeout(function(){
+        crash = false;
+    }, 500);
+
+    if(gameLoaded)
+        ResetTargets();
 }
 
 /**

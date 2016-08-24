@@ -13,6 +13,8 @@ scene.add(marker);
 
 
 
+
+
 initBonooneStadium();
 
 function animate() {
@@ -39,6 +41,9 @@ function animate() {
     
 }
 animate();
+ResetDrone();
+gameLoaded = true;
+ResetTargets();
 
 function rotateRotor(element, index)
 {

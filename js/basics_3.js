@@ -3,7 +3,7 @@
 /**
  * This file sets up the basics of the scene, droneCamera and rendering
  */
-
+var gameLoaded = false;
 var mtlLoader = new THREE.MTLLoader();
 // Renderer draws what the droneCamera sees on the screen.
 var scene, renderer;

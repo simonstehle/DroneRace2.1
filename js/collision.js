@@ -55,6 +55,8 @@ function changeColorOfObject(mesh, r, g, b)
  * @returns {boolean}
  */
 function detectCollisions() {
+    if(!gameLoaded)
+        return false;
     detectTargetHit();
     var vector = new THREE.Vector3(0,-1,0);
     var rayCaster = new THREE.Raycaster(marker.position, vector);
@@ -74,7 +76,6 @@ function detectCollisions() {
 
 
 function detectTargetHit() {
-
     flyThroughMeshs.forEach(detectFlyOver)
 
 }
@@ -149,6 +150,7 @@ function detectHit(hitBoxes,index){
 
 function RefreshTarget()
 {
+    console.log('Refresh Targets');
     if(nextTarget === 2)
         startTimer();
     if(nextTarget<lastTarget) {
@@ -164,8 +166,10 @@ function RefreshTarget()
 
 function ResetTargets()
 {
+    if(!gameLoaded)
+        return;
     nextTarget=-1;
-
+    console.log('Reset Targets');
     //startTimer();
     for (var i = 0; i < indicatorMeshs.length; i++) {
         changeColorOfObject(indicatorMeshs[i], 155, 155 , 155);
