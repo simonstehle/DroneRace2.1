@@ -40,6 +40,8 @@ function buildLevel1()
 
 
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
+    if(startPlaying)
+        makeMusic();
 
 }
 

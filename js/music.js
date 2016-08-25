@@ -6,20 +6,42 @@
  * https://github.com/goldfire/howler.js
  */
 
-var startPlaying = false;
 
-function makeMusic() {
-    sound.play();
+
+if(getCookie("playSounds") === ""){
+    setCookie("playSounds", "true",100);
 }
 
-var sound = new Howl({
-    src: ['objects/everything_is_awesome.mp3'],
+var startPlaying;
+if(getCookie("playSounds")=== "true"){
+    startPlaying = true;
+} else{
+    startPlaying = false;
+}
+ 
+
+
+
+
+function makeMusic() {
+    mainSound.play();
+}
+
+function stopMakingMusic() {
+    mainSound.stop();
+}
+
+
+var mainSound = new Howl({
+    src: ['objects/euromir_song.mp3'],
     loop: true,
     volume: 0.5,
     
 });
 
-//sound.play();
+
+
+//mainSound.play();
 
 
 
@@ -31,7 +53,10 @@ var scoringSound = new Howl({
 });
 
 function madePointSound() {
-    scoringSound.play();
+    if(getCookie("playSounds") === "true"){
+        scoringSound.play();
+    }
+
 }
 
 
@@ -56,3 +81,4 @@ var droneCrashSound = new Howl({
 function droneCrashSoundPlay() {
     droneCrashSound.play();
 }
+

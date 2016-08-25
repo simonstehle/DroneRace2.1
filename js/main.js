@@ -12,8 +12,8 @@ initDrone01();
 scene.add(droneMarker);
 
 
-
 initBonooneStadium();
+
 
 buildLevels();
 
