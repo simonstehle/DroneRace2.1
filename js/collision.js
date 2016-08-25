@@ -19,27 +19,27 @@
  * Meshs for marking the next target and indicating fly-troughs. Usually the obstacle itself.
  * @type {Array}
  */
-var indicatorMeshs = [];
-var flyThroughMeshs = [];
-var flyOverMeshs = [];
-var hitBoxMeshs = [];
-var hitBoxFlyOverMeshs = [];
+var indicatorMeshes = [];
+var flyThroughMeshes = [];
+var flyOverMeshes = [];
+var hitBoxMeshes = [];
+var hitBoxFlyOverMeshes = [];
 var nextTarget = -1;
 var lastTarget = -1;
 
-ResetTargets();
+resetTargets();
 
 function addTarget(flyThroughMesh, flyOverMesh, indicatorMesh, hitBoxMeshCollection, hitBoxFlyOverMeshCollection) {
-    flyThroughMeshs.push(flyThroughMesh);
-    flyOverMeshs.push(flyOverMesh);
-    indicatorMeshs.push(indicatorMesh);
-    hitBoxMeshs.push(hitBoxMeshCollection);
-    hitBoxFlyOverMeshs.push(hitBoxFlyOverMeshCollection);
+    flyThroughMeshes.push(flyThroughMesh);
+    flyOverMeshes.push(flyOverMesh);
+    indicatorMeshes.push(indicatorMesh);
+    hitBoxMeshes.push(hitBoxMeshCollection);
+    hitBoxFlyOverMeshes.push(hitBoxFlyOverMeshCollection);
     lastTarget = lastTarget + 1;
 }
 
 
-function changeColorOfObject(mesh, color) {
+function changeColorOfMesh(mesh, color) {
     if (mesh != undefined)
         mesh.traverse(function (child) {
             if ((child instanceof THREE.Mesh)) {
@@ -60,7 +60,7 @@ function detectCollisions() {
     var rayCaster = new THREE.Raycaster(droneMarker.position, vector);
     var intersect = rayCaster.intersectObjects(forbiddenZones);
     if (intersect.length === 0) {
-        crash = true;
+        resetDrone();
         console.log("Crash: " + crash)
         return false;
     }
@@ -68,26 +68,30 @@ function detectCollisions() {
         return true;
 }
 
+function detectBottomIntersect(intersectObject) {
+    var bottomVector = new THREE.Vector3(0, -1, 0);
+    var bottomRayCaster = new THREE.Raycaster(droneMarker.position, bottomVector);
+    var bottomIntersect = bottomRayCaster.intersectObject(intersectObject)
+    if(bottomIntersect.length>0)
+        return true;
+    return false;
+}
+
+
 
 function detectTargetHit() {
-    flyThroughMeshs.forEach(detectFlyOver)
+    flyThroughMeshes.forEach(detectFlyOver)
 
 }
 //flyOverFirst to save ressources
 function detectFlyOver(element, index) {
-    var bottomVector = new THREE.Vector3(0, -1, 0);
-    var bottomRayCaster = new THREE.Raycaster(droneMarker.position, bottomVector);
 
-    var bottomIntersect = bottomRayCaster.intersectObject(flyOverMeshs[index])
-    if (bottomIntersect.length > 0) {
+    if (detectBottomIntersect(flyOverMeshes[index])) {
         detectFlyThrough(index);
     }
 
-    for (var i = 0; i < hitBoxFlyOverMeshs[index].length; i++) {
-        var bottomVector = new THREE.Vector3(0, -1, 0);
-        var bottomRayCaster = new THREE.Raycaster(droneMarker.position, bottomVector);
-        var bottomIntersect = bottomRayCaster.intersectObject(hitBoxFlyOverMeshs[index][i])
-        if (bottomIntersect.length > 0) {
+    for (var i = 0; i < hitBoxFlyOverMeshes[index].length; i++) {
+        if (detectBottomIntersect(hitBoxFlyOverMeshes[index][i])) {
             detectHit(index, i);
         }
     }
@@ -96,23 +100,23 @@ function detectFlyOver(element, index) {
 function detectFlyThrough(index) {
 
     if (index === nextTarget
-        && GetIntersect(flyThroughMeshs[index])) {
-        changeColorOfObject(indicatorMeshs[index], 0x3366ff);
-        RefreshTarget();
+        && detectIntersect(flyThroughMeshes[index])) {
+        changeColorOfMesh(indicatorMeshes[index], 0x3366ff);
+        refreshTarget();
         madePointSound();
     }
 }
 
-function GetIntersect(intersectObject) {
-    if (GetRaycastIntersect(intersectObject, new THREE.Vector3(0, 0, -1))
-        || GetRaycastIntersect(intersectObject, new THREE.Vector3(0, 0, 1))
-        || GetRaycastIntersect(intersectObject, new THREE.Vector3(-1, 0, 0))
-        || GetRaycastIntersect(intersectObject, new THREE.Vector3(1, 0, 0)))
+function detectIntersect(intersectObject) {
+    if (getRaycastIntersect(intersectObject, new THREE.Vector3(0, 0, -1))
+        || getRaycastIntersect(intersectObject, new THREE.Vector3(0, 0, 1))
+        || getRaycastIntersect(intersectObject, new THREE.Vector3(-1, 0, 0))
+        || getRaycastIntersect(intersectObject, new THREE.Vector3(1, 0, 0)))
         return true;
     return false;
 }
 
-function GetRaycastIntersect(object, vector) {
+function getRaycastIntersect(object, vector) {
     if (object === undefined)
         return false;
     var rayCaster = new THREE.Raycaster(droneMarker.position, vector);
@@ -123,20 +127,19 @@ function GetRaycastIntersect(object, vector) {
 }
 
 function detectHit(hitBoxes, index) {
-    if (GetIntersect(hitBoxMeshs[hitBoxes][index])) {
-        changeColorOfObject(indicatorMeshs[hitBoxes], 0xff0000);
-        crash = true;
-        ResetTargets();
+    if (detectIntersect(hitBoxMeshes[hitBoxes][index])) {
+        changeColorOfMesh(indicatorMeshes[hitBoxes], 0xff0000);
+        resetDrone();
     }
 }
 
-function RefreshTarget() {
+function refreshTarget() {
     console.log('Refresh Targets');
     if (nextTarget === 2)
         startTimer();
     if (nextTarget < lastTarget) {
         nextTarget += 1;
-        changeColorOfObject(indicatorMeshs[nextTarget], 0x33ee33);
+        changeColorOfMesh(indicatorMeshes[nextTarget], 0x33ee33);
     }
     else {
         stopTimer();
@@ -144,16 +147,16 @@ function RefreshTarget() {
     }
 }
 
-function ResetTargets() {
+function resetTargets() {
     if (!gameLoaded)
         return;
     nextTarget = -1;
     console.log('Reset Targets');
     //startTimer();
-    for (var i = 0; i < indicatorMeshs.length; i++) {
-        changeColorOfObject(indicatorMeshs[i], 0xffffff);
+    for (var i = 0; i < indicatorMeshes.length; i++) {
+        changeColorOfMesh(indicatorMeshes[i], 0xffffff);
     }
-    RefreshTarget();
+    refreshTarget();
     resetTimer();
 }
 
@@ -187,16 +190,7 @@ function stopGame() {
     }
 }
 
-/**
- * when the global variable "crash" is true, the drone is respawned at the start/finish line including a 0.5 s timeout
- */
-function droneDidCrash() {
-    if (crash) {
-        ResetDrone();
-    }
-}
-
-function ResetDrone() {
+function resetDrone() {
     droneMarker.position.set(-8000, 0, 400);
     droneMarker.rotation.y = 0;
     globalAngle = 0;
@@ -207,6 +201,6 @@ function ResetDrone() {
     }, 500);
 
     if (gameLoaded)
-        ResetTargets();
+        resetTargets();
 }
 

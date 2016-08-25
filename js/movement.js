@@ -494,23 +494,6 @@ function rotateOnYaxis(keycode) {
 }
 
 /**
- * when the global variable "crash" is true, the drone is respawned at the start/finish line including a 0.5 s timeout
- */
-function droneDidCrash() {
-    if (crash) {
-        droneMarker.position.set(-8000, 0, 400);
-        droneMarker.rotation.y = 0;
-        globalAngle = 0;
-        resetStraight();
-        resetSide();
-        setTimeout(function () {
-            crash = false;
-        }, 500);
-        ResetTargets();
-    }
-}
-
-/**
  * helper function for acc(), calculates on value
  * @param vMax
  * @returns {number}

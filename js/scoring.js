@@ -44,3 +44,8 @@ function showSpeed() {
 function getActualTime() {
     return scoreboard.getTime();
 }
+
+function speedDisplay(speed) {
+    var displaySpeed = Math.round(speed);
+    return displaySpeed;
+}

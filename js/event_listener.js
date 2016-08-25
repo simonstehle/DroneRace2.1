@@ -9,7 +9,6 @@ document.addEventListener('keydown', function (event) {
 
     var code = event.keyCode;
 
-
     switch (code) {
         case 87:
             //Move Upwards w
@@ -111,6 +110,5 @@ document.addEventListener('keyup', function (event) {
             giveBoost = false;
             break;
     }
-
 
 });

@@ -16,15 +16,18 @@ var actualLevel = getCookie("ActualLevel");
  */
 function buildLevels() {
 
-    if(actualLevel == 1){
-        buildLevel1();
+    switch(actualLevel)
+    {
+        case "1":
+            buildLevel1();
+            break;
+        case "2":
+            buildLevel2();
+            break;
+        case "3":
+            buildLevel3();
     }
-    if (actualLevel == 2){
-        buildLevel2();
-    }
-    if (actualLevel == 3){
-        buildLevel3();
-    }
+
 }
 
 /**

@@ -3,6 +3,8 @@
 /**
  * This file sets up the basics of the scene, droneCamera and rendering
  */
+
+
 var gameLoaded = false;
 var mtlLoader = new THREE.MTLLoader();
 // Renderer draws what the droneCamera sees on the screen.
@@ -13,7 +15,7 @@ var droneCamera, textureCamera;
 var screenScene, screenCamera, firstRenderTarget, finalRenderTarget;
 
 var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-var VIEW_ANGLE = 45, ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 50000;
+var ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 50000;
 
 var zeppelin;
 var zepMarker = new THREE.Object3D();
@@ -22,18 +24,16 @@ var rotors = [];
 
 init();
 
-
 function init() {
 
     scene = new THREE.Scene();
 
-    droneCamera = new THREE.PerspectiveCamera(50, ASPECT_RATIO, 1, FAR);
+    droneCamera = new THREE.PerspectiveCamera(50, ASPECT_RATIO, NEAR, FAR);
     droneCamera.position.z = 320;
     droneCamera.position.y = 100;
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0xAAAAEE);
     document.body.appendChild(renderer.domElement);
 
     //Adding Lights
@@ -48,8 +48,6 @@ function init() {
     directionalLight.rotateX(Math.PI * 0.75);
     directionalLight.rotateY(Math.PI * 0.75);
     scene.add(directionalLight);
-    //initBonooneStadium();
-
 
     var skyGeo = new THREE.SphereGeometry(40000, 25, 25);
 
@@ -76,11 +74,7 @@ function init() {
         objLoader.load('objects/Zeppelin.obj', function (object) {
 
             zeppelin = object;
-            //mesh.position.Y = -200;
-            //mesh.position.X = 3000;
-            //mesh.position.Z = 200;
-            //bonooneStadium.rotation.y = Math.PI*1.5;
-            zeppelin.boundingSphere
+            zeppelin.boundingSphere;
             zeppelin.rotation.y = Math.PI * 0.5;
             zeppelin.scale.set(500, 500, 500);
             zeppelin.position.set(0, 2000, -11000);
@@ -89,11 +83,9 @@ function init() {
             zepMarker.add(zeppelin);
             scene.add(zepMarker);
 
-
         }, onProgress, onError);
 
     });
-
 
     //Texture As Camera
     textureCamera = new THREE.PerspectiveCamera(1, ASPECT_RATIO, NEAR, FAR * 5);
@@ -129,11 +121,38 @@ function init() {
     scene.add(screen);
 
 //End Camera as Texture
-
-
 }
 
+var zepCrashFlag = false;
+var zeppelinRotation = 0.005;
+var firstTime = 0;
 
+function zeppelin_circle(rotation) {
+    if (rotation > 0.06) rotation = 0.06;
+    zepMarker.rotateY(rotation);
+}
+
+function zeppelin_crash() {
+    if (zepMarker.position.y > -5000) zepMarker.position.y -= 70;
+    if (zeppelin.position.z = 0) zeppelin.position.x -= 10;
+    if (zeppelin.position.x = 0) zeppelin.position.z -= 10;
+}
+
+function moveZeppelin(crash) {
+
+    if (crash) {
+        if (firstTime < 3) firstTime++;
+        if (firstTime === 1) dyingSoundPlay();
+        //console.log("Zeppelin crash!");
+        zeppelin_crash();
+        zeppelinRotation += 0.001;
+        zeppelin_circle(zeppelinRotation);
+    }
+    else {
+        zeppelin_circle(zeppelinRotation);
+    }
+
+}
 
 
 

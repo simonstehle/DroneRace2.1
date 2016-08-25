@@ -33,9 +33,6 @@ function animate() {
 
     requestAnimationFrame(animate);
 
-    //Reset Drone if crashed
-    droneDidCrash();
-
     //Handle Control of Drone by Flags
     drone_movement();
     moveObstacles();
@@ -52,10 +49,9 @@ function animate() {
 
 }
 animate();
-ResetDrone();
+resetDrone();
 gameLoaded = true;
-ResetTargets();
-
+resetTargets();
 function rotateRotor(element, index) {
     element.rotation.y += Math.PI * 0.2;
 }

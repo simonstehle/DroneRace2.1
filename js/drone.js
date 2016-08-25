@@ -11,12 +11,10 @@
 function initDrone01() {
 
     mtlLoader.load('objects/DroneV2.mtl', function (materials) {
-
         materials.preload();
 
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
-
         objLoader.load('objects/DroneV2.obj', function (object) {
             drone_mesh = object;
             drone_mesh.boundingSphere;
@@ -44,12 +42,10 @@ function initDrone01() {
 function AddRotor(positionX, positionY, positionZ, scale) {
     var rotorMesh;
     mtlLoader.load('objects/Rotor.mtl', function (materials) {
-
         materials.preload();
 
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
-
         objLoader.load('objects/Rotor.obj', function (object) {
             rotorMesh = object;
             rotorMesh.boundingSphere;
@@ -57,7 +53,6 @@ function AddRotor(positionX, positionY, positionZ, scale) {
             rotorMesh.position.set(positionX, positionY, positionZ);
             drone_mesh.add(rotorMesh);
             rotors.push(rotorMesh);
-
         }, onProgress, onError);
 
     })
