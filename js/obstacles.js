@@ -66,7 +66,7 @@ function addTube(numberOfRings, innerRadius, outerRadius, positionX, positionY, 
     scene.add(tubeMarker);
 }
 
-function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueOnLeft, moving) {
+function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueOnLeft, movingPace, movingDuration) {
     var wallMarker = new THREE.Object3D();
     var wallTexture = textureLoader.load('objects/woodTexture.jpg');
     wallTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -159,28 +159,58 @@ function addWallObstacle(width, height,positionX, positionZ, rotationY, flyTrueO
     hitBoxFlyOverMeshCollection.push(zylinderFlyOverCircle);
     hitBoxMeshCollection.push(wallMesh);
     hitBoxFlyOverMeshCollection.push(wallFlyOverBox);
+
+
+
+
+
+    if (movingPace != 0 && movingDuration != 0) {
+
+        var potentialMovement = calcWallMovement(rotationY, movingPace);
+
+        var thisWallMarkerObj = new Object();
+        thisWallMarkerObj.obstacle = wallMarker;
+        thisWallMarkerObj.moveX = potentialMovement.moveInX;
+        thisWallMarkerObj.moveZ = potentialMovement.moveInZ;
+        thisWallMarkerObj.back = true;
+        thisWallMarkerObj.noOfMovements = movingDuration;
+        thisWallMarkerObj.alreadyMoved = 0;
+
+        thisWallMarkerObj.move = function() {
+
+            if (thisWallMarkerObj.alreadyMoved >= thisWallMarkerObj.noOfMovements || thisWallMarkerObj.alreadyMoved <= 0) thisWallMarkerObj.back = !thisWallMarkerObj.back;
+            if (thisWallMarkerObj.back === false) {
+                thisWallMarkerObj.obstacle.position.x += thisWallMarkerObj.moveX;
+                thisWallMarkerObj.obstacle.position.z += thisWallMarkerObj.moveZ;
+                thisWallMarkerObj.alreadyMoved++;
+            } else if (thisWallMarkerObj.back === true) {
+                thisWallMarkerObj.obstacle.position.x -= thisWallMarkerObj.moveX;
+                thisWallMarkerObj.obstacle.position.z -= thisWallMarkerObj.moveZ;
+                thisWallMarkerObj.alreadyMoved--;
+            }
+        }
+
+        obstaclesToMove.push(thisWallMarkerObj);
+    }
+
     addTarget(flytrueWallMesh,targetFlyOverBox,zylinderMesh,hitBoxMeshCollection,hitBoxFlyOverMeshCollection);
     scene.add(wallMarker);
-
-    if (moving) {
-        wallMarker.rotateY(0.1);
-    }
 
 }
 
 
 function build3WallObstacle(widthSegment, heightSegment, posXStarting, posZStarting, rotationY) {
 
-    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false, false);
-    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true, false);
-    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false, false);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false, 0, 0);
+    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true, 0, 0);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false, 0, 0);
 }
 
-function build3MovingWallObstacle(widthSegment, heightSegment, posXStarting, posZStarting, rotationY) {
+function build3MovingWallObstacle(widthSegment, heightSegment, posXStarting, posZStarting, rotationY, movingPace, movingDuration) {
 
-    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false, true);
-    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true, true);
-    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false, true);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       posZStarting,       rotationY, false, movingPace, movingDuration);
+    addWallObstacle(widthSegment,heightSegment, (posXStarting+1000),(posZStarting+1000),rotationY, true, movingPace, movingDuration);
+    addWallObstacle(widthSegment,heightSegment, posXStarting,       (posZStarting+2000),rotationY, false, movingPace, movingDuration);
 }
 
 
@@ -319,4 +349,67 @@ function makeAFlyOverCircle(positionX,positionY, positionZ, radius) {
 }
 
 
+function calcWallMovement(rotation, speed) {
+    var currentRotation = rotation;
+    var movingPace = speed;
+    var moveX, moveZ;
+
+    console.log(currentRotation, movingPace);
+
+    var PiHalf = Math.PI / 2;
+    var quadrant, net_angle;
+
+    currentRotation -= PiHalf;
+
+    quadrant = -1;
+
+    for (var i = currentRotation; i >= 0; i -= PiHalf) {quadrant++;}
+    quadrant = quadrant % 4;
+
+    net_angle = currentRotation % PiHalf;
+
+    if (net_angle < 0) net_angle += PiHalf*4;
+
+
+
+
+    switch (quadrant) {
+        case 0:
+            moveZ = -(Math.cos(net_angle)*movingPace);
+            moveX = -(Math.sin(net_angle)*movingPace);
+            break;
+        case 1:
+            moveZ = (Math.sin(net_angle)*movingPace);
+            moveX = -(Math.cos(net_angle)*movingPace);
+            break;
+        case 2:
+            moveZ = (Math.cos(net_angle)*movingPace);
+            moveX = (Math.sin(net_angle)*movingPace);
+            break;
+        case 3:
+            moveZ = -(Math.sin(net_angle)*movingPace);
+            moveX = (Math.cos(net_angle)*movingPace);
+            break;
+    }
+
+    console.log("X: " + moveX + ", Z: " + moveZ);
+
+
+
+    var output = new Object();
+    output.moveInX = moveX;
+    output.moveInZ = moveZ;
+
+    return output;
+
+}
+
+
+var obstaclesToMove = [];
+
+function moveObstacles() {
+    for (var i = 0; i<obstaclesToMove.length; i++) {
+        obstaclesToMove[i].move();
+    }
+}
 

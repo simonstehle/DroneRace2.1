@@ -35,7 +35,8 @@ function buildLevel1()
     addTargetRing(200, 300, 5500, 200, 800,0, scene);
     addTargetRing(200, 300, 6100, 200, 1600,0, scene);
 
-    build3WallObstacle(1000,2000,0,-6000, Math.PI*1.2);
+    //build3WallObstacle(1000,2000,0,-6000, Math.PI*1.2);
+    build3MovingWallObstacle(1000,2000,0,-6000, Math.PI*1.2, 10, 100);
 
     addTargetRing(200, 250, 250, 250, 3250,Math.PI*0.5, scene);
 

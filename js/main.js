@@ -28,6 +28,7 @@ function animate() {
 
     //Handle Control of Drone by Flags
     drone_movement();
+    moveObstacles();
     moveZeppelin(zepCrashFlag);
     rotors.forEach(rotateRotor);
 

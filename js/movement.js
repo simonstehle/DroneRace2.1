@@ -115,7 +115,7 @@ var movingRight = false;
  * radian around which the drone is maximally turned around the Y axis; value is lowered with increasing speed
  * @type {number}
  */
-var maxRotation = 0.04;
+var maxRotation = 0.035;
 
 /**
  * speed at which the drone moves up and down the Y axis; value is lowered with increasing speed
@@ -127,13 +127,13 @@ var speedUpDown = 20;
  * maximal speed the drone can reach by steady acceleration
  * @type {number}
  */
-var maxStraightSpeed = 100;
+var maxStraightSpeed = 90;
 
 /**
  *
  * @type {number}
  */
-var maxSideSpeed = maxStraightSpeed * 0.75;
+var maxSideSpeed = maxStraightSpeed * 0.8;
 
 /**
  * maximal acceleration of the drone at rest (currentStraightSpeed = 0)
@@ -146,7 +146,7 @@ var maxStraightAcceleration = 3;
  *
  * @type {number}
  */
-var maxSideAcceleration = maxStraightAcceleration * 0.75;
+var maxSideAcceleration = maxStraightAcceleration * 0.8;
 
 
 /**
