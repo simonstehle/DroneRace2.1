@@ -82,7 +82,38 @@ function buildLevel2()
 }
 
 function buildLevel3(){
+
+
+
     addStartFinishLine(1000,100,-4000,-80,0,0,800);
+
+    build3MovingWallObstacle(1000,1000,7000,2000, Math.PI*1, 20, 150);
+
+    addTube(25,200,250,1500,400,-7000, Math.PI * 0.3);
+
+    addTube(50,400,600,-2500,0,-8000, 0);
+
+    addTube(25,300,350,-1500,400,-7000, Math.PI * 1.8);
+
+    addTargetRing(200, 300, 4000, 400, -1500,0, scene,-10,100);
+    addTargetRing(200, 300, 5000, 400, -1000,0, scene,0,0);
+    addTargetRing(200, 300, 6000, 400, -500,0, scene,5,200);
+
+
+    addTargetRing(300, 500, 5000, 600, 3000,0, scene,-20,150);
+
+
+
+    build3MovingWallObstacle(1000,2000,6000,-1000, Math.PI*1.5, 20, 80);
+
+
+    build3WallObstacle(1000,2000,6000,-4000, Math.PI*1.2);
+
+    addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
+    addTargetFrame(800,-6000,2000,1000, Math.PI*0.25);
+    addTargetFrame(800,-6500,4000,-2000, Math.PI*0.25);
+
+
     setMainSound('objects/everything_is_awesome.mp3');
     if(startPlaying)
         makeMusic();
