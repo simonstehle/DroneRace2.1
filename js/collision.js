@@ -40,12 +40,12 @@ function addTarget(flyThroughMesh, flyOverMesh, indicatorMesh, hitBoxMeshCollect
 }
 
 
-function changeColorOfObject(mesh, r, g, b)
+function changeColorOfObject(mesh, color)
 {
     if(mesh!=undefined)
     mesh.traverse(function(child){
         if ((child instanceof THREE.Mesh)) {
-            child.material.color.setRGB(r,g,b);
+            child.material.color.set(color);
         }
     });
 }
@@ -110,7 +110,7 @@ function detectFlyThrough(index){
         ||GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(-1,0,0))
         ||GetRaycastIntersect(flyThroughMeshs[index], new THREE.Vector3(1,0,0))))
     {
-        changeColorOfObject(indicatorMeshs[index],155,155,155);
+        changeColorOfObject(indicatorMeshs[index],0x3366ff);
         RefreshTarget();
         madePointSound();
     }
@@ -140,9 +140,7 @@ function GetRaycastIntersect(object, vector)
 function detectHit(hitBoxes,index){
     if(GetIntersect(hitBoxMeshs[hitBoxes][index]))
     {
-        changeColorOfObject(indicatorMeshs[hitBoxes],255,0,0);
-        window.setTimeout(function () {
-            changeColorOfObject(indicatorMeshs[hitBoxes],200,200,255);},3000);
+        changeColorOfObject(indicatorMeshs[hitBoxes],0xff0000);
         crash = true;
         ResetTargets();
     }
@@ -155,7 +153,7 @@ function RefreshTarget()
         startTimer();
     if(nextTarget<lastTarget) {
         nextTarget += 1;
-        changeColorOfObject(indicatorMeshs[nextTarget], 0, 255, 0);
+        changeColorOfObject(indicatorMeshs[nextTarget], 0x33cc33);
     }
     else {
         stopTimer();
@@ -175,7 +173,7 @@ function ResetTargets()
     console.log('Reset Targets');
     //startTimer();
     for (var i = 0; i < indicatorMeshs.length; i++) {
-        changeColorOfObject(indicatorMeshs[i], 155, 155 , 155);
+        changeColorOfObject(indicatorMeshs[i], 0xffffff);
     }
     RefreshTarget();
     resetTimer();

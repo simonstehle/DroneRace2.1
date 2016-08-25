@@ -40,11 +40,12 @@ function init()
      * Our ambient Light for the Stadium and other objects
      * @type {THREE.AmbientLight}
      */
-    var ambient = new THREE.AmbientLight( 0xAAAAAA);
+    var ambient = new THREE.AmbientLight( 0xDDDDDD);
     scene.add( ambient );
     var directionalLight = new THREE.DirectionalLight( 0xFFFFFF );
-    directionalLight.position.set( 200, 500, 100 ).normalize();
-    directionalLight.rotateX(Math.PI*0.5);
+    directionalLight.position.set( 2200, 3000, 1000 );
+    directionalLight.rotateX(Math.PI*0.75);
+    directionalLight.rotateY(Math.PI*0.75);
     scene.add( directionalLight );
 
 
