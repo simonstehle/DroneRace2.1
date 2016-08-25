@@ -54,12 +54,16 @@
             text-align: center;
             border-radius: 15px;
             cursor: pointer;
-
-
         }
 
         .levelinsideText{
             font-size:3em;
+        }
+
+        .funnyText {
+            font-size: 1em;
+            color: rgb(89, 96, 201);
+
         }
 
         .timeToBeat{
@@ -112,13 +116,13 @@
 
 <div class="row levelrow">
     <div class="col-md-4 leveloutside" onclick="levelSetter(1);"><div class="levelinside"><br><span class="levelinsideText">Level 1</span>
-    <br><span id="level1Time" class="timeToBeat"></span></div></div>
+    <br><span id="level1Time" class="timeToBeat"></span><br><span class="funnyText">This one is to get you started</span></div></div>
 
     <div class="col-md-4 leveloutside" onclick="levelSetter(2);"><div class="levelinside"><br><span class="levelinsideText">Level 2</span>
-        <br><span id="level2Time" class="timeToBeat"></span></div></div>
+        <br><span id="level2Time" class="timeToBeat"></span><br><span class="funnyText">Play the drone race, they said. It will be fun, they said.</span></div></div>
 
     <div class="col-md-4 leveloutside" onclick="levelSetter(3);"><div class="levelinside"><br><span class="levelinsideText">Level 3</span>
-        <br><span id="level3Time" class="timeToBeat"></span></div></div>
+        <br><span id="level3Time" class="timeToBeat"></span><br><span class="funnyText">Only almost as hard as Level 2.</span></div></div>
 </div>
     <div class="row resetrow">
         <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="resetScores('Level1')"></span></h2></div>
@@ -172,19 +176,19 @@
         if (level1temp >= 0 && level1temp != ""){
             document.getElementById("level1Time").innerHTML = "Highscore: "+ level1temp + " s";
         } else {
-            document.getElementById("level1Time").innerHTML = "No Highscore yet. Be the first!";
+            document.getElementById("level1Time").innerHTML = "No Highscore yet.";
         }
 
         if (level2temp >= 0 && level2temp != "" ){
             document.getElementById("level2Time").innerHTML = "Highscore: "+ level2temp + " s";
         } else {
-            document.getElementById("level2Time").innerHTML = "No Highscore yet. Be the first!";
+            document.getElementById("level2Time").innerHTML = "No Highscore yet.";
         }
 
         if (level3temp >= 0 && level3temp != ""){
             document.getElementById("level3Time").innerHTML = "Highscore: "+ level3temp + " s";
         } else {
-            document.getElementById("level3Time").innerHTML = "No Highscore yet. Be the first!";
+            document.getElementById("level3Time").innerHTML = "No Highscore yet.";
         }
     }
 

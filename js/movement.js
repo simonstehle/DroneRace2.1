@@ -205,7 +205,7 @@ function drone_movement() {
     //console.log(currentStraightSpeed, currentSideSpeed);
     if (detectCollisions()) {
 
-        //logPosition();
+
 
         // keyDown in moving direction; normal acceleration
         if (moveForward && movingForward && !movingBackward) calcMovement(true, 38, false);
