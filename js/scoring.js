@@ -17,7 +17,7 @@ function inAnimate() {
 }
 
 function setHelp() {
-    scoreboard.help("Fliege durch die grün markierten Hindernisse!");
+    scoreboard.help("Fly TRUE the green marked obstacles");
     scoreboard.showHelp();
 }
 
