@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Drone Racer</title>
+
     <style>
         .overlayingTextBox{
             position: absolute;
@@ -40,28 +41,7 @@
             font-size: 1.8em;
         }
 
-        .muteTB{
-            position: absolute;
-            top: 10px;
-            right:10px;
-            width: auto;
-            height: 50px;
-        }
 
-        .relativeMuteTB{
-            position: relative;
-        }
-        .muteText{
-            background-color: rgba(238, 238, 238, 0.5);
-            font-size: 2.5em;
-            text-align: center;
-            border-radius: 10px;
-            vertical-align: middle;
-
-        }
-        .muteText span {
-            cursor: pointer;
-        }
 
     </style>
 </head>
@@ -69,7 +49,7 @@
 
 <body>
 
-
+<link rel='stylesheet' href="basics.css">
 
 <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" >
 
@@ -156,14 +136,6 @@
 
     document.getElementById("aktualBestTime").innerHTML = getCookie("Level"+getCookie("ActualLevel"));
 
-    function setGlyphiconMusicStart() {
-        if(getCookie("playSounds")==="true"){
-            document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
-        }else{
-            document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
-        }
-
-    }
 
     function backToHome() {
 
@@ -179,22 +151,7 @@
 
     }
 
-    function stopMusic(){
 
-
-         var className =  document.getElementById("volumeGlyphicon").className;
-
-        if (className === "glyphicon glyphicon-volume-up"){
-            setCookie("playSounds", "false",100);
-            stopMakingMusic();
-            document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
-        } else {
-
-            setCookie("playSounds", "true",100);
-            document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
-            makeMusic();
-        }
-    }
 
 </script>
 

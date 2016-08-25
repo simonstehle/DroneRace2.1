@@ -82,7 +82,7 @@ function init()
     
     
     //Texture As Camera
-    textureCamera = new THREE.PerspectiveCamera(2, ASPECT_RATIO, NEAR, FAR*5 );
+    textureCamera = new THREE.PerspectiveCamera(1, ASPECT_RATIO, NEAR, FAR*5 );
     textureCamera.position.set(11000,3000,-3000);
     scene.add(textureCamera);
 

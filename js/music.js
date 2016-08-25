@@ -7,6 +7,7 @@
  */
 
 
+var mainSound;
 
 if(getCookie("playSounds") === ""){
     setCookie("playSounds", "true",100);
@@ -24,20 +25,25 @@ if(getCookie("playSounds")=== "true"){
 
 
 function makeMusic() {
+
     mainSound.play();
+    //mainSound.seek(80);
 }
 
 function stopMakingMusic() {
     mainSound.stop();
 }
 
+function setMainSound(path)
+{
+    mainSound = new Howl({
+        src: [path],
+        loop: true,
+        volume: 0.5
 
-var mainSound = new Howl({
-    src: ['objects/euromir_song.mp3'],
-    loop: true,
-    volume: 0.5,
-    
-});
+    });
+}
+
 
 
 
@@ -80,5 +86,31 @@ var droneCrashSound = new Howl({
 
 function droneCrashSoundPlay() {
     droneCrashSound.play();
+}
+
+
+function setGlyphiconMusicStart() {
+    if(getCookie("playSounds")==="true"){
+        document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
+    }else{
+        document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
+    }
+
+}
+function stopMusic(){
+
+
+    var className =  document.getElementById("volumeGlyphicon").className;
+
+    if (className === "glyphicon glyphicon-volume-up"){
+        setCookie("playSounds", "false",100);
+        stopMakingMusic();
+        document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
+    } else {
+
+        setCookie("playSounds", "true",100);
+        document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
+        makeMusic();
+    }
 }
 

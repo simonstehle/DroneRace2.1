@@ -42,7 +42,7 @@
     <script src="js/drone01.js"></script>
 
 
-
+    <link rel='stylesheet' href="basics.css">
 
     <style>
 
@@ -140,13 +140,24 @@
 
     </div><!--End of Container -->
 
+<div class="muteTB ">
+    <div class="relativeMuteTB">
+        <div class="muteText">
+            <span class="glyphicon glyphicon-volume-off" onclick="stopMusic()" id="volumeGlyphicon"></span>
 
+        </div>
+    </div>
+</div>
 
 
 </body>
 
 <script>
 
+    setMainSound('objects/levels_reverse.mp3');
+    setGlyphiconMusicStart();
+    if(startPlaying)
+        makeMusic();
 
     function levelSetter(number) {
 
