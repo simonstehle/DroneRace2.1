@@ -29,8 +29,22 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
 
 
     var ringGeometry = new THREE.RingGeometry(innerRadius, outerRadius, segmentCount);
-    var ringMaterial = new THREE.MeshLambertMaterial();
-    ringMaterial.side = THREE.DoubleSide;
+
+    var ringTexture = textureLoader.load('objects/metalTexture.jpg');
+    ringTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    ringTexture.repeat.set( 1,1 );
+
+    var ringMaterial = new THREE.MeshPhysicalMaterial( {
+        color: 0xffffff,
+        map: ringTexture,
+        reflectivity: 0.05,
+        side: THREE.DoubleSide
+    } );
+
+
+
+    /*var ringMaterial = new THREE.MeshPhongMaterial({shininess:100});
+    ringMaterial.side = THREE.DoubleSide;*/
     var flyThroughRingMesh = new THREE.Mesh(ringGeometry, ringMaterial);
     flyThroughRingMesh.position.set(positionX,positionY,positionZ);
     flyThroughRingMesh.rotation.y = rotationY;
@@ -317,7 +331,7 @@ function addStartFinishLine(width,depth, positionX, positionY, positionZ, rotati
 
 function makeAZylinder(positionX,positionY, positionZ, height) {
     var zylinderGeometry = new THREE.CylinderGeometry( 50, 50, height, 5,5 );
-    var zylinderMaterial = new THREE.MeshLambertMaterial( {color: 0xffff00} );
+    var zylinderMaterial = new THREE.MeshLambertMaterial( {color: 0x777777} );
     var zylinderMesh = new THREE.Mesh( zylinderGeometry, zylinderMaterial );
     zylinderMesh.position.set(positionX, positionY,positionZ);
 

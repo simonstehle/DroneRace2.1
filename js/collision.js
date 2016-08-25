@@ -153,7 +153,7 @@ function RefreshTarget()
         startTimer();
     if(nextTarget<lastTarget) {
         nextTarget += 1;
-        changeColorOfObject(indicatorMeshs[nextTarget], 0x33cc33);
+        changeColorOfObject(indicatorMeshs[nextTarget], 0x33ee33);
     }
     else {
         stopTimer();
