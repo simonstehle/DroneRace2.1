@@ -96,7 +96,10 @@ var dyingSound = new Howl({
  * let the dying sound play once
  */
 function dyingSoundPlay() {
-    dyingSound.play();
+    if(getCookie("playSounds") === "true"){
+        dyingSound.play();
+    }
+
 }
 
 
