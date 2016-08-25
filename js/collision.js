@@ -205,7 +205,7 @@ function stopGame()
     if (recentPersonalBestTime > getActualTime()){
         document.getElementById("resultText").innerHTML = "Yeah, du hast deinen Rekord für diese Strecke gebrochen!";
     } else {
-        document.getElementById("resultText").innerHTML = "Schade, du warst schonmal bessser. Versuche es doch gleich nochmal";
+        document.getElementById("resultText").innerHTML = "Schade, du warst schonmal besser. Versuche es doch gleich nochmal";
     }
 
 
