@@ -1,9 +1,19 @@
 /**
  * Created by simonstehle on 03.08.16.
+ *
+ * This file is to build each Level for the game.
+ * Every Level has a function which is called after selecting one on the Landing Page.
+ * The actual level is set inside a cookie called "ActualLevel"
  */
 
+/**
+ *Temporary var. Gets the actual Level from the cookie set inside index.html
+ */
 var actualLevel = getCookie("ActualLevel");
 
+/**
+ * Function to set the level when loading the game.html
+ */
 function buildLevels() {
 
     if(actualLevel == 1){
@@ -18,7 +28,10 @@ function buildLevels() {
 
 }
 
-
+/**
+ * Function to build Level 3
+ *
+ */
 function buildLevel1()
 {
     addStartFinishLine(1000,100,-4000,-80,0,0,800);
@@ -46,6 +59,11 @@ function buildLevel1()
         makeMusic();
 
 }
+
+/**
+ * Function to build Level 2
+ * Obstacles are defined inside obstacles.js
+ */
 
 function buildLevel2()
 {
@@ -81,6 +99,10 @@ function buildLevel2()
         makeMusic();
 }
 
+/**
+ * Function with every obstacle needed in Level 3.
+ * Positions set by the constructors
+ */
 function buildLevel3(){
 
 
