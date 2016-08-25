@@ -59,7 +59,7 @@ function detectCollisions() {
         return false;
     detectTargetHit();
     var vector = new THREE.Vector3(0,-1,0);
-    var rayCaster = new THREE.Raycaster(marker.position, vector);
+    var rayCaster = new THREE.Raycaster(droneMarker.position, vector);
     var intersect = rayCaster.intersectObjects(forbiddenZones);
     //console.log("Länge des Intersect " + intersect.length);
 
@@ -83,7 +83,7 @@ function detectTargetHit() {
 function detectFlyOver(element, index)
 {
     var bottomVector = new THREE.Vector3(0,-1,0);
-    var bottomRayCaster = new THREE.Raycaster(marker.position, bottomVector);
+    var bottomRayCaster = new THREE.Raycaster(droneMarker.position, bottomVector);
 
     var bottomIntersect = bottomRayCaster.intersectObject(flyOverMeshs[index])
     if(bottomIntersect.length>0)
@@ -93,7 +93,7 @@ function detectFlyOver(element, index)
 
     for (var i = 0; i < hitBoxFlyOverMeshs[index].length; i++) {
         var bottomVector = new THREE.Vector3(0,-1,0);
-        var bottomRayCaster = new THREE.Raycaster(marker.position, bottomVector);
+        var bottomRayCaster = new THREE.Raycaster(droneMarker.position, bottomVector);
         var bottomIntersect = bottomRayCaster.intersectObject(hitBoxFlyOverMeshs[index][i])
         if(bottomIntersect.length>0)
         {
@@ -130,7 +130,7 @@ function GetRaycastIntersect(object, vector)
 {
     if(object === undefined)
         return false;
-    var rayCaster = new THREE.Raycaster(marker.position, vector);
+    var rayCaster = new THREE.Raycaster(droneMarker.position, vector);
     var intersect = rayCaster.intersectObject(object,true);
     if(intersect.length>0)
         return true;
@@ -190,8 +190,8 @@ function stopGame()
 
     var recentPersonalBestTime = getCookie("Level"+getCookie("ActualLevel"))
     //Check ift the Time was better than the latest personal best. If it was, overwrite the cookie
-    console.log("Bisherige Bestzeit"+ recentPersonalBestTime);
-    console.log("Zeit: "+getActualTime());
+    console.log("Current Highscore"+ recentPersonalBestTime);
+    console.log("Time: "+getActualTime());
     if((getCookie("Level"+getCookie("ActualLevel")) > getActualTime())){
 
         setCookie("Level"+getCookie("ActualLevel"),getActualTime(), 100);
@@ -206,14 +206,38 @@ function stopGame()
     document.getElementById('timeJustFlew').innerHTML = getActualTime();
 
     if (recentPersonalBestTime > getActualTime()){
-        document.getElementById("resultText").innerHTML = "Yeah, du hast deinen Rekord für diese Strecke gebrochen!";
+        document.getElementById("resultText").innerHTML = "Congrats, you set a new highscore for this level!";
     }
 
     else if(recentPersonalBestTime === undefined || recentPersonalBestTime === ""){
-            document.getElementById("resultText").innerHTML = "Deine erste Zeit geschafft! Versuche sie zu toppen";
+            document.getElementById("resultText").innerHTML = "You set a first highscore. Try to get better by flying again!";
         }
    else {
-        document.getElementById("resultText").innerHTML = "Schade, du warst schonmal besser. Versuche es doch gleich nochmal";
+        document.getElementById("resultText").innerHTML = "Damn, you couldn't set another highscore. Go ahead and try again!";
     }
+}
+
+/**
+ * when the global variable "crash" is true, the drone is respawned at the start/finish line including a 0.5 s timeout
+ */
+function droneDidCrash(){
+    if (crash){
+        ResetDrone();
+    }
+}
+
+function ResetDrone()
+{
+    droneMarker.position.set(-8000,0,400);
+    droneMarker.rotation.y = 0;
+    globalAngle = 0;
+    resetStraight();
+    resetSide();
+    setTimeout(function(){
+        crash = false;
+    }, 500);
+
+    if(gameLoaded)
+        ResetTargets();
 }
 

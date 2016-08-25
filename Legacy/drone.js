@@ -72,7 +72,7 @@ function detectCollisions() {
     if(detectFlyThrough(flyTroughObjects, flyOverObjects))
         console.log("Heureka!");
     var vector = new THREE.Vector3(0,-1,0);
-    var rayCaster = new THREE.Raycaster(marker.position, vector);
+    var rayCaster = new THREE.Raycaster(droneMarker.position, vector);
     var intersect = rayCaster.
     intersectObjects(forbiddenZones);
     //console.log("Länge des Intersect " + intersect.length);
@@ -91,11 +91,11 @@ function detectCollisions() {
 
 function detectFlyThrough(flyThroughObjects, flyOverObjects) {
     var frontVector = new THREE.Vector3(0,0,-1);
-    var frontRayCaster = new THREE.Raycaster(marker.position, frontVector);
+    var frontRayCaster = new THREE.Raycaster(droneMarker.position, frontVector);
     var frontIntersect = frontRayCaster.intersectObjects(flyThroughObjects);
 
     var bottomVector = new THREE.Vector3(0,-1,0);
-    var bottomRayCaster = new THREE.Raycaster(marker.position, bottomVector);
+    var bottomRayCaster = new THREE.Raycaster(droneMarker.position, bottomVector);
     var bottomIntersect = bottomRayCaster.intersectObjects(flyOverObjects);
    // console.log('front' + frontIntersect.length)
    // console.log('bottom' + bottomIntersect.length)

@@ -106,6 +106,8 @@ var movingLeft = false;
  */
 var movingRight = false;
 
+var giveBoost = false;
+
 
 /**
  * the following variables are global variables that control extent of the movement
@@ -128,6 +130,8 @@ var speedUpDown = 20;
  * @type {number}
  */
 var maxStraightSpeed = 90;
+
+var boostSpeed = 20;
 
 /**
  *
@@ -183,23 +187,7 @@ var forbiddenZones = [];
  */
 var crash = false;
 
-//vars to score the Game
-/**
- *
- * @type {Array}
- */
-var yBoundaries = [];
-/**
- *
- * @type {number}
- */
-var gameScore = 0;
-/**
- *
- * @type {Array}
- */
-var hindernisse = [];
-hindernisse[0] = false;
+
 
 
 
@@ -212,7 +200,12 @@ hindernisse[0] = false;
  * a function where acceleration, breaking and moving with rotation is calculated
  */
 function drone_movement() {
+
+
+    //console.log(currentStraightSpeed, currentSideSpeed);
     if (detectCollisions()) {
+
+        logPosition();
 
         // keyDown in moving direction; normal acceleration
         if (moveForward && movingForward && !movingBackward) calcMovement(true, 38, false);
@@ -226,26 +219,27 @@ function drone_movement() {
         if (!moveLeft && movingLeft) calcMovement(false, 37, false);
         if (!moveRight && movingRight) calcMovement(false, 39, false);
 
-        // keyDown in against moving direction: slowing by inertia and braking
+        // keyDown against moving direction: slowing by inertia and braking
         if (moveBackward && movingForward) calcMovement(false, 38, true);
         if (moveForward && movingBackward) calcMovement(false, 40, true);
         if (moveRight && movingLeft) calcMovement(false, 37, true);
         if (moveLeft && movingRight) calcMovement(false, 39, true);
 
+        // keyDown sidewards to moving direction
+
         if ((moveForward || moveBackward) && (moveLeft || moveRight)) diagonalMovement = true;
 
-        cleanUpMovement();
     }
 
     if (rotateLeft) rotateOnYaxis(65);
     if (rotateRight) rotateOnYaxis(68);
 
     if (moveDroneUp){
-        marker.position.y += speedUpDown;
+        droneMarker.position.y += speedUpDown;
     }
     if (moveDroneDown){
-        if (marker.position.y > boundaryBottom){
-            marker.position.y -= speedUpDown;
+        if (droneMarker.position.y > boundaryBottom){
+            droneMarker.position.y -= speedUpDown;
         }
     }
 }
@@ -287,39 +281,16 @@ function rotateOnYaxis (keycode) {
     switch (keycode) {
         case 65:
             globalAngle += currentRotation;
-            marker.rotation.y += currentRotation;
+            droneMarker.rotation.y += currentRotation;
             break;
         case 68:
             globalAngle -= currentRotation;
-            marker.rotation.y -= currentRotation;
+            droneMarker.rotation.y -= currentRotation;
             break;
     }
 }
 
-/**
- * when the global variable "crash" is true, the drone is respawned at the start/finish line including a 0.5 s timeout
- */
-function droneDidCrash(){
-    if (crash){
-        console.log('crash');
-        ResetDrone();
-    }
-}
 
-function ResetDrone()
-{
-    marker.position.set(-8000,0,400);
-    marker.rotation.y = 0;
-    globalAngle = 0;
-    resetStraight();
-    resetSide();
-    setTimeout(function(){
-        crash = false;
-    }, 500);
-
-    if(gameLoaded)
-        ResetTargets();
-}
 
 /**
  * This function uses current rotation (globalAngle) of
@@ -357,6 +328,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
         localMaxSpeed = maxSideSpeed;
         straight = false;
     }
+
 
     if (rotateRight || rotateLeft) {
         localMaxAcc *= 0.9;
@@ -444,8 +416,8 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
             break;
     }
 
-    marker.position.z += moveZ;
-    marker.position.x += moveX;
+    droneMarker.position.z += moveZ;
+    droneMarker.position.x += moveX;
 
     if (direction === 38 || direction === 40) {
         currentStraightSpeed = localSpeed;
@@ -512,11 +484,11 @@ function rotateOnYaxis (keycode) {
     switch (keycode) {
         case 65:
             globalAngle += currentRotation;
-            marker.rotation.y += currentRotation;
+            droneMarker.rotation.y += currentRotation;
             break;
         case 68:
             globalAngle -= currentRotation;
-            marker.rotation.y -= currentRotation;
+            droneMarker.rotation.y -= currentRotation;
             break;
     }
 }
@@ -526,8 +498,8 @@ function rotateOnYaxis (keycode) {
  */
 function droneDidCrash(){
     if (crash){
-        marker.position.set(-8000,0,400);
-        marker.rotation.y = 0;
+        droneMarker.position.set(-8000,0,400);
+        droneMarker.rotation.y = 0;
         globalAngle = 0;
         resetStraight();
         resetSide();
@@ -602,5 +574,5 @@ function negAcc(aMax, vMax, vCurr) {
 }
 
 function logPosition() {
-    console.log(marker.position.x + "; " + marker.position.z);
+    console.log(droneMarker.position.x + "; " + droneMarker.position.z);
 }

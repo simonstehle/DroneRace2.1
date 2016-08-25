@@ -52,11 +52,14 @@ document.addEventListener('keydown', function (event) {
             movingRight = true;
             drone_mesh.rotation.z = Math.PI * -0.05;
             break;
-        case 32:
+        case 90:
             zepCrashFlag = true;
             break;
         case 16:
-            marker.position.y = 6000;
+            droneMarker.position.y = 6000;
+            break;
+        case 32:
+            giveBoost = true;
             break;
     }
 
@@ -103,6 +106,9 @@ document.addEventListener('keyup', function (event) {
             //Move right arrow right
             moveRight = false;
             drone_mesh.rotation.z = 0;
+            break;
+        case 32:
+            giveBoost = false;
             break;
     }
 

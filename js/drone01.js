@@ -24,7 +24,7 @@ function initDrone01(){
             drone_mesh = object;
             drone_mesh.boundingSphere;
             drone_mesh.scale.set(8, 8, 8);
-            marker.add(drone_mesh);
+            droneMarker.add(drone_mesh);
 
             var offsetX = 2.5;
             var offsetY = 0.3;

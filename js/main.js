@@ -2,14 +2,14 @@
  * Created by simonstehle on 03.08.16.
  */
 //Marker for grouping object, drone and droneCamera
-var marker = new THREE.Object3D();
-marker.add(droneCamera);
+var droneMarker = new THREE.Object3D();
+droneMarker.add(droneCamera);
 
 var drone_mesh;
 initDrone01();
-//marker.add(drone_mesh);
+//droneMarker.add(drone_mesh);
 
-scene.add(marker);
+scene.add(droneMarker);
 
 
 
@@ -36,7 +36,7 @@ function animate() {
     showSpeed();
 
 
-    textureCamera.lookAt(marker.position);
+    textureCamera.lookAt(droneMarker.position);
     renderer.render( scene, textureCamera, firstRenderTarget, true);
     renderer.render( screenScene, screenCamera, finalRenderTarget, true);
 

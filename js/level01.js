@@ -47,18 +47,12 @@ function buildLevel2()
 {
     addStartFinishLine(1000,100,-4000,-80,0,0,800);
 
-    addTargetRing(200, 300, 5000, 200, 0,0, scene,-10,100);
+    addTargetRing(200, 300, 5000, 200, 0,0, scene,-5,200);
     addTargetRing(200, 300, 5500, 200, 800,0, scene,0,0);
-    addTargetRing(200, 300, 6000, 200, 1600,0, scene,10,100);
+    addTargetRing(200, 300, 6000, 200, 1600,0, scene,5,200);
 
     build3MovingWallObstacle(1000,2000,0,-6000, Math.PI*1.2, 10, 100);
 
-
-
-
-
-
-    
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
 
 }
