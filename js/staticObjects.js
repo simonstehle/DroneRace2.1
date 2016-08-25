@@ -80,7 +80,7 @@ var geometry = new THREE.CircleGeometry(9690, 50);
 //var material = new THREE.MeshBasicMaterial( {  opacity: 0.1} );
 //Stadion Circle = Allowed Zone
 var circle = new THREE.Mesh( geometry, grassMaterial );
-circle.position.y = -78;
+circle.position.y = -87;
 circle.position.x = -235;
 circle.rotation.x += -Math.PI/2;
 forbiddenZones.push(circle);

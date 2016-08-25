@@ -13,7 +13,7 @@ var droneCamera, textureCamera;
 var screenScene, screenCamera, firstRenderTarget, finalRenderTarget;
 
 var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-var VIEW_ANGLE = 45, ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+var VIEW_ANGLE = 45, ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 50000;
 
 var zeppelin;
 var zepMarker = new THREE.Object3D();
@@ -27,7 +27,7 @@ function init()
 
     scene = new THREE.Scene();
 
-    droneCamera = new THREE.PerspectiveCamera(50, ASPECT_RATIO, 1, 30000);
+    droneCamera = new THREE.PerspectiveCamera(50, ASPECT_RATIO, 1, FAR);
     droneCamera.position.z = 320;
     droneCamera.position.y = 100;
 
@@ -49,6 +49,22 @@ function init()
     directionalLight.rotateY(Math.PI*0.75);
     scene.add( directionalLight );
     //initBonooneStadium();
+
+
+    var skyGeo = new THREE.SphereGeometry(40000, 25, 25);
+
+    var texture = THREE.ImageUtils.loadTexture( "objects/skyDome.jpg" );
+
+    var material = new THREE.MeshPhongMaterial({
+        map: texture,
+    });
+
+    var sky = new THREE.Mesh(skyGeo, material);
+    sky.rotation.z = Math.PI;
+    sky.material.side = THREE.BackSide;
+    scene.add(sky);
+
+
 
     //Zeppelin
     mtlLoader.load( 'objects/Zeppelin.mtl', function( materials ) {
