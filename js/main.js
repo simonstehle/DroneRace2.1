@@ -29,7 +29,6 @@ initBonooneStadium();
 buildLevels();
 
 
-
 function animate() {
 
     requestAnimationFrame(animate);
@@ -43,23 +42,20 @@ function animate() {
     moveZeppelin(zepCrashFlag);
     rotors.forEach(rotateRotor);
 
-
     showSpeed();
 
-
     textureCamera.lookAt(droneMarker.position);
-    renderer.render( scene, textureCamera, firstRenderTarget, true);
-    renderer.render( screenScene, screenCamera, finalRenderTarget, true);
+    renderer.render(scene, textureCamera, firstRenderTarget, true);
+    renderer.render(screenScene, screenCamera, finalRenderTarget, true);
 
-    renderer.render( scene, droneCamera);
-    
+    renderer.render(scene, droneCamera);
+
 }
 animate();
 ResetDrone();
 gameLoaded = true;
 ResetTargets();
 
-function rotateRotor(element, index)
-{
-    element.rotation.y += Math.PI*0.2;
+function rotateRotor(element, index) {
+    element.rotation.y += Math.PI * 0.2;
 }

@@ -25,7 +25,6 @@ function buildLevels() {
     if (actualLevel == 3){
         buildLevel3();
     }
-
 }
 
 /**
@@ -46,11 +45,9 @@ function buildLevel1()
 
     build3WallObstacle(1000,2000,0,-6000, Math.PI*1.2);
 
-
     addTargetRing(200, 250, 250, 250, 3250,Math.PI*0.5, scene, 0,0);
 
     //addTube(30,200,250,-3000,40,3000, 0);
-
 
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
 
@@ -88,8 +85,6 @@ function buildLevel2()
 
     addTube(50,200,250,1000,0,-2500, Math.PI*1.2);
 
-
-
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
     addTargetFrame(800,-6000,2000,1000, Math.PI*0.25);
     addTargetFrame(800,-6500,4000,-2000, Math.PI*0.25);
@@ -104,9 +99,6 @@ function buildLevel2()
  * Positions set by the constructors
  */
 function buildLevel3(){
-
-
-
     addStartFinishLine(1000,100,-4000,-80,0,0,800);
 
     build3MovingWallObstacle(1000,1000,7000,2000, Math.PI*1, 20, 150);
@@ -121,20 +113,15 @@ function buildLevel3(){
     addTargetRing(200, 300, 5000, 400, -1000,0, scene,0,0);
     addTargetRing(200, 300, 6000, 400, -500,0, scene,5,200);
 
-
     addTargetRing(300, 500, 5000, 600, 3000,0, scene,-20,150);
 
-
-
     build3MovingWallObstacle(1000,2000,6000,-1000, Math.PI*1.5, 20, 80);
-
 
     build3WallObstacle(1000,2000,6000,-4000, Math.PI*1.2);
 
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
     addTargetFrame(800,-6000,2000,1000, Math.PI*0.25);
     addTargetFrame(800,-6500,4000,-2000, Math.PI*0.25);
-
 
     setMainSound('objects/everything_is_awesome.mp3');
     if(startPlaying)

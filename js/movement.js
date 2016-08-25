@@ -37,7 +37,6 @@ var moveLeft = false;
 var moveRight = false;
 
 
-
 /**
  * true when A is pressed
  * makes the drone rotate around the Y axis anticlockwise
@@ -188,9 +187,6 @@ var forbiddenZones = [];
 var crash = false;
 
 
-
-
-
 /**
  * this function is called in the "animate()" function in the main.js file and therefor executed all the time
  * at first, cleanUpMovement() checks all the keys pressed to determine whether the drone should now move straight
@@ -236,11 +232,11 @@ function drone_movement() {
     if (rotateLeft) rotateOnYaxis(65);
     if (rotateRight) rotateOnYaxis(68);
 
-    if (moveDroneUp){
+    if (moveDroneUp) {
         droneMarker.position.y += speedUpDown;
     }
-    if (moveDroneDown){
-        if (droneMarker.position.y > boundaryBottom){
+    if (moveDroneDown) {
+        if (droneMarker.position.y > boundaryBottom) {
             droneMarker.position.y -= speedUpDown;
         }
     }
@@ -277,7 +273,7 @@ function cleanUpMovement() {
  * with increasing speed, the rotation decreases slightly (max: 0.05; min: 0.03)
  * @param keycode - can have two values which determine whether the drone turns clockwise or anticlockwise
  */
-function rotateOnYaxis (keycode) {
+function rotateOnYaxis(keycode) {
     var currentRotation;
     currentRotation = maxRotation - currentStraightSpeed / maxStraightSpeed * 0.02;
     switch (keycode) {
@@ -293,7 +289,6 @@ function rotateOnYaxis (keycode) {
 }
 
 
-
 /**
  * This function uses current rotation (globalAngle) of
  * an object to calculate how far it has to move on
@@ -307,7 +302,7 @@ function rotateOnYaxis (keycode) {
  * @param direction
  * @param reverseThrust
  */
-function calcMovement (inKeyDirection, direction, reverseThrust){
+function calcMovement(inKeyDirection, direction, reverseThrust) {
 
     var speedToAdd = 0;
     var speedToSubtract = 0;
@@ -343,7 +338,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
         else localSpeed += speedToAdd;
     }
 
-    if (!inKeyDirection){
+    if (!inKeyDirection) {
         speedToSubtract = negAcc(localMaxAcc, localMaxSpeed, localSpeed);
 
         if (reverseThrust || diagonalMovement) {
@@ -361,11 +356,10 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     }
 
 
-
     if (rotateRight || rotateLeft) {
         var quotientVMax = localSpeed / localMaxSpeed;
         quotientVMax *= 0.5;
-        vNew *= 1-quotientVMax;
+        vNew *= 1 - quotientVMax;
     }
 
     var vNew = localSpeed;
@@ -373,48 +367,52 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
     var angle = globalAngle;
     var quadrant, net_angle, moveZ, moveX, PiHalf;
     quadrant = -1;
-    PiHalf = Math.PI/2;
+    PiHalf = Math.PI / 2;
 
-    while (angle<0) { angle+=PiHalf*4; }
+    while (angle < 0) {
+        angle += PiHalf * 4;
+    }
 
     switch (direction) {
         case 37:
             angle += PiHalf;
             break;
         case 39:
-            angle += PiHalf*3;
+            angle += PiHalf * 3;
             break;
         case 40:
-            angle += PiHalf*2;
+            angle += PiHalf * 2;
             break;
         case 38:
             break;
     }
 
-    for (var i = angle; i >= 0; i -= PiHalf) {quadrant++;}
+    for (var i = angle; i >= 0; i -= PiHalf) {
+        quadrant++;
+    }
     quadrant = quadrant % 4;
 
     net_angle = angle % PiHalf;
 
-    if (net_angle < 0) net_angle += PiHalf*4;
+    if (net_angle < 0) net_angle += PiHalf * 4;
 
 
     switch (quadrant) {
         case 0:
-            moveZ = -(Math.cos(net_angle)*vNew);
-            moveX = -(Math.sin(net_angle)*vNew);
+            moveZ = -(Math.cos(net_angle) * vNew);
+            moveX = -(Math.sin(net_angle) * vNew);
             break;
         case 1:
-            moveZ = (Math.sin(net_angle)*vNew);
-            moveX = -(Math.cos(net_angle)*vNew);
+            moveZ = (Math.sin(net_angle) * vNew);
+            moveX = -(Math.cos(net_angle) * vNew);
             break;
         case 2:
-            moveZ = (Math.cos(net_angle)*vNew);
-            moveX = (Math.sin(net_angle)*vNew);
+            moveZ = (Math.cos(net_angle) * vNew);
+            moveX = (Math.sin(net_angle) * vNew);
             break;
         case 3:
-            moveZ = -(Math.sin(net_angle)*vNew);
-            moveX = (Math.cos(net_angle)*vNew);
+            moveZ = -(Math.sin(net_angle) * vNew);
+            moveX = (Math.cos(net_angle) * vNew);
             break;
     }
 
@@ -437,7 +435,7 @@ function calcMovement (inKeyDirection, direction, reverseThrust){
  * - when the drone has crashed and is respawned and therefor not moving
  * - when the drone has reached currentStraightSpeed = 0 and is therefor not moving in any direction
  */
-function resetStraight () {
+function resetStraight() {
     movingForward = false;
     movingBackward = false;
     currentStraightSpeed = 0;
@@ -480,7 +478,7 @@ function cleanUpMovement() {
  * with increasing speed, the rotation decreases slightly (max: 0.05; min: 0.03)
  * @param keycode - can have two values which determine whether the drone turns clockwise or anticlockwise
  */
-function rotateOnYaxis (keycode) {
+function rotateOnYaxis(keycode) {
     var currentRotation;
     currentRotation = maxRotation - currentStraightSpeed / maxStraightSpeed * 0.02;
     switch (keycode) {
@@ -498,14 +496,14 @@ function rotateOnYaxis (keycode) {
 /**
  * when the global variable "crash" is true, the drone is respawned at the start/finish line including a 0.5 s timeout
  */
-function droneDidCrash(){
-    if (crash){
-        droneMarker.position.set(-8000,0,400);
+function droneDidCrash() {
+    if (crash) {
+        droneMarker.position.set(-8000, 0, 400);
         droneMarker.rotation.y = 0;
         globalAngle = 0;
         resetStraight();
         resetSide();
-        setTimeout(function(){
+        setTimeout(function () {
             crash = false;
         }, 500);
         ResetTargets();
@@ -517,8 +515,8 @@ function droneDidCrash(){
  * @param vMax
  * @returns {number}
  */
-function getQ (vMax) {
-    var q = Math.pow(10, 1/vMax);
+function getQ(vMax) {
+    var q = Math.pow(10, 1 / vMax);
     return q;
 }
 
@@ -527,8 +525,8 @@ function getQ (vMax) {
  * @param vMax
  * @returns {number}
  */
-function getNegQ (vMax) {
-    var negQ = Math.pow(10, -1/vMax);
+function getNegQ(vMax) {
+    var negQ = Math.pow(10, -1 / vMax);
     return negQ;
 }
 
@@ -542,7 +540,7 @@ function getNegQ (vMax) {
  */
 function acc(aMax, vMax, vCurr) {
     var q = getQ(vMax);
-    var aCurr = aMax*Math.pow(q, -vCurr);
+    var aCurr = aMax * Math.pow(q, -vCurr);
     if (vCurr + aCurr >= vMax) {
         return 0;
     } else {
@@ -562,9 +560,9 @@ function negAcc(aMax, vMax, vCurr) {
     if (vCurr === 0) {
         return 0;
     } else {
-        var aStart = aMax * 1/10;
+        var aStart = aMax * 1 / 10;
         var qStr = getNegQ(vMax);
-        var aCurr = -aStart*Math.pow(qStr, -vCurr);
+        var aCurr = -aStart * Math.pow(qStr, -vCurr);
         if (vCurr + aCurr <= aStart) {
             aCurr = vCurr;
             return aCurr;

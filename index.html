@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <title>DroneRacer2.1</title>
 
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" >
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css" >
-
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css">
 
 
     <script src="lib/ChromeFixes.js"></script>
@@ -47,8 +46,8 @@
     <style>
 
 
-        .levelinside{
-            padding:10px;
+        .levelinside {
+            padding: 10px;
             background-color: rgba(251, 255, 48, 0.36);
             height: 200px;
             text-align: center;
@@ -56,8 +55,8 @@
             cursor: pointer;
         }
 
-        .levelinsideText{
-            font-size:3em;
+        .levelinsideText {
+            font-size: 3em;
         }
 
         .funnyText {
@@ -66,33 +65,32 @@
 
         }
 
-        .timeToBeat{
+        .timeToBeat {
             font-size: 2.5em;
         }
 
-        .resetrow{
+        .resetrow {
             text-align: center;
             padding-top: -10px;
 
         }
 
-        .resetrow span{
+        .resetrow span {
             cursor: pointer;
         }
 
-        .logorow{
+        .logorow {
             text-align: center;
             padding-top: 10px;
         }
 
-        .spenenOnline{
+        .spenenOnline {
             width: 280px;
         }
 
-        .answerToEverything{
+        .answerToEverything {
             width: 120px;;
         }
-
 
 
     </style>
@@ -111,35 +109,47 @@
 <div class="container">
 
 
+    <div class="row levelrow">
+        <div class="col-md-4 leveloutside" onclick="levelSetter(1);">
+            <div class="levelinside"><br><span class="levelinsideText">Level 1</span>
+                <br><span id="level1Time" class="timeToBeat"></span><br><span class="funnyText">This one is to get you started</span>
+            </div>
+        </div>
 
+        <div class="col-md-4 leveloutside" onclick="levelSetter(2);">
+            <div class="levelinside"><br><span class="levelinsideText">Level 2</span>
+                <br><span id="level2Time" class="timeToBeat"></span><br><span class="funnyText">Play the drone race, they said. It will be fun, they said.</span>
+            </div>
+        </div>
 
-
-<div class="row levelrow">
-    <div class="col-md-4 leveloutside" onclick="levelSetter(1);"><div class="levelinside"><br><span class="levelinsideText">Level 1</span>
-    <br><span id="level1Time" class="timeToBeat"></span><br><span class="funnyText">This one is to get you started</span></div></div>
-
-    <div class="col-md-4 leveloutside" onclick="levelSetter(2);"><div class="levelinside"><br><span class="levelinsideText">Level 2</span>
-        <br><span id="level2Time" class="timeToBeat"></span><br><span class="funnyText">Play the drone race, they said. It will be fun, they said.</span></div></div>
-
-    <div class="col-md-4 leveloutside" onclick="levelSetter(3);"><div class="levelinside"><br><span class="levelinsideText">Level 3</span>
-        <br><span id="level3Time" class="timeToBeat"></span><br><span class="funnyText">Only almost as hard as Level 2.</span></div></div>
-</div>
+        <div class="col-md-4 leveloutside" onclick="levelSetter(3);">
+            <div class="levelinside"><br><span class="levelinsideText">Level 3</span>
+                <br><span id="level3Time" class="timeToBeat"></span><br><span class="funnyText">Only almost as hard as Level 2.</span>
+            </div>
+        </div>
+    </div>
     <div class="row resetrow">
-        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="resetScores('Level1')"></span></h2></div>
-        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="resetScores('Level2')"></span></h2></div>
-        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="resetScores('Level3')"></span></h2></div>
+        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove" aria-hidden="true"
+                                        onclick="resetScores('Level1')"></span></h2></div>
+        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove" aria-hidden="true"
+                                        onclick="resetScores('Level2')"></span></h2></div>
+        <div class="col-md-4"><h2><span class="glyphicon glyphicon-remove" aria-hidden="true"
+                                        onclick="resetScores('Level3')"></span></h2></div>
 
 
     </div>
 
     <div class="row logorow">
-        <div class="col-md-4"><a href="https://github.com/simonstehle/DroneRace2.1" target="_blank"><img src="objects/gitHub-download-button.png"></a></div>
-        <div class="col-md-4"><a href="http://www.sos-kinderdorf.de/portal/spende/einmalig-spenden/online-spenden" target="_blank"><img src="objects/donations.jpg" class="spenenOnline"></a></div>
-        <div class="col-md-4"><a href="https://de.wikipedia.org/wiki/42_(Antwort)" target="_blank"><img src="objects/220px-Answer_to_Life.png" class="answerToEverything"></a></div>
+        <div class="col-md-4"><a href="https://github.com/simonstehle/DroneRace2.1" target="_blank"><img
+                src="objects/gitHub-download-button.png"></a></div>
+        <div class="col-md-4"><a href="http://www.sos-kinderdorf.de/portal/spende/einmalig-spenden/online-spenden"
+                                 target="_blank"><img src="objects/donations.jpg" class="spenenOnline"></a></div>
+        <div class="col-md-4"><a href="https://de.wikipedia.org/wiki/42_(Antwort)" target="_blank"><img
+                src="objects/220px-Answer_to_Life.png" class="answerToEverything"></a></div>
 
     </div>
 
-    </div><!--End of Container -->
+</div><!--End of Container -->
 
 <div class="muteTB ">
     <div class="relativeMuteTB">
@@ -157,13 +167,13 @@
 
     setMainSound('objects/levels_reverse.mp3');
     setGlyphiconMusicStart();
-    if(startPlaying)
+    if (startPlaying)
         makeMusic();
 
     function levelSetter(number) {
 
-        setCookie("ActualLevel",number,100);
-        location.href='game.html';
+        setCookie("ActualLevel", number, 100);
+        location.href = 'game.html';
     }
 
     updateTimesToBeat();
@@ -173,38 +183,36 @@
         var level2temp = document.getElementById("level2Time").innerHTML = getCookie("Level2");
         var level3temp = document.getElementById("level1Time").innerHTML = getCookie("Level3");
 
-        if (level1temp >= 0 && level1temp != ""){
-            document.getElementById("level1Time").innerHTML = "Highscore: "+ level1temp + " s";
+        if (level1temp >= 0 && level1temp != "") {
+            document.getElementById("level1Time").innerHTML = "Highscore: " + level1temp + " s";
         } else {
             document.getElementById("level1Time").innerHTML = "No Highscore yet.";
         }
 
-        if (level2temp >= 0 && level2temp != "" ){
-            document.getElementById("level2Time").innerHTML = "Highscore: "+ level2temp + " s";
+        if (level2temp >= 0 && level2temp != "") {
+            document.getElementById("level2Time").innerHTML = "Highscore: " + level2temp + " s";
         } else {
             document.getElementById("level2Time").innerHTML = "No Highscore yet.";
         }
 
-        if (level3temp >= 0 && level3temp != ""){
-            document.getElementById("level3Time").innerHTML = "Highscore: "+ level3temp + " s";
+        if (level3temp >= 0 && level3temp != "") {
+            document.getElementById("level3Time").innerHTML = "Highscore: " + level3temp + " s";
         } else {
             document.getElementById("level3Time").innerHTML = "No Highscore yet.";
         }
     }
 
 
-    function resetScores(level){
+    function resetScores(level) {
 
-        setCookie(level,"",100);
+        setCookie(level, "", 100);
         updateTimesToBeat();
 
     }
 
 
-
-
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
-<script src="lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 </html>

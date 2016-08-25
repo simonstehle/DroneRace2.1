@@ -23,8 +23,7 @@ var rotors = [];
 init();
 
 
-function init()
-{
+function init() {
 
     scene = new THREE.Scene();
 
@@ -42,19 +41,19 @@ function init()
      * Our ambient Light for the Stadium and other objects
      * @type {THREE.AmbientLight}
      */
-    var ambient = new THREE.AmbientLight( 0xCCCCCC);
-    scene.add( ambient );
-    var directionalLight = new THREE.DirectionalLight( 0xFFFFFF );
-    directionalLight.position.set( 1200, 3500, 1500 );
-    directionalLight.rotateX(Math.PI*0.75);
-    directionalLight.rotateY(Math.PI*0.75);
-    scene.add( directionalLight );
+    var ambient = new THREE.AmbientLight(0xCCCCCC);
+    scene.add(ambient);
+    var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
+    directionalLight.position.set(1200, 3500, 1500);
+    directionalLight.rotateX(Math.PI * 0.75);
+    directionalLight.rotateY(Math.PI * 0.75);
+    scene.add(directionalLight);
     //initBonooneStadium();
 
 
     var skyGeo = new THREE.SphereGeometry(40000, 25, 25);
 
-    var texture = THREE.ImageUtils.loadTexture( "objects/skyDome.jpg" );
+    var texture = THREE.ImageUtils.loadTexture("objects/skyDome.jpg");
 
     var material = new THREE.MeshPhongMaterial({
         map: texture,
@@ -66,16 +65,15 @@ function init()
     scene.add(sky);
 
 
-
     //Zeppelin
-    mtlLoader.load( 'objects/Zeppelin.mtl', function( materials ) {
+    mtlLoader.load('objects/Zeppelin.mtl', function (materials) {
 
         materials.preload();
 
         var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials( materials );
+        objLoader.setMaterials(materials);
 
-        objLoader.load( 'objects/Zeppelin.obj', function ( object ) {
+        objLoader.load('objects/Zeppelin.obj', function (object) {
 
             zeppelin = object;
             //mesh.position.Y = -200;
@@ -83,56 +81,54 @@ function init()
             //mesh.position.Z = 200;
             //bonooneStadium.rotation.y = Math.PI*1.5;
             zeppelin.boundingSphere
-            zeppelin.rotation.y = Math.PI*0.5;
+            zeppelin.rotation.y = Math.PI * 0.5;
             zeppelin.scale.set(500, 500, 500);
-            zeppelin.position.set(0,2000,-11000);
+            zeppelin.position.set(0, 2000, -11000);
 
             zepMarker.position.set(0, 6000, 0);
             zepMarker.add(zeppelin);
             scene.add(zepMarker);
 
 
-
-        }, onProgress, onError );
+        }, onProgress, onError);
 
     });
-    
-    
+
+
     //Texture As Camera
-    textureCamera = new THREE.PerspectiveCamera(1, ASPECT_RATIO, NEAR, FAR*5 );
-    textureCamera.position.set(11000,3000,-3000);
+    textureCamera = new THREE.PerspectiveCamera(1, ASPECT_RATIO, NEAR, FAR * 5);
+    textureCamera.position.set(11000, 3000, -3000);
     scene.add(textureCamera);
 
     screenScene = new THREE.Scene();
     screenCamera = new THREE.OrthographicCamera(
-        window.innerWidth  / -2, window.innerWidth  /  2,
-        window.innerHeight /  2, window.innerHeight / -2,
-        -10000, 10000 );
-    screenCamera.position.set(0,0,-1);
-    screenScene.add( screenCamera );
-    var screenGeometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
-    firstRenderTarget = new THREE.WebGLRenderTarget( 1024, 1024, { format: THREE.RGBFormat } );
-    var screenMaterial = new THREE.MeshBasicMaterial( { map: firstRenderTarget.texture } );
-    var quad = new THREE.Mesh( screenGeometry, screenMaterial );
+        window.innerWidth / -2, window.innerWidth / 2,
+        window.innerHeight / 2, window.innerHeight / -2,
+        -10000, 10000);
+    screenCamera.position.set(0, 0, -1);
+    screenScene.add(screenCamera);
+    var screenGeometry = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
+    firstRenderTarget = new THREE.WebGLRenderTarget(1024, 1024, {format: THREE.RGBFormat});
+    var screenMaterial = new THREE.MeshBasicMaterial({map: firstRenderTarget.texture});
+    var quad = new THREE.Mesh(screenGeometry, screenMaterial);
     //quad.rotation.x = Math.PI / 2;
-    screenScene.add( quad );
+    screenScene.add(quad);
 
     // final version of camera texture, used in scene.
-    var screenGeometry = new THREE.CubeGeometry( 4000, 2000, 1, 1 );
-    finalRenderTarget = new THREE.WebGLRenderTarget( 1024, 1024, { format: THREE.RGBFormat } );
-    var screenMaterial = new THREE.MeshBasicMaterial( { map: finalRenderTarget.texture } );
-    var screen = new THREE.Mesh( screenGeometry, screenMaterial );
-    screen.position.set(0,1900,-9450);
+    var screenGeometry = new THREE.CubeGeometry(4000, 2000, 1, 1);
+    finalRenderTarget = new THREE.WebGLRenderTarget(1024, 1024, {format: THREE.RGBFormat});
+    var screenMaterial = new THREE.MeshBasicMaterial({map: finalRenderTarget.texture});
+    var screen = new THREE.Mesh(screenGeometry, screenMaterial);
+    screen.position.set(0, 1900, -9450);
     scene.add(screen);
     // pseudo-border for plane, to make it easier to see
-    var screenGeometry = new THREE.CubeGeometry(4000,2000,50,1) ;
-    var screenMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-    var screen = new THREE.Mesh( screenGeometry, screenMaterial );
-    screen.position.set(0,1900,-9550);
+    var screenGeometry = new THREE.CubeGeometry(4000, 2000, 50, 1);
+    var screenMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
+    var screen = new THREE.Mesh(screenGeometry, screenMaterial);
+    screen.position.set(0, 1900, -9550);
     scene.add(screen);
 
 //End Camera as Texture
-
 
 
 }

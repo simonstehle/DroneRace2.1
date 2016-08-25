@@ -3,7 +3,7 @@
  */
 
 
-var scoreboard = new  Scoreboard();
+var scoreboard = new Scoreboard();
 
 startOnLoad();
 scoreboard.timer();

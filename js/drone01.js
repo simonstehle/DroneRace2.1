@@ -4,21 +4,20 @@
 "use strict";
 
 
-
 /**
  * Function to initialise the different drones
  *
  */
-function initDrone01(){
+function initDrone01() {
 
-    mtlLoader.load( 'objects/DroneV2.mtl', function( materials ) {
+    mtlLoader.load('objects/DroneV2.mtl', function (materials) {
 
         materials.preload();
 
         var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials( materials );
+        objLoader.setMaterials(materials);
 
-        objLoader.load( 'objects/DroneV2.obj', function ( object ) {
+        objLoader.load('objects/DroneV2.obj', function (object) {
             drone_mesh = object;
             drone_mesh.boundingSphere;
             drone_mesh.scale.set(8, 8, 8);
@@ -30,17 +29,14 @@ function initDrone01(){
             var offsetZFront = -3.5;
             var scale = 1.6;
 
-            AddRotor(offsetX,offsetY,offsetZFront,scale);
-            AddRotor(offsetX,offsetY,offsetZBack,scale);
-            AddRotor(-offsetX,offsetY,offsetZFront,scale);
-            AddRotor(-offsetX,offsetY,offsetZBack,scale);
+            AddRotor(offsetX, offsetY, offsetZFront, scale);
+            AddRotor(offsetX, offsetY, offsetZBack, scale);
+            AddRotor(-offsetX, offsetY, offsetZFront, scale);
+            AddRotor(-offsetX, offsetY, offsetZBack, scale);
 
-        }, onProgress, onError );
+        }, onProgress, onError);
 
     });
-
-
-
 
 
 }

@@ -17,19 +17,16 @@
 
 var mainSound;
 
-if(getCookie("playSounds") === ""){
-    setCookie("playSounds", "true",100);
+if (getCookie("playSounds") === "") {
+    setCookie("playSounds", "true", 100);
 }
 
 var startPlaying;
-if(getCookie("playSounds")=== "true"){
+if (getCookie("playSounds") === "true") {
     startPlaying = true;
-} else{
+} else {
     startPlaying = false;
 }
- 
-
-
 
 
 function makeMusic() {
@@ -46,8 +43,7 @@ function stopMakingMusic() {
  * Function to set the main sound to play.
  * @param path - String to set the mp3 file to play
  */
-function setMainSound(path)
-{
+function setMainSound(path) {
     mainSound = new Howl({
         src: [path],
         loop: true,
@@ -74,7 +70,7 @@ var scoringSound = new Howl({
  * chacks if music is muted
  */
 function madePointSound() {
-    if(getCookie("playSounds") === "true"){
+    if (getCookie("playSounds") === "true") {
         scoringSound.play();
     }
 
@@ -96,7 +92,7 @@ var dyingSound = new Howl({
  * let the dying sound play once
  */
 function dyingSoundPlay() {
-    if(getCookie("playSounds") === "true"){
+    if (getCookie("playSounds") === "true") {
         dyingSound.play();
     }
 
@@ -107,9 +103,9 @@ function dyingSoundPlay() {
  * function to set the mute/play icon at the right top
  */
 function setGlyphiconMusicStart() {
-    if(getCookie("playSounds")==="true"){
+    if (getCookie("playSounds") === "true") {
         document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
-    }else{
+    } else {
         document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
     }
 
@@ -119,16 +115,16 @@ function setGlyphiconMusicStart() {
  * Function to be called when the user is muting the music
  * Also checks and sets the glyphicons
  */
-function stopMusic(){
-    var className =  document.getElementById("volumeGlyphicon").className;
+function stopMusic() {
+    var className = document.getElementById("volumeGlyphicon").className;
 
-    if (className === "glyphicon glyphicon-volume-up"){
-        setCookie("playSounds", "false",100);
+    if (className === "glyphicon glyphicon-volume-up") {
+        setCookie("playSounds", "false", 100);
         stopMakingMusic();
         document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
     } else {
 
-        setCookie("playSounds", "true",100);
+        setCookie("playSounds", "true", 100);
         document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
         makeMusic();
     }

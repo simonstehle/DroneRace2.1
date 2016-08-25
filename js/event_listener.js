@@ -10,7 +10,7 @@ document.addEventListener('keydown', function (event) {
     var code = event.keyCode;
 
 
-    switch (code){
+    switch (code) {
         case 87:
             //Move Upwards w
             moveDroneUp = true;
@@ -70,7 +70,7 @@ document.addEventListener('keydown', function (event) {
 document.addEventListener('keyup', function (event) {
     var code = event.keyCode;
 
-    switch (code){
+    switch (code) {
         case 87:
             //Move Upwards w
             moveDroneUp = false;

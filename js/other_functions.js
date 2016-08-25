@@ -30,10 +30,10 @@ function zeppelin_crash() {
 }
 
 
-function moveZeppelin (crash) {
+function moveZeppelin(crash) {
 
     if (crash) {
-        if (firstTime<3) firstTime ++;
+        if (firstTime < 3) firstTime++;
         if (firstTime === 1) dyingSoundPlay();
         //console.log("Zeppelin crash!");
         zeppelin_crash();
