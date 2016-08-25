@@ -229,6 +229,8 @@ function drone_movement() {
 
         if ((moveForward || moveBackward) && (moveLeft || moveRight)) diagonalMovement = true;
 
+        //cleanUpMovement();
+
     }
 
     if (rotateLeft) rotateOnYaxis(65);
