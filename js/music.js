@@ -6,14 +6,14 @@
  * https://github.com/goldfire/howler.js
  */
 
-var startPlaying = false;
+var startPlaying = true;
 
 function makeMusic() {
     sound.play();
 }
 
 var sound = new Howl({
-    src: ['objects/everything_is_awesome.mp3'],
+    src: ['objects/euromir_song.mp3'],
     loop: true,
     volume: 0.5,
     
@@ -56,3 +56,4 @@ var droneCrashSound = new Howl({
 function droneCrashSoundPlay() {
     droneCrashSound.play();
 }
+

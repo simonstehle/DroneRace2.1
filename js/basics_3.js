@@ -24,6 +24,7 @@ init();
 
 function init()
 {
+
     scene = new THREE.Scene();
 
     droneCamera = new THREE.PerspectiveCamera(50, ASPECT_RATIO, 1, 30000);
