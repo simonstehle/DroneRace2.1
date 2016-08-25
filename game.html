@@ -152,7 +152,18 @@
 
 <script>
 
+    setGlyphiconMusicStart();
+
     document.getElementById("aktualBestTime").innerHTML = getCookie("Level"+getCookie("ActualLevel"));
+
+    function setGlyphiconMusicStart() {
+        if(getCookie("playSounds")==="true"){
+            document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
+        }else{
+            document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
+        }
+
+    }
 
     function backToHome() {
 
@@ -173,13 +184,15 @@
 
          var className =  document.getElementById("volumeGlyphicon").className;
 
-        if (className === "glyphicon glyphicon-volume-off"){
-            //TODO: Mute The Music
-
-            document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
-        } else {
-            //TODO: Start Music
+        if (className === "glyphicon glyphicon-volume-up"){
+            setCookie("playSounds", "false",100);
+            stopMakingMusic();
             document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
+        } else {
+
+            setCookie("playSounds", "true",100);
+            document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
+            makeMusic();
         }
     }
 

@@ -48,7 +48,7 @@ function init()
     directionalLight.rotateX(Math.PI*0.75);
     directionalLight.rotateY(Math.PI*0.75);
     scene.add( directionalLight );
-
+    //initBonooneStadium();
 
     //Zeppelin
     mtlLoader.load( 'objects/Zeppelin.mtl', function( materials ) {
