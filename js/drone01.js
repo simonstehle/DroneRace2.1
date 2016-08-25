@@ -7,9 +7,7 @@
 
 /**
  * Function to initialise the different drones
- * The parameter is selecting the drone
- * 
- * @param droneID
+ *
  */
 function initDrone01(){
 
