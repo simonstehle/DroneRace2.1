@@ -215,15 +215,5 @@ function stopGame()
    else {
         document.getElementById("resultText").innerHTML = "Schade, du warst schonmal besser. Versuche es doch gleich nochmal";
     }
-
-
-
-    setTimeout(function(){
-
-        document.getElementById('overlaytext').className = "overlayingTextBox hiddenStuff";
-        location.href='index.html';
-
-    }, 5000);
-
 }
 
