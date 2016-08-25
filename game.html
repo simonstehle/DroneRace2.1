@@ -27,6 +27,17 @@
 
         .textDivResults{
             padding: 10px;
+            text-align: center;
+        }
+
+        .buttonGroup_game{
+            text-align: center;
+            padding-top:15px;
+
+        }
+
+        .textDivResults h4{
+            font-size: 1.8em;
         }
 
     </style>
@@ -48,9 +59,16 @@
     <div class="rativeDiv">
         <div class="textDivResults">
 
-            <h3>Deine Zeit:        <span id="timeJustFlew"></span></h3><br>
-            <h3>Deine Bestzeit:    <span id="aktualBestTime"></span></h3>
-            <h3>                   <span id="resultText"></span></h3>
+            <h4>Deine Zeit:        <br><span id="timeJustFlew"></span></h4>
+            <h4>Deine Bestzeit:    <br><span id="aktualBestTime"></span></h4>
+            <h4>                   <span id="resultText"></span></h4>
+
+            <div class="buttonGroup_game">
+            <button class="btn btn-primary" onclick="backToHome()">Zurück zum Menü</button>
+
+            <button class="btn btn-info" onclick="tryAgain()">Nochmal versuchen</button>
+            </div>
+
         </div>
 
 
@@ -103,6 +121,20 @@
 <script>
 
     document.getElementById("aktualBestTime").innerHTML = getCookie("Level"+getCookie("ActualLevel"));
+
+    function backToHome() {
+
+        location.href ='index.html';
+        document.getElementById('overlaytext').className = "overlayingTextBox hiddenStuff";
+
+    }
+
+    function tryAgain() {
+
+        location.reload();
+        document.getElementById('overlaytext').className = "overlayingTextBox hiddenStuff";
+
+    }
 
 </script>
 
