@@ -217,7 +217,7 @@ function init() {
      * @type {THREE.PlaneGeometry}
      */
     var screenGeometry = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
-    firstRenderTarget = new THREE.WebGLRenderTarget(1024, 1024, {format: THREE.RGBFormat});
+    firstRenderTarget = new THREE.WebGLRenderTarget(512, 512, {format: THREE.RGBFormat});
     /**
      * Material for the first screen
      * @type {THREE.MeshBasicMaterial}
@@ -237,7 +237,7 @@ function init() {
      * @type {THREE.CubeGeometry}
      */
     var screenGeometry = new THREE.CubeGeometry(4000, 2000, 1, 1);
-    finalRenderTarget = new THREE.WebGLRenderTarget(1024, 1024, {format: THREE.RGBFormat});
+    finalRenderTarget = new THREE.WebGLRenderTarget(512, 512, {format: THREE.RGBFormat});
     /**
      * Material for the final screen
      * @type {THREE.MeshBasicMaterial}

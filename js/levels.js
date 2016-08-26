@@ -88,8 +88,9 @@ function buildLevel2()
     addTube(50,200,250,1000,0,-2500, Math.PI*1.2,80);
 
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
-    addTargetFrame(800,-6000,2000,1000, Math.PI*0.25);
-    addTargetFrame(800,-6500,4000,-2000, Math.PI*0.25);
+    //Timeout to make sure frames are loaded in correct order
+    setTimeout(addTargetFrame(800,-6000,2000,1000, Math.PI*0.25),200);
+    setTimeout(addTargetFrame(800,-6500,4000,-2000, Math.PI*0.25),200);
 
     setMainSound('objects/euromir_song.mp3');
     if(startPlaying)
@@ -122,8 +123,9 @@ function buildLevel3(){
     build3WallObstacle(1000,2000,6000,-4000, Math.PI*1.2);
 
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
-    addTargetFrame(800,-6000,2000,1000, Math.PI*0.25);
-    addTargetFrame(800,-6500,4000,-2000, Math.PI*0.25);
+    //Timeout to make sure frames are loaded in correct order
+    setTimeout(addTargetFrame(800,-6000,2000,1000, Math.PI*0.25),200);
+    setTimeout(addTargetFrame(800,-6500,4000,-2000, Math.PI*0.25),200)
 
     setMainSound('objects/everything_is_awesome.mp3');
     if(startPlaying)
