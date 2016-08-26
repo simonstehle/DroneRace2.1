@@ -6,29 +6,52 @@
  * Area for detecting the collisions
  */
 
-
 /**
- * all legitimate zones are stored in this array,
- * so the drone is only allowed to fly there
- * additionally, there will be forbiddenZones within allowedZones,
- * which resemble the obstacles in the court
- * @type {Array}
- */
-
-/**
- * Meshs for marking the next target and indicating fly-troughs. Usually the obstacle itself.
+ * Meshes for marking the next target and indicating fly-troughs. Usually the visible obstacle itself.
  * @type {Array}
  */
 var indicatorMeshes = [];
+/**
+ * Hit box meshes for fly-through
+ * @type {Array}
+ */
 var flyThroughMeshes = [];
+/**
+ * Fly-over meshes for fly-through
+ * @type {Array}
+ */
 var flyOverMeshes = [];
+/**
+ * Hit box meshes for collision
+ * @type {Array}
+ */
 var hitBoxMeshes = [];
+/**
+ * Fly-over meshes for fly-collision
+ * @type {Array}
+ */
 var hitBoxFlyOverMeshes = [];
+/**
+ * Number of next target
+ * @type {number}
+ */
 var nextTarget = -1;
+/**
+ * Number of last target
+ * @type {number}
+ */
 var lastTarget = -1;
 
 resetTargets();
 
+/**
+ *
+ * @param flyThroughMesh - Hit box mesh for fly-through
+ * @param flyOverMesh - Fly-over mesh for fly-through
+ * @param indicatorMesh - Mesh for marking the next target and indicating fly-troughs
+ * @param hitBoxMeshCollection - Hit box meshes for collision
+ * @param hitBoxFlyOverMeshCollection - Fly-over meshes for fly-collision
+ */
 function addTarget(flyThroughMesh, flyOverMesh, indicatorMesh, hitBoxMeshCollection, hitBoxFlyOverMeshCollection) {
     flyThroughMeshes.push(flyThroughMesh);
     flyOverMeshes.push(flyOverMesh);
@@ -38,7 +61,11 @@ function addTarget(flyThroughMesh, flyOverMesh, indicatorMesh, hitBoxMeshCollect
     lastTarget = lastTarget + 1;
 }
 
-
+/**
+ * Change color of mesh
+ * @param mesh - Mesh to change the color
+ * @param color - New color (format 0xffffff)
+ */
 function changeColorOfMesh(mesh, color) {
     if (mesh != undefined)
         mesh.traverse(function (child) {
@@ -49,15 +76,27 @@ function changeColorOfMesh(mesh, color) {
 }
 
 /**
- * detect collision
+ * Detect collisions and fly-through
  * @returns {boolean}
  */
 function detectCollisions() {
     if (!gameLoaded)
         return false;
     detectTargetHit();
+    /**
+     * Bottom vector
+     * @type {THREE.Vector3}
+     */
     var vector = new THREE.Vector3(0, -1, 0);
+    /**
+     * Bottom raycaster
+     * @type {THREE.Raycaster}
+     */
     var rayCaster = new THREE.Raycaster(droneMarker.position, vector);
+    /**
+     * Bottom intersect
+     * @type {Array}
+     */
     var intersect = rayCaster.intersectObjects(forbiddenZones);
     if (intersect.length === 0) {
         resetDrone();
@@ -67,9 +106,26 @@ function detectCollisions() {
         return true;
 }
 
+/**
+ * Detect intersect between drone and object
+ * @param intersectObject - Hit box mesh
+ * @returns {boolean}
+ */
 function detectBottomIntersect(intersectObject) {
+    /**
+     * Bottom vector
+     * @type {THREE.Vector3}
+     */
     var bottomVector = new THREE.Vector3(0, -1, 0);
+    /**
+     * Bottom raycaster
+     * @type {THREE.Raycaster}
+     */
     var bottomRayCaster = new THREE.Raycaster(droneMarker.position, bottomVector);
+    /**
+     * Bottom intersect
+     * @type {Array}
+     */
     var bottomIntersect = bottomRayCaster.intersectObject(intersectObject)
     if(bottomIntersect.length>0)
         return true;
@@ -77,12 +133,18 @@ function detectBottomIntersect(intersectObject) {
 }
 
 
-
+/**
+ * Detect collisions and fly through for all targets
+ */
 function detectTargetHit() {
     flyThroughMeshes.forEach(detectFlyOver)
-
 }
-//flyOverFirst to save ressources
+
+/**
+ * Detect collisions and fly through. Detect bottom intersect first to save ressources
+ * @param element - Target
+ * @param index - Number of target
+ */
 function detectFlyOver(element, index) {
 
     if (detectBottomIntersect(flyOverMeshes[index])) {
@@ -91,11 +153,15 @@ function detectFlyOver(element, index) {
 
     for (var i = 0; i < hitBoxFlyOverMeshes[index].length; i++) {
         if (detectBottomIntersect(hitBoxFlyOverMeshes[index][i])) {
-            detectHit(index, i);
+            detectHit(hitBoxMeshes[index][i]);
         }
     }
 }
 
+/**
+ * Detect a successful target fly trough
+ * @param index
+ */
 function detectFlyThrough(index) {
 
     if (index === nextTarget
@@ -106,6 +172,11 @@ function detectFlyThrough(index) {
     }
 }
 
+/**
+ * Detect Intersect between drone and hit box. Checked directions: Front, back, left, right
+ * @param intersectObject - Object to be checked
+ * @returns {boolean}
+ */
 function detectIntersect(intersectObject) {
     if (getRaycastIntersect(intersectObject, new THREE.Vector3(0, 0, -1))
         || getRaycastIntersect(intersectObject, new THREE.Vector3(0, 0, 1))
@@ -115,25 +186,41 @@ function detectIntersect(intersectObject) {
     return false;
 }
 
+/**
+ * Detect raycast intersect
+ * @param object - Object to be checked
+ * @param vector - Intersect vector
+ * @returns {boolean}
+ */
 function getRaycastIntersect(object, vector) {
     if (object === undefined)
         return false;
+    /**
+     * Raycaster
+     * @type {THREE.Raycaster}
+     */
     var rayCaster = new THREE.Raycaster(droneMarker.position, vector);
+    /**
+     * Intersect
+     * @type [Array}
+     */
     var intersect = rayCaster.intersectObject(object, true);
     if (intersect.length > 0)
         return true;
     return false;
 }
 
-function detectHit(hitBoxes, index) {
-    if (detectIntersect(hitBoxMeshes[hitBoxes][index])) {
-        changeColorOfMesh(indicatorMeshes[hitBoxes], 0xff0000);
+/**
+ * Detects collision between drone and hit box mesh
+ * @param hitBoxesMesh
+ */
+function detectHit(hitBoxMesh) {
+    if (detectIntersect(hitBoxMesh)) {
         resetDrone();
     }
 }
 
 function refreshTarget() {
-    console.log('Refresh Targets');
     if (nextTarget === 2)
         startTimer();
     if (nextTarget < lastTarget) {
@@ -146,6 +233,9 @@ function refreshTarget() {
     }
 }
 
+/**
+ * Reset targets and timer to restart game
+ */
 function resetTargets() {
     if (!gameLoaded)
         return;
@@ -159,11 +249,18 @@ function resetTargets() {
     resetTimer();
 }
 
+/**
+ * Stop the game after flying through all targets
+ */
 function stopGame() {
 
     if (gameLoaded === false) return;
     gameLoaded = false;
 
+    /**
+     * Last personal best time
+     * @type {string}
+     */
     var recentPersonalBestTime = getCookie("Level" + getCookie("ActualLevel"));
     //Check ift the Time was better than the latest personal best. If it was, overwrite the cookie
     console.log("Current Highscore" + recentPersonalBestTime);
@@ -192,6 +289,9 @@ function stopGame() {
     
 }
 
+/**
+ * Reset the drone to it's starting position
+ */
 function resetDrone() {
     droneMarker.position.set(-8000, 0, 400);
     droneMarker.rotation.y = 0;
