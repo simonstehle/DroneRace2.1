@@ -642,7 +642,6 @@ function createFlyOverCircle(positionX, positionY, positionZ, radius) {
 }
 
 /**
- * TODO-Marci
  * uses mostly the same logic as the drone movement to calculate
  * how much on X and Z the obstacles has to move relative to its current rotation
  * so that it moves rectangular to the direction it should be crossed

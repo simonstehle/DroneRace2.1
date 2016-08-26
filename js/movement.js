@@ -187,7 +187,7 @@ var boundaryBottom = -80;
  */
 function drone_movement() {
 
-    // console.log(currentStraightSpeed);
+    if (currentStraightSpeed!=0) console.log(currentStraightSpeed);
     // console.log(droneMarker.position.x, droneMarker.position.z);
 
     if (detectCollisions()) {
@@ -213,7 +213,13 @@ function drone_movement() {
         if (moveLeft && movingRight) calcMovement(false, 39, true);
 
         // keyDown sidewards to moving direction
-        if ((moveForward || moveBackward) && (moveLeft || moveRight)) diagonalMovement = true;
+        if (((moveForward || moveBackward) && (moveLeft || moveRight))
+            || ((movingForward || movingBackward) && (moveLeft || moveRight))
+            || ((moveForward || moveBackward) && (movingLeft || movingRight))) {
+            diagonalMovement = true;
+        }
+        else diagonalMovement = false;
+
     }
 }
 
@@ -280,6 +286,7 @@ function calculateAcceleration(inKeyDirection, direction, reverseThrust) {
      */
     var straight;
 
+
     /**
      * checks which settings must be used
      */
@@ -320,6 +327,8 @@ function calculateAcceleration(inKeyDirection, direction, reverseThrust) {
             localSpeed += speedToSubtract;
         }
     }
+
+    if (rotateLeft || rotateRight) localSpeed*= 0.995;
 
     return localSpeed;
 }
@@ -554,7 +563,6 @@ function negAcc(aMax, vMax, vCurr) {
             return aCurr;
         } else {
             return aCurr;
-
         }
     }
 }

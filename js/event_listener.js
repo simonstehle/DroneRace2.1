@@ -26,10 +26,12 @@ document.addEventListener('keydown', function (event) {
         case 65:
             //Rotate Left a
             rotateLeft = true;
+            drone_mesh.rotation.z = Math.PI * 0.05;
             break;
         case 68:
             //Rotate right d
             rotateRight = true;
+            drone_mesh.rotation.z = Math.PI * -0.05;
             break;
 
         case 38:
@@ -85,10 +87,12 @@ document.addEventListener('keyup', function (event) {
             break;
         case 65:
             //Rotate Left a
+            drone_mesh.rotation.z = 0;
             rotateLeft = false;
             break;
         case 68:
             //Rotate right d
+            drone_mesh.rotation.z = 0;
             rotateRight = false;
             break;
         case 38:

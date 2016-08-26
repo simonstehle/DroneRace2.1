@@ -307,7 +307,7 @@ function resetDrone() {
 }
 
 /**
- *
+ * zones that must not be flewn over
  * @type {Array}
  */
 var forbiddenZones = [];
