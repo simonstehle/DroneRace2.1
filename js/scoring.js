@@ -22,7 +22,6 @@ function startOnLoad() {
  * Display help text on scoreboard
  */
 function setHelp() {
-    //scoreboard.help("Fly through the green marked obstacles!");
     scoreboard.showHelp();
 }
 
