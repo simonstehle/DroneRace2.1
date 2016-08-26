@@ -171,7 +171,7 @@ function init() {
 
         materials.preload();
         /**
-         * 
+         * Object loader to load 3D objets exported from Blender
          * @type {THREE.OBJLoader}
          */
         var objLoader = new THREE.OBJLoader();
@@ -205,45 +205,86 @@ function init() {
         -10000, 10000);
     screenCamera.position.set(0, 0, -1);
     screenScene.add(screenCamera);
+
+    /**
+     * Geometry for the first screen (that's the one the screenCamera is filming)
+     * @type {THREE.PlaneGeometry}
+     */
     var screenGeometry = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
     firstRenderTarget = new THREE.WebGLRenderTarget(1024, 1024, {format: THREE.RGBFormat});
+    /**
+     * Material for the first screen
+     * @type {THREE.MeshBasicMaterial}
+     */
     var screenMaterial = new THREE.MeshBasicMaterial({map: firstRenderTarget.texture});
-    var quad = new THREE.Mesh(screenGeometry, screenMaterial);
-    //quad.rotation.x = Math.PI / 2;
-    screenScene.add(quad);
+    /**
+     * Mesh for the first screen
+     * @type {THREE.Mesh}
+     */
+    var firstScreenMesh = new THREE.Mesh(screenGeometry, screenMaterial);
+    //firstScreenMesh.rotation.x = Math.PI / 2;
+    screenScene.add(firstScreenMesh);
 
     // final version of camera texture, used in scene.
+    /**
+     * Geometry for the final screen (that's the one the screenCamera is filming)
+     * @type {THREE.CubeGeometry}
+     */
     var screenGeometry = new THREE.CubeGeometry(4000, 2000, 1, 1);
     finalRenderTarget = new THREE.WebGLRenderTarget(1024, 1024, {format: THREE.RGBFormat});
+    /**
+     * Material for the final screen
+     * @type {THREE.MeshBasicMaterial}
+     */
     var screenMaterial = new THREE.MeshBasicMaterial({map: finalRenderTarget.texture});
+    /**
+     * Mesh for the final screen
+     * @type {THREE.Mesh}
+     */
     var screen = new THREE.Mesh(screenGeometry, screenMaterial);
     screen.position.set(0, 1900, -9450);
-    scene.add(screen);
-    // pseudo-border for plane, to make it easier to see
-    var screenGeometry = new THREE.CubeGeometry(4000, 2000, 50, 1);
-    var screenMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
-    var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-    screen.position.set(0, 1900, -9550);
     scene.add(screen);
 
 //End Camera as Texture
 }
 
+/**
+ * Indicates whether zeppelin has already crashed
+ * @type {boolean}
+ */
 var zepCrashFlag = false;
+/**
+ * Y-Rotation of the zeppelin
+ * @type {number}
+ */
 var zeppelinRotation = 0.005;
+/**
+ * TODO-Marci
+ * @type {number}
+ */
 var firstTime = 0;
 
+/**
+ * Rotate the zepMarker to let the zeppelin fly around the stadium
+ * @param rotation
+ */
 function zeppelin_circle(rotation) {
     if (rotation > 0.06) rotation = 0.06;
     zepMarker.rotateY(rotation);
 }
-
+/**
+ * Crash the zeppelin
+ */
 function zeppelin_crash() {
     if (zepMarker.position.y > -5000) zepMarker.position.y -= 70;
     if (zeppelin.position.z = 0) zeppelin.position.x -= 10;
     if (zeppelin.position.x = 0) zeppelin.position.z -= 10;
 }
 
+/**
+ * TODO-Marci
+ * @param crash
+ */
 function moveZeppelin(crash) {
 
     if (crash) {
