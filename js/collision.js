@@ -6,6 +6,7 @@
  * Area for detecting the collisions
  */
 
+
 /**
  * Meshes for marking the next target and indicating fly-troughs. Usually the visible obstacle itself.
  * @type {Array}
@@ -299,10 +300,14 @@ function resetDrone() {
     resetStraight();
     resetSide();
     setTimeout(function () {
-        crash = false;
     }, 500);
 
     if (gameLoaded)
         resetTargets();
 }
 
+/**
+ *
+ * @type {Array}
+ */
+var forbiddenZones = [];
