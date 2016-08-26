@@ -1,38 +1,98 @@
 /**
  * Created by simonstehle on 03.08.16.
  */
-
+/**
+ * Collection of moving obstacles
+ * @type {Array}
+ */
 var obstaclesToMove = [];
+/**
+ * Basic Material for different obstacles
+ * @type {THREE.MeshBasicMaterial}
+ */
+var basicMaterial = new THREE.MeshBasicMaterial();
 
+/**
+ * Initialize a ring with collision detection and movement, add it to a parent (usually scene or marker)
+ * @param innerRadius - Inner radius of ring
+ * @param outerRadius - Outer radius of ring
+ * @param positionX - X-position
+ * @param positionY - Y-position
+ * @param positionZ - Z-position
+ * @param rotationY - Y-rotation
+ * @param parent - Parent object (scene, marker, ...)
+ * @param movingPace - Starting pace
+ * @param movingDuration - Starting duration of movement in frames
+ */
 function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ, rotationY, parent, movingPace, movingDuration) {
+    /**
+     * Count of circle segments
+     * @type {number}
+     */
     var segmentCount = 30;
+    /**
+     * Inner radius of hit box
+     * @type {number}
+     */
     var hitBoxInnerRadius = innerRadius - 20;
+    /**
+     * Outer radius of hit box
+     * @type {number}
+     */
     var hitBoxOuterRadius = outerRadius + 20;
 
+    /**
+     * Geometry for target circle  (hitbox indicating a fly through)
+     * @type {THREE.CircleGeometry}
+     */
     var circleGeo = new THREE.CircleGeometry(hitBoxInnerRadius, segmentCount);
-    var circleMat = new THREE.MeshBasicMaterial({color: 0x69201C});
-    circleMat.side = THREE.DoubleSide;
-    circleMat.visible = false;
-    var circleMesh = new THREE.Mesh(circleGeo, circleMat);
+
+    basicMaterial.side = THREE.DoubleSide;
+    basicMaterial.visible = false;
+    /**
+     * Mesh for target circle
+     * @type {THREE.Mesh}
+     */
+    var circleMesh = new THREE.Mesh(circleGeo, basicMaterial);
     circleMesh.position.set(positionX, positionY, positionZ);
     circleMesh.rotation.y = rotationY;
 
+    /**
+     * Geometry for fly over box (for collision detection
+     * @type {THREE.BoxGeometry}
+     */
     var flyOverBoxGeometry = new THREE.BoxGeometry(hitBoxOuterRadius * 2, 1, maxStraightSpeed + 1);
-    var flyOverBoxMaterial = new THREE.MeshBasicMaterial();
-    flyOverBoxMaterial.side = THREE.DoubleSide;
-    flyOverBoxMaterial.visible = false;
-    var flyOverBox = new THREE.Mesh(flyOverBoxGeometry, flyOverBoxMaterial);
+
+    basicMaterial.side = THREE.DoubleSide;
+    basicMaterial.visible = false;
+    /**
+     * Mesh for fly over hit box
+     * @type {THREE.Mesh}
+     */
+    var flyOverBox = new THREE.Mesh(flyOverBoxGeometry, basicMaterial);
     flyOverBox.position.x = positionX;
     flyOverBox.position.z = positionZ;
     flyOverBox.position.y = -150;
     flyOverBox.rotation.y = rotationY;
 
+    /**
+     * Geometry for the fly through ring (visible part of the obstacle)
+     * @type {THREE.RingGeometry}
+     */
     var ringGeometry = new THREE.RingGeometry(innerRadius, outerRadius, segmentCount);
 
+    /**
+     * Texture for the fly through ring
+     * @type {*|Howler|void}
+     */
     var ringTexture = textureLoader.load('objects/metalTexture.jpg');
     ringTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     ringTexture.repeat.set(1, 1);
 
+    /**
+     * Material for the fly through ring
+     * @type {THREE.MeshPhysicalMaterial}
+     */
     var ringMaterial = new THREE.MeshPhysicalMaterial({
         color: 0xffffff,
         map: ringTexture,
@@ -40,18 +100,33 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
         side: THREE.DoubleSide
     });
 
+    /**
+     * Mesh for the fly through ring
+     * @type {THREE.Mesh}
+     */
     var flyThroughRingMesh = new THREE.Mesh(ringGeometry, ringMaterial);
     flyThroughRingMesh.position.set(positionX, positionY, positionZ);
     flyThroughRingMesh.rotation.y = rotationY;
 
+    /**
+     * Geometry for the ring hit box
+     * @type {THREE.RingGeometry}
+     */
     var ringGeometry = new THREE.RingGeometry(hitBoxInnerRadius, hitBoxOuterRadius, segmentCount);
-    var ringMaterial = new THREE.MeshBasicMaterial({color: 0x69201C});
-    ringMaterial.side = THREE.DoubleSide;
-    ringMaterial.visible = false;
-    var hitBoxMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+    basicMaterial.side = THREE.DoubleSide;
+    basicMaterial.visible = false;
+    /**
+     * Mesh for the ring hit box
+     * @type {THREE.Mesh}
+     */
+    var hitBoxMesh = new THREE.Mesh(ringGeometry, basicMaterial);
     hitBoxMesh.position.set(positionX, positionY, positionZ);
     hitBoxMesh.rotation.y = rotationY;
 
+    /**
+     * Marker for all components of the ring
+     * @type {THREE.Object3D}
+     */
     var circleMarker = new THREE.Object3D();
     // circleMarker.rotation.y = rotationY;
 
@@ -62,9 +137,17 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
 
     parent.add(circleMarker);
 
+    /**
+     * Collection of all hit boxes of the ring
+     * @type {Array}
+     */
     var hitBoxCollection = [];
     hitBoxCollection.push(hitBoxMesh);
 
+    /**
+     * Collection of all fly over meshs of the ring
+     * @type {Array}
+     */
     var hitBoxFlyOverMeshCollection = [];
     hitBoxFlyOverMeshCollection.push(flyOverBox);
 
@@ -76,7 +159,21 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
     }
 }
 
+/**
+ * Add a multiple rings as tube
+ * @param numberOfRings
+ * @param innerRadius - Inner radius of ring
+ * @param outerRadius - Outer radius of ring
+ * @param positionX - X-position
+ * @param positionY - Y-position
+ * @param positionZ - Z-position
+ * @param rotationY - Y-rotation
+ */
 function addTube(numberOfRings, innerRadius, outerRadius, positionX, positionY, positionZ, rotationY) {
+    /**
+     * Marker for all rings
+     * @type {THREE.Object3D}
+     */
     var tubeMarker = new THREE.Object3D();
     for (var i = 0; i < numberOfRings; i++) {
         addTargetRing(innerRadius, outerRadius, positionX + i * 80, positionY, positionZ, Math.PI * 0.5, tubeMarker, 0, 0);
@@ -86,12 +183,35 @@ function addTube(numberOfRings, innerRadius, outerRadius, positionX, positionY, 
     scene.add(tubeMarker);
 }
 
+/**
+ *
+ * @param width - Width of the visible wall element
+ * @param height - Height of the wall
+ * @param positionX - X-position
+ * @param positionZ - Z-position
+ * @param rotationY - Y-rotation
+ * @param flyThroughOnLeft - Indicates on which side the fly through is positioned
+ * @param movingPace - Starting pace
+ * @param movingDuration - Starting duration of movement in frames
+ */
 function addWallObstacle(width, height, positionX, positionZ, rotationY, flyThroughOnLeft, movingPace, movingDuration) {
+    /**
+     * Marker for all components of the wall
+     * @type {THREE.Object3D}
+     */
     var wallMarker = new THREE.Object3D();
+    /**
+     * Texture for the wall
+     * @type {THREE.Texture}
+     */
     var wallTexture = textureLoader.load('objects/woodTexture.jpg');
     wallTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     wallTexture.repeat.set(1, 1);
 
+    /**
+     * Material for the wall
+     * @type {THREE.MeshPhysicalMaterial}
+     */
     var wallMaterial = new THREE.MeshPhysicalMaterial({
         color: 0xffffff,
         map: wallTexture,
@@ -99,25 +219,48 @@ function addWallObstacle(width, height, positionX, positionZ, rotationY, flyThro
         side: THREE.DoubleSide
     });
 
-    //Wall that is an obstacle
+    /**
+     * Geometry for the wall
+     * @type {THREE.BoxGeometry}
+     */
     var wallGeo = new THREE.BoxGeometry(width, height, 50);
-    //var wallMat = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-    //wallMat.side = THREE.DoubleSide;
+    /**
+     * Mesh for the wall
+     * @type {THREE.Mesh}
+     */
     var wallMesh = new THREE.Mesh(wallGeo, wallMaterial);
     wallMesh.position.set(positionX, 0, positionZ);
 
 
-    //Box to detect a collision. Placed under the wallMesh
+    /**
+     * Mesh for fly over hit box
+     * @type {THREE.Mesh}
+     */
     var wallFlyOverBoxGeometry = new THREE.BoxGeometry(width, 1, maxStraightSpeed);
+    /**
+     * Material for fly over hit box
+     * @type {THREE.MeshBasicMaterial}
+     */
     var wallFlyOverBoxMaterial = new THREE.MeshBasicMaterial({color: 0xff0055});
     wallFlyOverBoxMaterial.visible = true;
+    /**
+     * Mesh for fly over hit box
+     * @type {THREE.Mesh}
+     */
     var wallFlyOverBox = new THREE.Mesh(wallFlyOverBoxGeometry, wallFlyOverBoxMaterial);
 
     wallFlyOverBox.position.set(positionX, -150, positionZ);
 
+    /**
+     * Radius of the cylinder
+     * @type {number}
+     */
     var cylinderRadius = 50;
 
-    //Zylinder to make boundary to score point
+    /**
+     * Geometry for cylinder (the
+     * @type {THREE.CylinderGeometry}
+     */
     var cylinderGeometry = new THREE.CylinderGeometry(cylinderRadius, cylinderRadius, height, 5, 5);
     var cylinderMaterial = new THREE.MeshLambertMaterial({color: 0xffff00});
     var cylinderMesh = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
