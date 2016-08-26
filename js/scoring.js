@@ -17,7 +17,6 @@ function inAnimate() {
 }
 
 function setHelp() {
-    //scoreboard.help("Fly through the green marked obstacles!");
     scoreboard.showHelp();
 }
 

@@ -41,6 +41,13 @@
             font-size: 1.8em;
         }
 
+        .info_button{
+            position: absolute;
+            bottom: 10px;
+            left:10px;
+
+        }
+
 
 
     </style>
@@ -63,6 +70,8 @@
             <span class="glyphicon glyphicon-menu-left" onclick="backToHome()"></span>
             <span class="glyphicon glyphicon-volume-off" onclick="stopMusic()" id="volumeGlyphicon"></span>
 
+
+
             </div>
         </div>
     </div>
@@ -84,6 +93,15 @@
         </div>
 
 
+    </div>
+</div>
+
+<button type="button" class="btn btn-default info_button" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-info-sign" id="helpGlyph"></span></button>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content help_modal_content">
+            <img src="objects/wasd_ex.png" class="help_image">
+        </div>
     </div>
 </div>
 

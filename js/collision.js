@@ -61,7 +61,6 @@ function detectCollisions() {
     var intersect = rayCaster.intersectObjects(forbiddenZones);
     if (intersect.length === 0) {
         resetDrone();
-        console.log("Crash: " + crash)
         return false;
     }
     else
@@ -165,7 +164,7 @@ function stopGame() {
     if (gameLoaded === false) return;
     gameLoaded = false;
 
-    var recentPersonalBestTime = getCookie("Level" + getCookie("ActualLevel"))
+    var recentPersonalBestTime = getCookie("Level" + getCookie("ActualLevel"));
     //Check ift the Time was better than the latest personal best. If it was, overwrite the cookie
     console.log("Current Highscore" + recentPersonalBestTime);
     console.log("Time: " + getActualTime());
@@ -188,6 +187,9 @@ function stopGame() {
     else {
         document.getElementById("resultText").innerHTML = "Damn, you couldn't set another highscore. Go ahead and try again!";
     }
+
+
+    
 }
 
 function resetDrone() {
