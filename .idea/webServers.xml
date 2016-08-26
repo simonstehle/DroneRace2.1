@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="1efc4304-0300-42cf-b436-9d508e9ec7bf" name="ftp_dronerace" url="http://ftp.strato.de">
+        <fileTransfer host="ftp.strato.de" port="21" password="df93dfd0dfcfdfd2dfc1dfd0dfd9dfc5dfc1dfeedfdbdfe4dfefdf9d" username="ftp_droneracer@droneracer.fangwasan.com">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

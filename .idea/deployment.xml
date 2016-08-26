@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="ftp_dronerace">
+    <serverData>
+      <paths name="ftp_dronerace">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/droneracer" local="$PROJECT_DIR$" web="/droneracer" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
