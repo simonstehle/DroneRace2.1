@@ -105,8 +105,6 @@ var movingLeft = false;
  */
 var movingRight = false;
 
-var giveBoost = false;
-
 
 /**
  * the following variables are global variables that control extent of the movement
@@ -130,7 +128,6 @@ var speedUpDown = 20;
  */
 var maxStraightSpeed = 90;
 
-var boostSpeed = 20;
 
 /**
  *
@@ -201,8 +198,6 @@ function drone_movement() {
     //console.log(currentStraightSpeed, currentSideSpeed);
     if (detectCollisions()) {
 
-
-
         // keyDown in moving direction; normal acceleration
         if (moveForward && movingForward && !movingBackward) calcMovement(true, 38, false);
         if (moveBackward && movingBackward && !movingForward) calcMovement(true, 40, false);
@@ -222,24 +217,17 @@ function drone_movement() {
         if (moveLeft && movingRight) calcMovement(false, 39, true);
 
         // keyDown sidewards to moving direction
-
         if ((moveForward || moveBackward) && (moveLeft || moveRight)) diagonalMovement = true;
 
-        //cleanUpMovement();
 
     }
 
     if (rotateLeft) rotateOnYaxis(65);
     if (rotateRight) rotateOnYaxis(68);
 
-    if (moveDroneUp) {
-        droneMarker.position.y += speedUpDown;
-    }
-    if (moveDroneDown) {
-        if (droneMarker.position.y > boundaryBottom) {
-            droneMarker.position.y -= speedUpDown;
-        }
-    }
+    rotateOnYaxis();
+
+    moveUpAndDown();
 }
 
 /**
@@ -267,24 +255,33 @@ function cleanUpMovement() {
     }
 }
 
+function moveUpAndDown() {
+    var currentSpeedUpDown = speedUpDown - ((currentStraightSpeed / maxStraightSpeed) + (currentSideSpeed / maxSideSpeed)) / 2 * 5;
+    if (moveDroneUp ) {
+        droneMarker.position.y += speedUpDown;
+    }
+    if (moveDroneDown) {
+        if (droneMarker.position.y > boundaryBottom) {
+            droneMarker.position.y -= speedUpDown;
+        }
+    }
+}
 
 /**
  * makes the drone rotate around the Y axis
  * with increasing speed, the rotation decreases slightly (max: 0.05; min: 0.03)
- * @param keycode - can have two values which determine whether the drone turns clockwise or anticlockwise
  */
-function rotateOnYaxis(keycode) {
+function rotateOnYaxis() {
+
     var currentRotation;
-    currentRotation = maxRotation - currentStraightSpeed / maxStraightSpeed * 0.02;
-    switch (keycode) {
-        case 65:
-            globalAngle += currentRotation;
-            droneMarker.rotation.y += currentRotation;
-            break;
-        case 68:
-            globalAngle -= currentRotation;
-            droneMarker.rotation.y -= currentRotation;
-            break;
+    currentRotation = maxRotation - ((currentStraightSpeed / maxStraightSpeed) + (currentSideSpeed / maxSideSpeed)) / 2 * 0.02;
+    if (rotateLeft) {
+        globalAngle += currentRotation;
+        droneMarker.rotation.y += currentRotation;
+    }
+    if (rotateRight) {
+        globalAngle -= currentRotation;
+        droneMarker.rotation.y -= currentRotation;
     }
 }
 
