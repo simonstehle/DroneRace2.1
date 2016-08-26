@@ -11,7 +11,7 @@ var obstaclesToMove = [];
  * @type {THREE.MeshBasicMaterial}
  */
 var basicMaterial = new THREE.MeshBasicMaterial({side: THREE.DoubleSide});
-var lambertMaterial = new THREE.MeshLambertMaterial({side: THREE.DoubleSide});
+
 /**
  * Initialize a ring with collision detection and movement, add it to a parent (usually scene or marker)
  * @param innerRadius - Inner radius of ring
@@ -260,6 +260,11 @@ function addWallObstacle(width, height, positionX, positionZ, rotationY, flyThro
      */
     var cylinderGeometry = new THREE.CylinderGeometry(cylinderRadius, cylinderRadius, height, 5, 5);
     /**
+     * Lambert Material
+     * @type {THREE.MeshLambertMaterial}
+     */
+    var lambertMaterial = new THREE.MeshLambertMaterial({side: THREE.DoubleSide});
+    /**
      * Mesh for the cylinder
      * @type {THREE.Mesh}
      */
@@ -487,6 +492,11 @@ function addStartLine(width, depth, positionX, positionY, positionZ, rotationY, 
      */
     var startLineGeo = new THREE.BoxGeometry(width, 1, depth);
     /**
+     * Lambert Material
+     * @type {THREE.MeshLambertMaterial}
+     */
+    var lambertMaterial = new THREE.MeshLambertMaterial({side: THREE.DoubleSide});
+    /**
      * Mesh for the start line
      * @type {THREE.Mesh}
      */
@@ -501,6 +511,11 @@ function addStartLine(width, depth, positionX, positionY, positionZ, rotationY, 
      * @type {THREE.BoxGeometry}
      */
     var startTopGeo = new THREE.BoxGeometry(width, 1, depth);
+    /**
+     * Lambert Material
+     * @type {THREE.MeshLambertMaterial}
+     */
+    var lambertMaterial = new THREE.MeshLambertMaterial({side: THREE.DoubleSide});
     /**
      * Mesh for the upper bar
      * @type {THREE.Mesh}
@@ -587,6 +602,11 @@ function createCylinder(positionX, positionY, positionZ, height) {
      * @type {THREE.CylinderGeometry}
      */
     var cylinderGeometry = new THREE.CylinderGeometry(50, 50, height, 5, 5);
+    /**
+     * Lambert Material
+     * @type {THREE.MeshLambertMaterial}
+     */
+    var lambertMaterial = new THREE.MeshLambertMaterial({side: THREE.DoubleSide});
     /**
      * Mesh for the cylinder
      * @type {THREE.Mesh}
