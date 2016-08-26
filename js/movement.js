@@ -114,7 +114,7 @@ var movingRight = false;
  * radian around which the drone is maximally turned around the Y axis; value is lowered with increasing speed
  * @type {number}
  */
-var maxRotation = 0.035;
+var maxRotation = 0.03;
 
 /**
  * speed at which the drone moves up and down the Y axis; value is lowered with increasing speed
@@ -194,9 +194,9 @@ var crash = false;
  */
 function drone_movement() {
 
-
-    //console.log(currentStraightSpeed, currentSideSpeed);
     if (detectCollisions()) {
+        rotateOnYAxis();
+        moveUpAndDown();
 
         // keyDown in moving direction; normal acceleration
         if (moveForward && movingForward && !movingBackward) calcMovement(true, 38, false);
@@ -218,51 +218,21 @@ function drone_movement() {
 
         // keyDown sidewards to moving direction
         if ((moveForward || moveBackward) && (moveLeft || moveRight)) diagonalMovement = true;
-
-
     }
-
-    if (rotateLeft) rotateOnYaxis(65);
-    if (rotateRight) rotateOnYaxis(68);
-
-    rotateOnYaxis();
-
-    moveUpAndDown();
 }
 
 /**
- * checks all the keys pressed to determine whether
- * the drone should now move straight in one direction
- * or diagonally
+ * uses flags to determine whether the drone should move up or down the Y axis
+ * the speed on the Y axis slightly decreases, the faster the drone is straight and sidewards
  */
-function cleanUpMovement() {
-    if (!diagonalMovement) {
-        if (movingForward && (moveRight || moveLeft) && !moveForward) {
-            movingForward = false;
-        }
-
-        if (movingBackward && (moveRight || moveLeft) && !moveBackward) {
-            movingBackward = false;
-        }
-
-        if (movingLeft && (moveForward || moveBackward) && !moveLeft) {
-            movingLeft = false;
-        }
-
-        if (movingRight && (moveForward || moveBackward) && !moveRight) {
-            movingRight = false;
-        }
-    }
-}
-
 function moveUpAndDown() {
     var currentSpeedUpDown = speedUpDown - ((currentStraightSpeed / maxStraightSpeed) + (currentSideSpeed / maxSideSpeed)) / 2 * 5;
     if (moveDroneUp ) {
-        droneMarker.position.y += speedUpDown;
+        droneMarker.position.y += currentSpeedUpDown;
     }
     if (moveDroneDown) {
         if (droneMarker.position.y > boundaryBottom) {
-            droneMarker.position.y -= speedUpDown;
+            droneMarker.position.y -= currentSpeedUpDown;
         }
     }
 }
@@ -271,10 +241,10 @@ function moveUpAndDown() {
  * makes the drone rotate around the Y axis
  * with increasing speed, the rotation decreases slightly (max: 0.05; min: 0.03)
  */
-function rotateOnYaxis() {
+function rotateOnYAxis() {
 
     var currentRotation;
-    currentRotation = maxRotation - ((currentStraightSpeed / maxStraightSpeed) + (currentSideSpeed / maxSideSpeed)) / 2 * 0.02;
+    currentRotation = maxRotation - (currentStraightSpeed / maxStraightSpeed)  * 0.01;
     if (rotateLeft) {
         globalAngle += currentRotation;
         droneMarker.rotation.y += currentRotation;
@@ -285,22 +255,18 @@ function rotateOnYaxis() {
     }
 }
 
-
 /**
- * This function uses current rotation (globalAngle) of
- * an object to calculate how far it has to move on
- * X and Z in one iteration (pace).
+ * Uses all the movement settings (flags, current and maximal speed, etc.) to calculate
+ * how much the drone should move in the next iteration
+ * helper function acc() and negAcc() are used to calculate the numbers themselves
+ * combinations of flags are used to determine what acceleration must be added to what speed
  *
- * Furthermore, the current speed, the direction
- * in which the object is moving and in which direction the object
- * is accelerated is used the calculate the movement in the next iteration.
- *
- * @param inKeyDirection
- * @param direction
- * @param reverseThrust
+ * @param inKeyDirection {boolean}
+ * @param direction {number}
+ * @param reverseThrust {boolean}
+ * @returns {Object}
  */
-function calcMovement(inKeyDirection, direction, reverseThrust) {
-
+function calculateAcceleration(inKeyDirection, direction, reverseThrust) {
     var speedToAdd = 0;
     var speedToSubtract = 0;
 
@@ -352,6 +318,8 @@ function calcMovement(inKeyDirection, direction, reverseThrust) {
         }
     }
 
+    var vNew = localSpeed;
+
 
     if (rotateRight || rotateLeft) {
         var quotientVMax = localSpeed / localMaxSpeed;
@@ -359,7 +327,25 @@ function calcMovement(inKeyDirection, direction, reverseThrust) {
         vNew *= 1 - quotientVMax;
     }
 
-    var vNew = localSpeed;
+    var speeds = {};
+    speeds.vNew = vNew;
+    speeds.localSpeed = localSpeed;
+
+    return speeds;
+}
+
+/**
+ * Calculates how much on the X and Z axis the drone moves,
+ * which depends on the rotation around the Y-axis (globalAngle)
+ * and on the key that is pressed (direction)
+ *
+ * @param direction {number}
+ * @param speeds {object}
+ */
+function calculateDirection (direction, speeds) {
+
+    var localSpeed = speeds.localSpeed;
+    var vNew= speeds.vNew;
 
     var angle = globalAngle;
     var quadrant, net_angle, moveZ, moveX, PiHalf;
@@ -427,10 +413,26 @@ function calcMovement(inKeyDirection, direction, reverseThrust) {
 
 
 /**
- * function to reset all the moving___ flags to false
+ *
+ * This is the function that unifies both functions that calculate the movement
+ * at first, with all the flags from droneMovement, the acceleration is calculated and then
+ * applied to the direction in X and Z where the drone should move
+ *
+ *
+ * @param inKeyDirection {boolean)
+ * @param direction {number}
+ * @param reverseThrust {boolean)
+ */
+function calcMovement(inKeyDirection, direction, reverseThrust) {
+    calculateDirection(direction,(calculateAcceleration(inKeyDirection, direction, reverseThrust)));
+}
+
+
+/**
+ * function to reset all the straight moving flags to false
  * is used
- * - when the drone has crashed and is respawned and therefor not moving
- * - when the drone has reached currentStraightSpeed = 0 and is therefor not moving in any direction
+ * - when the drone has crashed and is respawned and therefore not moving
+ * - when the drone has reached currentStraightSpeed = 0 and is therefore not moving in any direction
  */
 function resetStraight() {
     movingForward = false;
@@ -438,76 +440,35 @@ function resetStraight() {
     currentStraightSpeed = 0;
 }
 
+/**
+ * function to reset all the side moving flags to false
+ * is used
+ * - when the drone has crashed and is respawned and therefore not moving
+ * - when the drone has reached currentStraightSpeed = 0 and is therefore not moving in any direction
+ */
 function resetSide() {
     movingLeft = false;
     movingRight = false;
     currentSideSpeed = 0;
 }
 
-/**
- * checks all the keys pressed to determine whether
- * the drone should now move straight in one direction
- * or diagonally
- */
-function cleanUpMovement() {
-    if (!diagonalMovement) {
-        if (movingForward && (moveRight || moveLeft) && !moveForward) {
-            movingForward = false;
-        }
-
-        if (movingBackward && (moveRight || moveLeft) && !moveBackward) {
-            movingBackward = false;
-        }
-
-        if (movingLeft && (moveForward || moveBackward) && !moveLeft) {
-            movingLeft = false;
-        }
-
-        if (movingRight && (moveForward || moveBackward) && !moveRight) {
-            movingRight = false;
-        }
-    }
-}
-
 
 /**
- * makes the drone rotate around the Y axis
- * with increasing speed, the rotation decreases slightly (max: 0.05; min: 0.03)
- * @param keycode - can have two values which determine whether the drone turns clockwise or anticlockwise
- */
-function rotateOnYaxis(keycode) {
-    var currentRotation;
-    currentRotation = maxRotation - currentStraightSpeed / maxStraightSpeed * 0.02;
-    switch (keycode) {
-        case 65:
-            globalAngle += currentRotation;
-            droneMarker.rotation.y += currentRotation;
-            break;
-        case 68:
-            globalAngle -= currentRotation;
-            droneMarker.rotation.y -= currentRotation;
-            break;
-    }
-}
-
-/**
- * helper function for acc(), calculates on value
+ * helper function for acc(), calculates one value
  * @param vMax
  * @returns {number}
  */
 function getQ(vMax) {
-    var q = Math.pow(10, 1 / vMax);
-    return q;
+    return q = Math.pow(20, 1 / vMax);
 }
 
 /**
- * helper function for negAcc(), calculates on value
+ * helper function for negAcc(), calculates one value
  * @param vMax
  * @returns {number}
  */
 function getNegQ(vMax) {
-    var negQ = Math.pow(10, -1 / vMax);
-    return negQ;
+    return negQ = Math.pow(20, -1 / vMax);
 }
 
 /**
@@ -540,7 +501,7 @@ function negAcc(aMax, vMax, vCurr) {
     if (vCurr === 0) {
         return 0;
     } else {
-        var aStart = aMax * 1 / 10;
+        var aStart = aMax * 1 / 8;
         var qStr = getNegQ(vMax);
         var aCurr = -aStart * Math.pow(qStr, -vCurr);
         if (vCurr + aCurr <= aStart) {
@@ -553,6 +514,3 @@ function negAcc(aMax, vMax, vCurr) {
     }
 }
 
-function logPosition() {
-    console.log(droneMarker.position.x + "; " + droneMarker.position.z);
-}
