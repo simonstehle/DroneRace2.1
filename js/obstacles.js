@@ -372,19 +372,40 @@ function calcObstacleMovement(rotation, speed) {
 
 function makeThisObstacleMove(obstacle, rotationY, movingPace, movingDuration) {
 
-    var potentialMovement = calcObstacleMovement(rotationY, movingPace);
-
     var thisObstacleObj = new Object();
+    thisObstacleObj.randomize = false;
+
+    var obstacleMovement = calcObstacleMovement(rotationY, movingPace);
+
+    thisObstacleObj.alreadyMoved = 0;
     thisObstacleObj.obstacle = obstacle;
-    thisObstacleObj.moveX = potentialMovement.moveInX;
-    thisObstacleObj.moveZ = potentialMovement.moveInZ;
     thisObstacleObj.back = true;
     thisObstacleObj.noOfMovements = movingDuration;
-    thisObstacleObj.alreadyMoved = 0;
+    thisObstacleObj.moveX = obstacleMovement.moveInX;
+    thisObstacleObj.moveZ = obstacleMovement.moveInZ;
+
 
     thisObstacleObj.move = function () {
 
-        if (thisObstacleObj.alreadyMoved >= thisObstacleObj.noOfMovements || thisObstacleObj.alreadyMoved <= 0) thisObstacleObj.back = !thisObstacleObj.back;
+        if (thisObstacleObj.randomize) {
+            var myRandom = 1-(Math.floor(100*Math.random()+1)/200);
+
+            movingPace *= myRandom;
+            movingDuration /= myRandom;
+            thisObstacleObj.noOfMovements = movingDuration;
+            obstacleMovement = calcObstacleMovement(rotationY, movingPace);
+            thisObstacleObj.moveX = obstacleMovement.moveInX;
+            thisObstacleObj.moveZ = obstacleMovement.moveInZ;
+        }
+
+        if (thisObstacleObj.alreadyMoved >= thisObstacleObj.noOfMovements || thisObstacleObj.alreadyMoved <= 0) {
+            thisObstacleObj.back = !thisObstacleObj.back;
+            thisObstacleObj.randomize = true;
+        }
+        else {
+            thisObstacleObj.randomize = false;
+        }
+
         if (thisObstacleObj.back === false) {
             thisObstacleObj.obstacle.position.x += thisObstacleObj.moveX;
             thisObstacleObj.obstacle.position.z += thisObstacleObj.moveZ;
