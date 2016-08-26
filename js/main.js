@@ -64,5 +64,5 @@ resetTargets();
  * @param element -element to rotate
  */
 function rotateRotor(element) {
-    element.rotation.y += Math.PI * 0.2;
+    element.rotation.y += Math.PI * 0.3;
 }
