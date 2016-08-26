@@ -36,7 +36,7 @@ function buildLevels() {
  */
 function buildLevel1()
 {
-    addStartFinishLine(1000,100,-4000,-80,0,0,800);
+    addStartLine(1000,100,-4000,-80,0,0,800);
 
     addTube(25,200,250,1500,0,-7000, Math.PI * 0.3);
 
@@ -67,7 +67,7 @@ function buildLevel1()
 
 function buildLevel2()
 {
-    addStartFinishLine(1000,100,-4000,-80,0,0,800);
+    addStartLine(1000,100,-4000,-80,0,0,800);
 
     addTargetRing(150, 250, -8000, 200,-2000,0, scene,-10,100);
 
@@ -102,7 +102,7 @@ function buildLevel2()
  * Positions set by the constructors
  */
 function buildLevel3(){
-    addStartFinishLine(1000,100,-4000,-80,0,0,800);
+    addStartLine(1000,100,-4000,-80,0,0,800);
 
     build3MovingWallObstacle(1000,1000,7000,2000, Math.PI*1, 20, 150);
 
