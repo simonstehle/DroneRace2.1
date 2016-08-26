@@ -3,48 +3,37 @@
  */
 "use strict";
 
-/**
- * Circle to set the allowed zone for the drones to fly in
- * @type {THREE.Mesh}
- */
 
 
 /**
- * Can this be deleted?
+ * Necessary for loading objects with OBJLoader
  * @param xhr
  */
 var onProgress = function (xhr) {
-    if (xhr.lengthComputable) {
-        var percentComplete = xhr.loaded / xhr.total * 100;
-        //console.log( Math.round(percentComplete, 2) + '% downloaded' );
-    }
 };
 
 /**
- * Can this be deleted?
+ * Necessary for loading objects with OBJLoader
  * @param xhr
  */
 var onError = function (xhr) {
 };
-THREE.Loader.Handlers.add(/\.dds$/i, new THREE.DDSLoader());
-
-
-/**
- * Importing the Libraries for loading and placing the models into the scene
- */
-
 
 function initBonooneStadium() {
-
     mtlLoader.load('objects/Stadium.mtl', function (materials) {
-
         materials.preload();
-
+        /**
+         * Object loader to load 3D objets exported from Blender
+         * @type {THREE.OBJLoader}
+         */
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
 
         objLoader.load('objects/Stadium.obj', function (object) {
-
+            /**
+             * The stadium
+             * @type {THREE.Group}
+             */
             var bonooneStadium = object;
             bonooneStadium.boundingSphere;
             bonooneStadium.scale.set(2000, 2000, 2000);
@@ -58,26 +47,32 @@ function initBonooneStadium() {
 
 }
 
-var textureLoader = new THREE.TextureLoader();
-var texture = textureLoader.load('objects/Grass_1.png');
-texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set(30, 30);
 
+/**
+ * Texture for the ground
+ */
+var groundTexture = textureLoader.load('objects/Grass_1.png');
+groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+groundTexture.repeat.set(30, 30);
 
 var grassMaterial = new THREE.MeshPhysicalMaterial({
     color: 0xffffff,
     specular: 0xffffff,
     shininess: 10,
-    map: texture,
+    map: groundTexture,
     combine: THREE.MixOperation,
     reflectivity: 0.05
 });
 
-
-//we need to set a circle around the stadium
+/**
+ * Circle geometry for the ground and as allowed zone fly over hit box
+ * @type {THREE.CircleGeometry}
+ */
 var geometry = new THREE.CircleGeometry(9690, 50);
-//var material = new THREE.MeshBasicMaterial( {  opacity: 0.1} );
-//Stadion Circle = Allowed Zone
+/**
+ * Mesh for the ground cirle
+ * @type {THREE.Mesh}
+ */
 var circle = new THREE.Mesh(geometry, grassMaterial);
 circle.position.y = -87;
 circle.position.x = -235;

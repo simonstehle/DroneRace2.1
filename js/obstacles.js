@@ -84,7 +84,7 @@ function addTargetRing(innerRadius, outerRadius, positionX, positionY, positionZ
      * @type {*|Howler|void}
      */
     var ringTexture = textureLoader.load('objects/metalTexture.jpg');
-    ringTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    ringTexture.wrapS = ringTexture.wrapT = THREE.RepeatWrapping;
     ringTexture.repeat.set(1, 1);
 
     /**
@@ -202,7 +202,7 @@ function addWallObstacle(width, height, positionX, positionZ, rotationY, flyThro
      * @type {THREE.Texture}
      */
     var wallTexture = textureLoader.load('objects/woodTexture.jpg');
-    wallTexture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
     wallTexture.repeat.set(1, 1);
 
     /**
