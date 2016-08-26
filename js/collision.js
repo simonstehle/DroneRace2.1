@@ -61,7 +61,6 @@ function detectCollisions() {
     var intersect = rayCaster.intersectObjects(forbiddenZones);
     if (intersect.length === 0) {
         resetDrone();
-        console.log("Crash: " + crash)
         return false;
     }
     else
@@ -165,21 +164,21 @@ function stopGame() {
     if (gameLoaded === false) return;
     gameLoaded = false;
 
-    var recentPersonalBestTime = getCookie("Level" + getCookie("ActualLevel"))
+    var recentPersonalBestTime = getCookie("Level" + getCookie("ActualLevel"));
     //Check ift the Time was better than the latest personal best. If it was, overwrite the cookie
     console.log("Current Highscore" + recentPersonalBestTime);
-    console.log("Time: " + getActualTime());
-    if ((getCookie("Level" + getCookie("ActualLevel")) > getActualTime())) {
+    console.log("Time: " + getCurrentTime());
+    if ((getCookie("Level" + getCookie("ActualLevel")) > getCurrentTime())) {
 
-        setCookie("Level" + getCookie("ActualLevel"), getActualTime(), 100);
+        setCookie("Level" + getCookie("ActualLevel"), getCurrentTime(), 100);
     }
     if (getCookie("Level" + getCookie("ActualLevel")) == undefined || getCookie("Level" + getCookie("ActualLevel")) == 0) {
-        setCookie("Level" + getCookie("ActualLevel"), getActualTime(), 100);
+        setCookie("Level" + getCookie("ActualLevel"), getCurrentTime(), 100);
     }
     document.getElementById('overlaytext').className = "overlayingTextBox";
-    document.getElementById('timeJustFlew').innerHTML = getActualTime();
+    document.getElementById('timeJustFlew').innerHTML = getCurrentTime();
 
-    if (recentPersonalBestTime > getActualTime()) {
+    if (recentPersonalBestTime > getCurrentTime()) {
         document.getElementById("resultText").innerHTML = "Congrats, you set a new highscore for this level!";
     }
     else if (recentPersonalBestTime === undefined || recentPersonalBestTime === "") {
@@ -188,6 +187,9 @@ function stopGame() {
     else {
         document.getElementById("resultText").innerHTML = "Damn, you couldn't set another highscore. Go ahead and try again!";
     }
+
+
+    
 }
 
 function resetDrone() {

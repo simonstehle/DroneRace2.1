@@ -3,7 +3,7 @@
     top: 10px;
     right:10px;
     width: auto;
-    height: 50px;
+
 }
 
 .relativeMuteTB{
@@ -19,4 +19,14 @@
 }
 .muteText span {
     cursor: pointer;
+}
+
+.help_modal_content{
+    text-align: center;
+
+}
+
+.help_image{
+
+    width: 100%;
 }

@@ -31,14 +31,14 @@ function buildLevels() {
 }
 
 /**
- * Function to build Level 3
+ * Function to build Level 1
  *
  */
 function buildLevel1()
 {
-    addStartFinishLine(1000,100,-4000,-80,0,0,800);
+    addStartLine(1000,100,-4000,-80,0,0,800);
 
-    addTube(25,200,250,1500,0,-7000, Math.PI * 0.3);
+    addTube(25,200,250,1500,0,-7000, Math.PI * 0.3,80);
 
     build3WallObstacle(1000,2000,6000,-4000, Math.PI*0.2);
 
@@ -50,10 +50,9 @@ function buildLevel1()
 
     addTargetRing(200, 250, 250, 250, 3250,Math.PI*0.5, scene, 0,0);
 
-    //addTube(30,200,250,-3000,40,3000, 0);
+
 
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
-
     setMainSound('objects/bennyHillTheme.mp3');
     if(startPlaying)
         toogleMusic(true);
@@ -67,11 +66,11 @@ function buildLevel1()
 
 function buildLevel2()
 {
-    addStartFinishLine(1000,100,-4000,-80,0,0,800);
+    addStartLine(1000,100,-4000,-80,0,0,800);
 
     addTargetRing(150, 250, -8000, 200,-2000,0, scene,-10,100);
 
-    addTube(25,200,250,1500,1500,-7000, Math.PI * 0.3);
+    addTube(25,200,250,1500,1500,-7000, Math.PI * 0.3,80);
 
     build3MovingWallObstacle(600,1000,7000,0, Math.PI*0.5, 20, 150);
 
@@ -86,7 +85,7 @@ function buildLevel2()
 
     build3MovingWallObstacle(1000,2000,0,-6000, Math.PI*1.2, 10, 100);
 
-    addTube(50,200,250,1000,0,-2500, Math.PI*1.2);
+    addTube(50,200,250,1000,0,-2500, Math.PI*1.2,80);
 
     addTargetFrame(800,-5000,800,3000, Math.PI *0.25);
     addTargetFrame(800,-6000,2000,1000, Math.PI*0.25);
@@ -102,15 +101,15 @@ function buildLevel2()
  * Positions set by the constructors
  */
 function buildLevel3(){
-    addStartFinishLine(1000,100,-4000,-80,0,0,800);
+    addStartLine(1000,100,-4000,-80,0,0,800);
 
     build3MovingWallObstacle(1000,1000,7000,2000, Math.PI*1, 20, 150);
 
-    addTube(25,200,250,1500,400,-7000, Math.PI * 0.3);
+    addTube(25,200,250,1500,400,-7000, Math.PI * 0.3,80);
 
-    addTube(50,400,600,-2500,0,-8000, 0);
+    addTube(25,400,600,-2500,0,-8000, 0,160);
 
-    addTube(25,300,350,-1500,400,-7000, Math.PI * 1.8);
+    addTube(25,300,350,-1500,400,-7000, Math.PI * 1.8,80);
 
     addTargetRing(200, 300, 4000, 400, -1500,0, scene,-10,100);
     addTargetRing(200, 300, 5000, 400, -1000,0, scene,0,0);

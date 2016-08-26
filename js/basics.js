@@ -10,11 +10,17 @@
  */
 var gameLoaded = false;
 /**
- * Shared Material Loader
+ * Shared Material loader
  * @type {THREE.MTLLoader}
  */
 var mtlLoader = new THREE.MTLLoader();
 // Renderer draws what the droneCamera sees on the screen.
+
+/**
+ * Shared texture loader
+ * @type {THREE.TextureLoader}
+ */
+var textureLoader = new THREE.TextureLoader();
 
 /**
  * Main scene
