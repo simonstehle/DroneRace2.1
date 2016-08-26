@@ -3,8 +3,13 @@
  */
 
 
+/**
+ * JS function on the object "document"
+ * uses the keycode of the pressed key to set the corresponding flags
+ * and makes the drone tilt a bit
+ */
 document.addEventListener('keydown', function (event) {
-    //console.log("Key Pressed: " + event.keyCode);
+
     event.preventDefault();
 
     var code = event.keyCode;
@@ -57,15 +62,15 @@ document.addEventListener('keydown', function (event) {
         case 16:
             droneMarker.position.y = 6000;
             break;
-        case 32:
-            giveBoost = true;
-            break;
     }
 
 
 });
 
-
+/**
+ * uses the keycode of the key which is moved up to set the corresponding flags
+ * and make the drone not tilt anymore
+ */
 document.addEventListener('keyup', function (event) {
     var code = event.keyCode;
 
@@ -110,5 +115,4 @@ document.addEventListener('keyup', function (event) {
             giveBoost = false;
             break;
     }
-
 });

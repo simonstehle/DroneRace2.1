@@ -1,11 +1,13 @@
 /**
  * Created by simonstehle on 03.08.16.
  */
+
 /**
  * Collection of moving obstacles
  * @type {Array}
  */
 var obstaclesToMove = [];
+
 /**
  * Basic Material for different obstacles
  * @type {THREE.MeshBasicMaterial}
@@ -641,6 +643,9 @@ function createFlyOverCircle(positionX, positionY, positionZ, radius) {
 
 /**
  * TODO-Marci
+ * uses mostly the same logic as the drone movement to calculate
+ * how much on X and Z the obstacles has to move relative to its current rotation
+ * so that it moves rectangular to the direction it should be crossed
  * @param rotation
  * @param speed
  * @returns {Object}
@@ -697,7 +702,15 @@ function calcObstacleMovement(rotation, speed) {
 }
 
 /**
- * TODO-Marci
+ * makes the obstacles move
+ * every obstacle becomes an object with a move() function
+ * it uses the results of calcObstacleMovement and how far and how fast the object should be moved
+ * it has a random element, which can make the obstacle faster or slower
+ * but still travelling the same distance every time
+ *
+ * one call of the move function makes the obstacle move just a bit
+ * to one entire back and forth cycle takes aproxximately several hundred call (moving duration * 2)
+ *
  * @param obstacle
  * @param rotationY
  * @param movingPace
@@ -760,7 +773,9 @@ function makeThisObstacleMove(obstacle, rotationY, movingPace, movingDuration) {
 }
 
 /**
- * TODO-Marci
+ * this function is called in the animate() function
+ * everytime it is called, it iterates over obstaclesToMove[] and the
+ * move()-function of each obstacle
  */
 function moveObstacles() {
     for (var i = 0; i < obstaclesToMove.length; i++) {
