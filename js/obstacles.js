@@ -383,15 +383,17 @@ function makeThisObstacleMove(obstacle, rotationY, movingPace, movingDuration) {
     thisObstacleObj.noOfMovements = movingDuration;
     thisObstacleObj.moveX = obstacleMovement.moveInX;
     thisObstacleObj.moveZ = obstacleMovement.moveInZ;
+    thisObstacleObj.wholeWay = movingPace*movingDuration;
+
 
 
     thisObstacleObj.move = function () {
 
         if (thisObstacleObj.randomize) {
-            var myRandom = 0;
-            myRandom = 1-(Math.floor(100*Math.random()+1)/200);
+            var myRandom =  1-(Math.floor(100*Math.random()+1)/200);
+
             var newMovingPace = movingPace * myRandom;
-            var newMovingDuration = movingDuration * myRandom;
+            var newMovingDuration = thisObstacleObj.wholeWay / newMovingPace;
             thisObstacleObj.noOfMovements = newMovingDuration;
             obstacleMovement = calcObstacleMovement(rotationY, newMovingPace);
             thisObstacleObj.moveX = obstacleMovement.moveInX;
@@ -400,7 +402,12 @@ function makeThisObstacleMove(obstacle, rotationY, movingPace, movingDuration) {
 
         if (thisObstacleObj.alreadyMoved >= thisObstacleObj.noOfMovements || thisObstacleObj.alreadyMoved <= 0) {
             thisObstacleObj.back = !thisObstacleObj.back;
-            thisObstacleObj.randomize = true;
+            if(thisObstacleObj.alreadyMoved<=0)
+            {
+                thisObstacleObj.randomize = true;
+            }
+            else
+                thisObstacleObj.randomize=false;
         }
         else {
             thisObstacleObj.randomize = false;

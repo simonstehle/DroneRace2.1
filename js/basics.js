@@ -4,26 +4,111 @@
  * This file sets up the basics of the scene, droneCamera and rendering
  */
 
-
+/**
+ * Indicates whether game is fully loaded
+ * @type {boolean}
+ */
 var gameLoaded = false;
+/**
+ * Shared Material Loader
+ * @type {THREE.MTLLoader}
+ */
 var mtlLoader = new THREE.MTLLoader();
 // Renderer draws what the droneCamera sees on the screen.
-var scene, renderer;
+
+/**
+ * Main scene
+ * @type {THREE.Scene}
+ */
+var scene;
+
+/**
+ * Main renderer
+ * @type {THREE.WebGLRenderer}
+ */
+var renderer;
 // Camera looks at the scene.
-var droneCamera, textureCamera;
 
-var screenScene, screenCamera, firstRenderTarget, finalRenderTarget;
+/**
+ * 3rd person view camera
+ * @type {THREE.PerspectiveCamera}
+ */
+var droneCamera;
 
-var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-var ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 50000;
+/**
+ * Camera for filming the drone
+ * @type {THREE.PerspectiveCamera}
+ */
+var textureCamera;
+/**
+ * Scene beeing shown on screen
+ * @type {THREE.Scene}
+ */
+var screenScene;
+/**
+ * Camera filming the screenScene to avoid mirroring
+ * @type {THREE.PerspectiveCamera}
+ */
+var screenCamera;
+/**
+ * Render target of the textureCamera
+ * @type {THREE.WebGLRenderTarget}
+ */
+var firstRenderTarget;
+/**
+ * Render target of the screenCamera
+ * @type {THREE.WebGLRenderTarget}
+ */
+var finalRenderTarget;
 
+/**
+ * Width of user's screen
+ * @type {Number|*}
+ */
+var SCREEN_WIDTH = window.innerWidth;
+/**
+ * Height of user's screen
+ * @type {Number|*}
+ */
+var SCREEN_HEIGHT = window.innerHeight;
+/**
+ * Aspect Ratio of user's screen
+ * @type {Number|*}
+ */
+var ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT;
+/**
+ * Minimum render distance
+ * @type {number}
+ */
+var NEAR = 0.1;
+/**
+ * Maximum render distance
+ * @type {number}
+ */
+var FAR = 50000;
+
+/**
+ * Zeppelin
+ * @type {THREE.Group}
+ */
 var zeppelin;
+/**
+ * Marker to which the zeppelin is attached
+ * @type {THREE.Object3D}
+ */
 var zepMarker = new THREE.Object3D();
 
+/**
+ * Collection drone's rotors
+ * @type {Array}
+ */
 var rotors = [];
 
 init();
 
+/**
+ * Initializes the basics for every level (scenes, cameras, lights, basic objects, ...)
+ */
 function init() {
 
     scene = new THREE.Scene();
@@ -38,25 +123,43 @@ function init() {
 
     //Adding Lights
     /**
-     * Our ambient Light for the Stadium and other objects
+     * Ambient light
      * @type {THREE.AmbientLight}
      */
     var ambient = new THREE.AmbientLight(0xCCCCCC);
     scene.add(ambient);
+    /**
+     * Directional light
+     * @type {THREE.DirectionalLight}
+     */
     var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
     directionalLight.position.set(1200, 3500, 1500);
     directionalLight.rotateX(Math.PI * 0.75);
     directionalLight.rotateY(Math.PI * 0.75);
     scene.add(directionalLight);
 
+    /**
+     * Geometry for the sky
+     * @type {THREE.SphereGeometry}
+     */
     var skyGeo = new THREE.SphereGeometry(40000, 25, 25);
-
+    /**
+     * Texture for the sky
+     * @type {THREE.Texture}
+     */
     var texture = THREE.ImageUtils.loadTexture("objects/skyDome.jpg");
 
+    /**
+     * Material for the sky
+     * @type {THREE.MeshPhongMaterial}
+     */
     var material = new THREE.MeshPhongMaterial({
         map: texture,
     });
-
+    /**
+     * Mesh of for the sky
+     * @type {THREE.Mesh}
+     */
     var sky = new THREE.Mesh(skyGeo, material);
     sky.rotation.z = Math.PI;
     sky.material.side = THREE.BackSide;
@@ -67,7 +170,10 @@ function init() {
     mtlLoader.load('objects/Zeppelin.mtl', function (materials) {
 
         materials.preload();
-
+        /**
+         * 
+         * @type {THREE.OBJLoader}
+         */
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
 
