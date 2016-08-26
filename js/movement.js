@@ -187,9 +187,6 @@ var boundaryBottom = -80;
  */
 function drone_movement() {
 
-    if (currentStraightSpeed!=0) console.log(currentStraightSpeed);
-    // console.log(droneMarker.position.x, droneMarker.position.z);
-
     if (detectCollisions()) {
         rotateOnYAxis();
         moveUpAndDown();
