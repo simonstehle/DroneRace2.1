@@ -17,7 +17,7 @@ function inAnimate() {
 }
 
 function setHelp() {
-    scoreboard.help("Fly TRUE the green marked obstacles");
+    //scoreboard.help("Fly through the green marked obstacles!");
     scoreboard.showHelp();
 }
 
@@ -34,7 +34,7 @@ function stopTimer() {
 }
 
 function showSpeed() {
-    scoreboard.message("Forward Speed: " + speedDisplay(currentStraightSpeed));
+    scoreboard.message("Straight Speed: " + speedDisplay(currentStraightSpeed));
     scoreboard.addMessage("Side Speed: " + speedDisplay(currentSideSpeed));
     var showLevel = getCookie("ActualLevel");
     scoreboard.addMessage("You're playing Level " + showLevel);
