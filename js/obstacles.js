@@ -388,12 +388,12 @@ function makeThisObstacleMove(obstacle, rotationY, movingPace, movingDuration) {
     thisObstacleObj.move = function () {
 
         if (thisObstacleObj.randomize) {
-            var myRandom = 1-(Math.floor(100*Math.random()+1)/200);
-
-            movingPace *= myRandom;
-            movingDuration /= myRandom;
-            thisObstacleObj.noOfMovements = movingDuration;
-            obstacleMovement = calcObstacleMovement(rotationY, movingPace);
+            var myRandom = 0;
+            myRandom = 1-(Math.floor(100*Math.random()+1)/200);
+            var newMovingPace = movingPace * myRandom;
+            var newMovingDuration = movingDuration * myRandom;
+            thisObstacleObj.noOfMovements = newMovingDuration;
+            obstacleMovement = calcObstacleMovement(rotationY, newMovingPace);
             thisObstacleObj.moveX = obstacleMovement.moveInX;
             thisObstacleObj.moveZ = obstacleMovement.moveInZ;
         }
