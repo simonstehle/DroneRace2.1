@@ -56,7 +56,7 @@ function buildLevel1()
 
     setMainSound('objects/bennyHillTheme.mp3');
     if(startPlaying)
-        makeMusic();
+        toogleMusic(true);
 
 }
 
@@ -94,7 +94,7 @@ function buildLevel2()
 
     setMainSound('objects/euromir_song.mp3');
     if(startPlaying)
-        makeMusic();
+        toogleMusic(true);
 }
 
 /**
@@ -128,7 +128,7 @@ function buildLevel3(){
 
     setMainSound('objects/everything_is_awesome.mp3');
     if(startPlaying)
-        makeMusic();
+        toogleMusic(true);
 }
 
 

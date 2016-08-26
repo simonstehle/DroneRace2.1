@@ -14,29 +14,41 @@
  */
 
 
-
+/**
+ * Main sound for a page/level
+ */
 var mainSound;
-
-if (getCookie("playSounds") === "") {
-    setCookie("playSounds", "true", 100);
-}
-
+/**
+ * Indicates whether the sound should start playing
+ */
 var startPlaying;
-if (getCookie("playSounds") === "true") {
-    startPlaying = true;
-} else {
-    startPlaying = false;
+
+initMusic();
+
+/**
+ * Initializes the music
+ */
+function initMusic() {
+    if (getCookie("playSounds") === "") {
+        setCookie("playSounds", "true", 100);
+    }
+
+
+    if (getCookie("playSounds") === "true") {
+        startPlaying = true;
+    } else {
+        startPlaying = false;
+    }
 }
 
-
-function makeMusic() {
-
-    mainSound.play();
-    //mainSound.seek(80);
-}
-
-function stopMakingMusic() {
-    mainSound.stop();
+/**
+ * Toogle the mainSound
+ */
+function toogleMusic(on) {
+    if(on)
+        mainSound.play();
+    else
+        mainSound.stop();
 }
 
 /**
@@ -95,7 +107,6 @@ function dyingSoundPlay() {
     if (getCookie("playSounds") === "true") {
         dyingSound.play();
     }
-
 }
 
 
@@ -120,13 +131,13 @@ function stopMusic() {
 
     if (className === "glyphicon glyphicon-volume-up") {
         setCookie("playSounds", "false", 100);
-        stopMakingMusic();
+        toogleMusic(false);
         document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-off";
     } else {
 
         setCookie("playSounds", "true", 100);
         document.getElementById("volumeGlyphicon").className = "glyphicon glyphicon-volume-up";
-        makeMusic();
+        toogleMusic(true);
     }
 }
 

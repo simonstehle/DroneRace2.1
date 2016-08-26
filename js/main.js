@@ -5,13 +5,18 @@
  * This file is specially for the animate function and to load the ressources after selecting them inside the
  * indexpage
  */
-//Marker for grouping object, drone and droneCamera
+
+/**
+ * Marker for grouping object, drone and droneCamera
+ * @type {THREE.Object3D}
+ */
 var droneMarker = new THREE.Object3D();
 droneMarker.add(droneCamera);
 
 
 /**
- * Initialize the drona.
+ * Mesh of the drone
+ * @type {THREE.Group}
  */
 var drone_mesh;
 initDrone01();
@@ -28,7 +33,9 @@ initBonooneStadium();
  */
 buildLevels();
 
-
+/**
+ * Animate function gets called for every frame to update and render the game
+ */
 function animate() {
 
     requestAnimationFrame(animate);
@@ -52,6 +59,10 @@ animate();
 resetDrone();
 gameLoaded = true;
 resetTargets();
-function rotateRotor(element, index) {
+/**
+ * Rotate the rotor
+ * @param element -element to rotate
+ */
+function rotateRotor(element) {
     element.rotation.y += Math.PI * 0.2;
 }
