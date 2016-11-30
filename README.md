@@ -9,7 +9,7 @@ Simon Stehle
 DHBW Villingen-Schwenningen - Department Business Informatics
 
 #Play
-Just download the Project and start with the index.html
+visit droneracer.fangwasan.com
 
 #libs
 The game ist based on Three.js and Scoreboard.js
