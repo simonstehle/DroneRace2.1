@@ -48,6 +48,7 @@ function animate() {
 
     showSpeed();
 
+
     textureCamera.lookAt(droneMarker.position);
     renderer.render(scene, textureCamera, firstRenderTarget, true);
     renderer.render(screenScene, screenCamera, finalRenderTarget, true);
