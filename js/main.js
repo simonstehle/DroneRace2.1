@@ -20,7 +20,6 @@ droneMarker.add(droneCamera);
  */
 var drone_mesh;
 initDrone01();
-init();
 scene.add(droneMarker);
 
 /**

@@ -110,7 +110,7 @@ var zepMarker = new THREE.Object3D();
  */
 var rotors = [];
 
-
+init();
 
 /**
  * Initializes the basics for every level (scenes, cameras, lights, basic objects, ...)
